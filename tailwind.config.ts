@@ -16,6 +16,11 @@ const config: Config = {
         cream: '#F5F5F5',
         green: '#006B35',
       },
+      boxShadow: {
+        '3xl': '0px 5px 15px rgba(0, 0, 0, 0.35)',
+        '4xl': '0px 3px 8px rgba(0, 0, 0, 0.24)',
+      },
+      error: '#FF3939',
     },
   },
   plugins: [],
