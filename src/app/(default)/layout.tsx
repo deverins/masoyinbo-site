@@ -1,6 +1,6 @@
 import React from 'react'
 import { Instrument_Sans } from 'next/font/google'
-import './globals.css'
+import '../globals.css'
 import Main from '@/components/main/main'
 import Navbar from '@/components/Navbar'
 import { Toaster } from 'react-hot-toast'
