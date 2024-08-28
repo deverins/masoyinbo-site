@@ -3,7 +3,6 @@ import { Instrument_Sans } from 'next/font/google'
 import '../globals.css'
 import Main from '@/components/main/main'
 import { Toaster } from 'react-hot-toast'
-import HeroSection from '@/components/heroSection'
 import Navbar from '@/components/navbar'
 
 const instrumentSans = Instrument_Sans({
@@ -26,7 +25,6 @@ export default function RootLayout({
         className={`h-screen bg-lightPink box-border overflow-auto ${instrumentSans.className}`}
       >
         <Navbar />
-        <HeroSection />
         <Main>
           <Toaster
             position="bottom-center"

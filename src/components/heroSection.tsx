@@ -1,64 +1,66 @@
+import Image from 'next/image'
 import React from 'react'
-import logo from '/public/logo.png'
-
+import speak from '/public/speak.png'
+import danger from '/public/danger.png'
 const HeroSection = () => {
   return (
-    <section 
-      className="bg-cover bg-center h-64 mx-10 rounded-xl mt-10" 
-      style={{ backgroundImage: `url(${logo.src})` }}
-    >
-    </section>
+    <>
+      <section
+        className="bg-navyBlue flex items-center mx-5 rounded-2xl mt-4 justify-center p-4"
+      >
+        <div className="flex items-center bg-navyBlue p-2 rounded-lg shadow-lg space-x-2">
+          <div className="">
+            <Image
+              src={speak}
+              alt="speak Icon"
+              width={100}
+              height={100}
+              className="w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24"
+            />
+          </div>
+
+          {/* Text */}
+          <div className=''>
+            <h1 className="text-2xl lg:text-6xl mt-3 lg:mt-6 md:mt-6  sm:text-3xl md:text-4xl font-bold text-[#D1D2DE] tracking-wide">
+              másòyìnbó)))
+            </h1>
+          </div>
+
+          <div className="">
+            <Image
+              src={danger}
+              alt="danger"
+              width={50}
+              height={50}
+              className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-14 lg:h-14 mt-3 lg:mt-6 md:mt-6 "
+            />
+          </div>
+        </div>
+      </section>
+
+
+      {/* <div className="flex flex-col items-center justify-end text-white">
+        <h1 className="text-4xl font-bold text-center mb-4">Másòyìnbó</h1>
+        <div className="flex space-x-4 pb-4">
+          <div className="bg-terracottaOrange bg-opacity-10 backdrop-blur-md p-4 rounded-lg">
+            <p>Total episodes</p>
+          </div>
+          <div className="bg-terracottaOrange bg-opacity-10 backdrop-blur-md p-4 rounded-lg">
+            <p>Total amount</p>
+          </div>
+          <div className="bg-terracottaOrange bg-opacity-10 backdrop-blur-md p-4 rounded-lg">
+            <p>Total asked episodes</p>
+          </div>
+          <div className="bg-terracottaOrange bg-opacity-10 backdrop-blur-md p-4 rounded-lg">
+            <p>Total right answers</p>
+          </div>
+          <div className="bg-terracottaOrange bg-opacity-10 backdrop-blur-md p-4 rounded-lg">
+            <p>Request pool</p>
+          </div>
+        </div>
+      </div> */}
+    </>
   )
 }
 
 export default HeroSection
-
-
-
-
-
-
-// import Image from 'next/image'
-// import React from 'react'
-
-// const HeroSection = () => {
-//   return (
-//     <>
-//     <section className=' relative mb-8 h-[368px]'>
-//     {/* <div class="rounded-4 video-embed-object-cover __web-inspector-hide-shortcut__"><iframe src="https://customer-hxx8e4gj6d0mjlsv.cloudflarestream.com/8223612fd764fbabbcff48432bf32cb9/iframe?muted=true&amp;preload=true&amp;loop=true&amp;autoplay=true&amp;poster=https%3A%2F%2Fcustomer-hxx8e4gj6d0mjlsv.cloudflarestream.com%2F8223612fd764fbabbcff48432bf32cb9%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600&amp;controls=false&amp;letterboxColor=transparent" loading="lazy" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen=""></iframe></div> */}
-
-//     </section>
-//     </>
-//     // <section 
-//     //   className="h-screen bg-cover bg-center flex items-center justify-center relative" 
-//     //   style={{ backgroundImage: `url('/path-to-your-background-image.jpg')` }} // Replace with your background image path
-//     // >
-//     //   <div className="flex items-center bg-navyBlue p-4 rounded-lg shadow-lg space-x-2">
-//     //     {/* Silhouette Icon */}
-//     //     <div className="w-10 h-10">
-//     //       <Image
-//     //         src="/path-to-silhouette-icon.png" // Replace with the path to your silhouette icon
-//     //         alt="Silhouette Icon"
-//     //         width={40}
-//     //         height={40}
-//     //       />
-//     //     </div>
-//     //     {/* Text */}
-//     //     <h1 className="text-4xl font-bold text-white tracking-wide">
-//     //       másòyínbọ)))
-//     //     </h1>
-//     //     {/* Red Circle Icon */}
-//     //     <div className="ml-2">
-//     //       <Image
-//     //         src="/path-to-red-circle-icon.png" // Replace with the path to your red circle icon
-//     //         alt="No Icon"
-//     //         width={20}
-//     //         height={20}
-//     //       />
-//     //     </div>
-//     //   </div>
-//     // </section>
-//   )
-// }
-
-// export default HeroSection
