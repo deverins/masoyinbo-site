@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 const Navbar = () => {
   return (
-    <nav className='bg-navyBlue text-white top-0 z-10 p-3'>
+    <nav className=' bg-primary-light text-white top-0 z-10 p-3'>
       <div className='flex justify-between items-center mx-4 sm:mx-8'>
         <div className='flex items-center'>
           <Link href = '/home'>
@@ -19,7 +19,7 @@ const Navbar = () => {
           </Link>
         </div>
         <div className='flex items-center gap-4 sm:gap-8'>
-          <button className='bg-cream text-black text-sm sm:text-base font-bold rounded-lg p-2 sm:p-3 hover:bg-saffron'>
+          <button className=' bg-secondary-cream text-black text-sm sm:text-base font-bold rounded-lg p-2 sm:p-3 hover:bg-secondary-saffron'>
            Participate
           </button>
           <select className="cursor-pointer bg-transparent border-none outline-none text-white text-sm sm:text-base">

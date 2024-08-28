@@ -5,6 +5,10 @@ const HomePage = () => {
   return (
     <>
       <HeroSection />
+
+      <section >
+
+      </section>
     </>
   )
 }
