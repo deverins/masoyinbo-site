@@ -18,8 +18,6 @@ const HeroSection = () => {
               className="w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24"
             />
           </div>
-
-          {/* Text */}
           <div className=''>
             <h1 className="text-2xl lg:text-6xl mt-3 lg:mt-6 md:mt-6  sm:text-3xl md:text-4xl font-bold text-[#D1D2DE] tracking-wide">
               másòyìnbó)))
