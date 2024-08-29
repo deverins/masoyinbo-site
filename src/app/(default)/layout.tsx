@@ -1,9 +1,11 @@
+// src/app/(default)/layout.tsx
 import React from 'react'
 import { Instrument_Sans } from 'next/font/google'
 import '../globals.css'
-import Main from '@/components/main/main'
 import { Toaster } from 'react-hot-toast'
-import Navbar from '@/components/navbar'
+import Navbar from '@/components/Navbar'
+import { ThemeProvider } from '@/hooks/themeContext'
+import Main from '@/components/layouts/Main'
 
 const instrumentSans = Instrument_Sans({
   subsets: ['latin'],
@@ -22,19 +24,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`h-screen bg-lightPink box-border overflow-auto ${instrumentSans.className}`}
+        className={`${instrumentSans.className}`}
       >
-        <Navbar />
-        <Main>
-          <Toaster
-            position="bottom-center"
-            toastOptions={{
-              duration: 5000,
-              style: { background: '#333333', color: '#FAFAFA' },
-            }}
-          />
-          {children}
-        </Main>
+        <ThemeProvider>
+          <Main>
+            <Navbar />
+            {children}
+            <Toaster
+              position="bottom-center"
+              toastOptions={{
+                duration: 5000,
+                style: { background: '#333333', color: '#FAFAFA' },
+              }}
+            />
+          </Main>
+        </ThemeProvider>
       </body>
     </html>
   )

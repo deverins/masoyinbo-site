@@ -9,34 +9,34 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Define primary and secondary colors for light and dark mode
         primary: {
-          light: '#1C1F41', // skyBlue in light mode
-          DEFAULT: '#1C1F41', // navyBlue by default
-          dark: '#000000', // black in dark mode
+          light: '#1C1F41',
+          DEFAULT: '#1C1F41', 
+          dark: '#000000', 
           lightPink:'#F7E6E6',
         },
         secondary: {
-          saffron: '#F9BC33', // saffron in light mode
-          DEFAULT: '#CB6F35', // terracottaOrange by default
-          dark: '#FF3939', // red in dark mode
+          saffron: '#F9BC33', 
+          DEFAULT: '#CB6F35', 
+          dark: '#FF3939', 
           cream: '#F5F5F5',
         },
         background: {
-          light: '#1C1F41', // white in light mode
-          dark: '#000000', // black in dark mode
+          light: '#1C1F41', 
+          dark: '#000000', 
         },
-        text: {
-          light: '#000000', // black text in light mode
-          dark: '#FFFFFF', // white text in dark mode
+        "text": {
+          light: '#000000', 
+          dark: '#FFFFFF', 
+          saffron: '#F9BC33', 
         },
         danger: {
-          light: '#FF3939', // red in light mode
-          dark: '#FF3939', // red in dark mode (same)
+          light: '#FF3939', 
+          dark: '#FF3939', 
         },
         success: {
-          light: '#006B35', // green in light mode
-          dark: '#006B35', // green in dark mode (same)
+          light: '#006B35', 
+          dark: '#006B35', 
         },
       },
       boxShadow: {
@@ -45,6 +45,7 @@ const config: Config = {
       },
     },
   },
+  darkMode: 'class',
   plugins: [],
 };
 
