@@ -2,13 +2,14 @@
 import React from 'react'
 import HeroSection from './HeroSection'
 import Link from 'next/link'
+import StatsCard from './StatsCard'
 
 const HomePage = () => {
   return (
     <>
       <HeroSection />
       <section>
-      <div className="flex items-center justify-center mt-4">
+      <div className="flex items-center justify-center mt-8 mx-2">
             <div className=" border-t-8 border-danger-light rounded-t-lg container">
                 <div className="bg-white p-6 w-full rounded-b-lg">
                     <h2 className=" text-[32px] text-gray-900 font-black">Másòyìnbó</h2>
@@ -31,8 +32,8 @@ const HomePage = () => {
             </div>
         </div>
     );
-
       </section>
+      <StatsCard />
     </>
   )
 }
