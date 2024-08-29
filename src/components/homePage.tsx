@@ -3,6 +3,7 @@ import React from 'react'
 import HeroSection from './HeroSection'
 import Link from 'next/link'
 import StatsCard from './StatsCard'
+import RecentEpisodes from './RecentEpisodes'
 
 const HomePage = () => {
   return (
@@ -31,9 +32,9 @@ const HomePage = () => {
                 </div>
             </div>
         </div>
-    );
       </section>
       <StatsCard />
+      <RecentEpisodes />
     </>
   )
 }

@@ -10,7 +10,6 @@ const Main: React.FC<MainProps> = ({ children }) => {
   
   // Get the current theme from context
   const { theme } = useTheme();
-  console.log(theme);
   
   return <main 
     className={`${theme== 'dark' && 'dark'} `}>
