@@ -31,7 +31,7 @@ const config: Config = {
           saffron: '#F9BC33', 
         },
         danger: {
-          light: '#FF3939', 
+          light: '#B30205', 
           dark: '#FF3939', 
         },
         success: {
