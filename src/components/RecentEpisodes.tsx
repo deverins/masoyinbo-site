@@ -1,7 +1,8 @@
-// components/RecentEpisodes.tsx
+import { API_URL } from '@/constants/api';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
-interface Episode {
+interface Stats {
   id: string;
   title: string;
   description: string;
@@ -11,7 +12,7 @@ interface Episode {
 
 
 const RecentEpisodes: React.FC = () => {
-  const [episodes, setEpisodes] = useState<Episode[]>([]);
+  const [episodeLinks, setEpisodeLinks] = useState<Stats[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -19,9 +20,8 @@ const RecentEpisodes: React.FC = () => {
     // Fetch recent episodes from the backend
     const fetchEpisodes = async () => {
       try {
-        const response = await fetch('/api/recent-episodes');
-        const data: Episode[] = await response.json();
-        setEpisodes(data);
+        const { data } = await axios.get(`${API_URL}/v1/api//get-episode-stats`);
+        setEpisodeLinks(data.stats.episodeLinks || []);
       } catch (err) {
         setError('Failed to fetch episodes');
       } finally {
@@ -33,7 +33,7 @@ const RecentEpisodes: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <div className="loader mx-auto ease-linear rounded-full border-4 border-t-4 h-12 w-12" />;
+    return <div className="loader mt-20 mx-auto ease-linear rounded-full border-4 border-t-4 h-12 w-12" />;
   }
 
   if (error) {
@@ -41,25 +41,21 @@ const RecentEpisodes: React.FC = () => {
   }
 
   return (
-    <div className="mt-8">
-      <h2 className="text-2xl font-bold mb-4">Recent Episodes</h2>
+    <div className="mt-16 pb-5 mx-8">
+      <h2 className="text-2xl font-bold mb-4 text-secondary-dark text-center">Recent Episodes</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {episodes.map((episode) => (
-          <div key={episode.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
+        {episodeLinks.map((episodeLink, index) => (
+          <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden">
             <div className="aspect-w-16 aspect-h-9">
-              <iframe
-                src={`https://www.youtube.com/embed/${episode.episodeLink}`}
-                title={episode.title}
-                frameBorder="0"
-                allowFullScreen
-                className="w-full h-full"
-              ></iframe>
+              <iframe width="560" height="315"
+                src="https://www.youtube.com/embed/w9ycDFt9hN0?si=OUwei86fReyrysTe"
+                // src={`https://www.youtube.com/embed/${episodeLink}`}
+                title={`Episode ${index + 1}`} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
             </div>
-            <div className="p-4">
-              <h3 className="text-lg font-semibold">{episode.title}</h3>
+            {/* <div className="p-4">
+              <h3 className="text-lg font-semibold">{`Episode ${index + 1}`}</h3>
               <p className="text-gray-600 mt-2">{episode.description}</p>
-              <p className="text-gray-500 text-sm mt-4">{new Date(episode.date).toLocaleDateString()}</p>
-            </div>
+            </div> */}
           </div>
         ))}
       </div>
