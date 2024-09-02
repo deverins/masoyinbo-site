@@ -1,4 +1,3 @@
-// src/components/navbar.tsx
 "use client"
 import Image from 'next/image';
 import React from 'react';
@@ -14,7 +13,7 @@ const Navbar = () => {
     >
       <div className='flex justify-between items-center mx-4 sm:mx-8'>
         <div className='flex items-center'>
-          <Link href="/home">
+          <Link href="/">
             <Image
               src={logo}
               alt="logo"
