@@ -40,7 +40,7 @@ const StatsCard: React.FC = () => {
 
   return (
     stats && (
-      <div className='mt-20 mx-4'>
+      <div className='mt-20 mx-0 lg:mx-20 md:mx-10'>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 p-4">
           <div className="p-4 bg-secondary-cream rounded-lg shadow-md">
             <h3 className="text-lg font-semibold">Total Episodes</h3>
