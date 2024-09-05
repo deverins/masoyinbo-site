@@ -1,5 +1,3 @@
-// src/validationSchema/participateSchema.ts
-"use client"
 import * as yup from 'yup';
 
 export const participationSchema = yup.object({
@@ -14,9 +12,10 @@ export const participationSchema = yup.object({
     .required("*-required")
     .matches(/^[\d\s-]+$/, "Invalid mobile number"),
   placeOfResidence: yup.string().required("*-required"),
-  StateOfOrigin: yup.string().required("*-required"),
-  socialMediaPlatform: yup.string().required("*-required"),
+  state: yup.string().required("*-required"),
+  comment: yup.string().nullable(),
+  platformLink: yup.string().required("*-required"),
   socialMediaHandle: yup.string().required("*-required"),
-  howDidYouFindOut: yup.array().min(1, "Select at least one option"),
+  source: yup.array().min(1, "Select at least one option"),
   rulesAgreement: yup.boolean().oneOf([true], "*-required"),
 });

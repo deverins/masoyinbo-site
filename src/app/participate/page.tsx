@@ -5,6 +5,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { participationSchema } from '@/validationSchema/participateSchema';
 import { API_URL } from '@/constants/api';
+
 interface Option {
   value: string;
   label: string;
@@ -24,6 +25,20 @@ const ParticipationForm: React.FC = () => {
     { value: 'Instagram', label: 'Instagram' },
   ];
 
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = event.target;
+    const { source } = formik.values;
+
+    if (checked) {
+      formik.setFieldValue("source", [...source, value]);
+    } else {
+      formik.setFieldValue(
+        "source",
+        source.filter((item: string) => item !== value)
+      );
+    }
+  };
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -34,16 +49,19 @@ const ParticipationForm: React.FC = () => {
       placeOfResidence: '',
       platformLink: '',
       socialMediaHandle: '',
-      howDidYouFindOut: [] as string[],
+      source: [] as string[],
       rulesAgreement: false,
-      additionalComments: '',
+      comment: '',
     },
     validationSchema: participationSchema,
-    onSubmit: async (values) => {
+
+    onSubmit: async (values, { resetForm }) => {
+      const { rulesAgreement, ...restValues } = values;
       try {
         setLoading(true);
-        await axios.post(URL, values);
+        await axios.post(URL, restValues);
         toast.success("User registered successfully.");
+        resetForm();
       } catch (error) {
         toast.error("Sign up failed. Please try again later.");
         console.error(error);
@@ -51,14 +69,19 @@ const ParticipationForm: React.FC = () => {
         setLoading(false);
       }
     },
+
   });
 
+  // Debug log to check initial values
+  console.log("Formik Initial Values:", formik.values);
+
   return (
-    <div className="flex justify-center items-center">
+    <section className="flex justify-center items-center">
+
       <div className="bg-slate-100 shadow-md rounded-lg p-8 w-full max-w-lg">
         <form onSubmit={formik.handleSubmit}>
-         {/* Email */}
-         <div className="mb-4">
+          {/* Email */}
+          <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Email
             </label>
@@ -97,16 +120,18 @@ const ParticipationForm: React.FC = () => {
 
           {/* Gender */}
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Gender
-            </label>
-            <input
-              type="text"
+            <label className="block text-gray-700 text-sm font-bold mb-2">Gender</label>
+            <select
               name="gender"
               onChange={formik.handleChange}
               value={formik.values.gender}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
+            >
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
             {formik.errors.gender && formik.touched.gender && (
               <div className="text-red-500 text-xs mt-1">
                 {formik.errors.gender}
@@ -152,11 +177,30 @@ const ParticipationForm: React.FC = () => {
             )}
           </div>
 
+          {/* State of Origin */}
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              State of Origin
+            </label>
+            <input
+              type="text"
+              name="state"
+              onChange={formik.handleChange}
+              value={formik.values.state}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+            {formik.errors.state && formik.touched.state && (
+              <div className="text-red-500 text-xs mt-1">
+                {formik.errors.state}
+              </div>
+            )}
+          </div>
+
           {/* Social Media Platform */}
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
-             Most Active/Frequently Used Social Media Platform Link
-             <span className=' text-secondary-dark ml-3'>*</span>
+              Most Active/Frequently Used Social Media Platform Link
+              <span className=' text-secondary-dark ml-3'>*</span>
             </label>
             <input
               type="text"
@@ -202,18 +246,18 @@ const ParticipationForm: React.FC = () => {
                 <label key={option.value} className="flex items-center">
                   <input
                     type="checkbox"
-                    name="howDidYouFindOut"
+                    name="source"
                     value={option.value}
-                    onChange={formik.handleChange}
-                    checked={formik.values.howDidYouFindOut.includes(option.value)}
+                    onChange={handleCheckboxChange}
+                    checked={formik.values.source.includes(option.value)}
                     className="mr-2"
                   />
                   {option.label}
                 </label>
               ))}
-              {formik.errors.howDidYouFindOut && formik.touched.howDidYouFindOut && (
+              {formik.errors.source && formik.touched.source && (
                 <div className="text-red-500 text-xs mt-1">
-                  {formik.errors.howDidYouFindOut}
+                  {formik.errors.source}
                 </div>
               )}
             </div>
@@ -251,29 +295,30 @@ const ParticipationForm: React.FC = () => {
               Any further comments/questions?
             </label>
             <textarea
-              name="additionalComments"
+              name="comment"
               onChange={formik.handleChange}
-              value={formik.values.additionalComments}
+              value={formik.values.comment}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               placeholder='Your answer'
             />
-            {formik.errors.additionalComments && formik.touched.additionalComments && (
+            {formik.errors.comment && formik.touched.comment && (
               <div className="text-red-500 text-xs mt-1">
-                {formik.errors.additionalComments}
+                {formik.errors.comment}
               </div>
             )}
           </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            Submit
-          </button>
+          <div className=' flex justify-end'>
+            <button
+              type="submit"
+              disabled={loading}
+              className=" bg-secondary-saffron text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              {loading ? 'Submitting...' : 'Submit'}
+            </button>
+          </div>
         </form>
       </div>
-    </div>
+    </section>
   );
 };
 
