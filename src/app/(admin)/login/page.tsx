@@ -4,6 +4,7 @@ import { userLoginSchema } from "@/validationSchema/loginSchema";
 import axios from "axios";
 import { useFormik } from "formik";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLock, AiOutlineMail } from "react-icons/ai";
@@ -12,6 +13,7 @@ const LogIn = () => {
 
   const URL = `${API_URL}/v1/auth/login`;
   const [loading, setLoading] = useState(false);
+  const navigate = useRouter()
 
   const onSubmit = async (values: any) => {
     try {
@@ -26,6 +28,7 @@ const LogIn = () => {
 
         toast.success('Login successful');
         const username = data.user.username;
+        return navigate.push(`/create-episode`);
         // return navigate(`/${username}/profile`);
 
       }
@@ -51,8 +54,8 @@ const LogIn = () => {
     <div>
       (
       <section>
-        <main className="pt-20 pb-5">
-          <div className="max-w-md mx-auto shadow-lg p-6 rounded">
+        <main className="flex justify-center items-center py-10 px-4">
+          <div className=" w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl transition-all duration-300 shadow-lg p-6 rounded">
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label htmlFor="email" className="block text-sm font-medium text-gray-500">
@@ -108,7 +111,7 @@ const LogIn = () => {
               </div>
               <div className="flex mt-2">
                 <p className="text-gray-500">Don't have an account <span>
-                  <Link href='/signup' className="text-gray-500 hover:underline hover:text-secondary-saffronLight">Register</Link></span></p>
+                  <Link href='/user/signup' className="text-gray-500 hover:underline hover:text-secondary-saffronLight">Register</Link></span></p>
               </div>
             </form>
           </div>

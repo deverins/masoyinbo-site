@@ -17,12 +17,12 @@ const SignUp = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.post(URL, values, {});
-      localStorage.setItem('userDetails', JSON.stringify(response.data.user));
+      const { data } = await axios.post(URL, values, {});
+      localStorage.setItem('userDetails', JSON.stringify(data.user));
       toast.success("User registered successfully.");
-      console.log(response);
-    } catch (error) {
-      toast.error("Sign up failed. Please try again later.");
+      console.log("response", data);
+    } catch (error: any) {
+      toast.error(error.response.data.message)
       console.error("Sign up error:", error);
 
     } finally {
@@ -46,8 +46,8 @@ const SignUp = () => {
     <div>
       (
       <section>
-        <main className="pt-20 pb-5">
-          <div className="max-w-md mx-auto shadow-lg p-6 rounded">
+        <main className="flex justify-center items-center py-10 px-4">
+          <div className=" w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl transition-all duration-300 shadow-lg p-6 rounded">
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label htmlFor="name" className="block text-sm font-medium text-gray-500">
