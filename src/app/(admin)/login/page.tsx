@@ -1,16 +1,15 @@
 "use client"
 import { API_URL } from "@/constants/api";
-import { userRegisterationSchema } from "@/validationSchema/userSchema";
+import { userLoginSchema } from "@/validationSchema/loginSchema";
 import axios from "axios";
 import { useFormik } from "formik";
-import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { AiOutlineLock, AiOutlineMail, AiOutlineUser } from "react-icons/ai";
+import { AiOutlineLock, AiOutlineMail } from "react-icons/ai";
 
-const SignUp = () => {
+const LogIn = () => {
 
-  const URL = `${API_URL}/v1/auth/signup`;
+  const URL = `${API_URL}/v1/auth/login`;
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (values: any) => {
@@ -33,12 +32,10 @@ const SignUp = () => {
 
   const { handleChange, handleSubmit, values, errors } = useFormik({
     initialValues: {
-      fullName: "",
-      username: "",
       email: "",
       password: "",
     },
-    validationSchema: userRegisterationSchema,
+    validationSchema: userLoginSchema,
     onSubmit,
   });
 
@@ -49,42 +46,6 @@ const SignUp = () => {
         <main className="pt-20 pb-5">
           <div className="max-w-md mx-auto shadow-lg p-6 rounded">
             <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <label htmlFor="name" className="block text-sm font-medium text-gray-500">
-                  fullName
-                </label>
-                <div className="flex items-center border rounded-md px-3 py-2">
-                  <AiOutlineUser className="mr-2 text-gray-500 " />
-                  <input
-                    type="text"
-                    name="fullName"
-                    onChange={handleChange}
-                    value={values.fullName}
-                    autoComplete="false"
-                    placeholder="fullName"
-                    className="p-2 py-3.5 flex-grow text-gray-500 font-medium placeholder-gray-500 bg-white outline-none border border-yellow-300 rounded-lg focus:ring focus:ring-yellow-200"
-                  />
-                </div>
-                <span className="text-red-500">{errors.fullName}</span>
-              </div>
-              <div className="mb-4">
-                <label htmlFor="username" className="block text-sm font-medium text-gray-500">
-                  Username
-                </label>
-                <div className="flex items-center border rounded-md px-3 py-2">
-                  <AiOutlineUser className="mr-2 text-gray-500 " />
-                  <input
-                    type="text"
-                    name="username"
-                    onChange={handleChange}
-                    value={values.username}
-                    autoComplete="false"
-                    placeholder="Username"
-                    className="p-2 py-3.5 flex-grow text-gray-500 font-medium placeholder-gray-500 bg-white outline-none border border-yellow-300 rounded-lg focus:ring focus:ring-yellow-200"
-                  />
-                </div>
-                <span className="text-red-500">{errors.username}</span>
-              </div>
               <div className="mb-4">
                 <label htmlFor="email" className="block text-sm font-medium text-gray-500">
                   Email Address
@@ -127,13 +88,9 @@ const SignUp = () => {
                   type="submit"
                   disabled={loading}
                 >
-                  Sign Up as Admin
+                 Login as Admin
                 </button>
               )}
-              <div className="text-center mt-4 mb-14">
-                <p className="text-gray-500">Already have an admin account?</p>
-                <Link href="/login" className="text-sm sm:text-base text-secondary-saffronLight hover:underline">Admin Login here</Link>
-              </div>
             </form>
           </div>
         </main>
@@ -143,4 +100,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default LogIn;

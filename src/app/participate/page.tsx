@@ -2,9 +2,9 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import axios from 'axios';
-import toast from 'react-hot-toast';
 import { participationSchema } from '@/validationSchema/participateSchema';
 import { API_URL } from '@/constants/api';
+import toast from 'react-hot-toast';
 
 interface Option {
   value: string;

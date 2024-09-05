@@ -17,6 +17,7 @@ const config: Config = {
         },
         secondary: {
           saffron: '#F9BC33', 
+          saffronLight: '#F9BC20',
           DEFAULT: '#CB6F35', 
           dark: '#FF3939', 
           cream: '#F5F5F5',
@@ -29,6 +30,11 @@ const config: Config = {
           light: '#000000', 
           dark: '#FFFFFF', 
           saffron: '#F9BC33', 
+          saffronLight: '#F9BC20', 
+        },
+        border: {
+          saffron: '#F9BC33', 
+          saffronLight: '#F9BC20', 
         },
         danger: {
           light: '#B30205', 
