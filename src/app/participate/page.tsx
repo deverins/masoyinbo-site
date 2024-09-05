@@ -80,11 +80,14 @@ const ParticipationForm: React.FC = () => {
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Email
+              <span className=' text-secondary-dark ml-3'>*</span>
+
             </label>
             <input
               type="email"
               name="email"
               onChange={formik.handleChange}
+              placeholder='email'
               value={formik.values.email}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
@@ -99,11 +102,14 @@ const ParticipationForm: React.FC = () => {
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Full Name (Name and Surname)
+              <span className=' text-secondary-dark ml-3'>*</span>
+
             </label>
             <input
               type="text"
               name="fullName"
               onChange={formik.handleChange}
+              placeholder='full name'
               value={formik.values.fullName}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
@@ -116,7 +122,10 @@ const ParticipationForm: React.FC = () => {
 
           {/* Gender */}
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">Gender</label>
+            <label className="block text-gray-700 text-sm font-bold mb-2">Gender
+              <span className=' text-secondary-dark ml-3'>*</span>
+
+            </label>
             <select
               name="gender"
               onChange={formik.handleChange}
@@ -144,6 +153,7 @@ const ParticipationForm: React.FC = () => {
               type="text"
               name="mobileNumber"
               onChange={formik.handleChange}
+              placeholder='mobile number'
               value={formik.values.mobileNumber}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
@@ -158,11 +168,14 @@ const ParticipationForm: React.FC = () => {
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Place of Residence
+              <span className=' text-secondary-dark ml-3'>*</span>
+
             </label>
             <input
               type="text"
               name="placeOfResidence"
               onChange={formik.handleChange}
+              placeholder='place of residence'
               value={formik.values.placeOfResidence}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
@@ -177,11 +190,14 @@ const ParticipationForm: React.FC = () => {
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
               State of Origin
+              <span className=' text-secondary-dark ml-3'>*</span>
+
             </label>
             <input
               type="text"
               name="state"
               onChange={formik.handleChange}
+              placeholder='state of origin'
               value={formik.values.state}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
@@ -202,6 +218,7 @@ const ParticipationForm: React.FC = () => {
               type="text"
               name="platformLink"
               onChange={formik.handleChange}
+              placeholder='social media platform link'
               value={formik.values.platformLink}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
@@ -216,11 +233,14 @@ const ParticipationForm: React.FC = () => {
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Social Media Handle
+              <span className=' text-secondary-dark ml-3'>*</span>
+
             </label>
             <input
               type="text"
               name="socialMediaHandle"
               onChange={formik.handleChange}
+              placeholder='social media handle'
               value={formik.values.socialMediaHandle}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
@@ -239,12 +259,13 @@ const ParticipationForm: React.FC = () => {
             </label>
             <div className="flex flex-col">
               {options.map((option: Option) => (
-                <label key={option.value} className="flex items-center">
+                <label key={option.value} className="flex items-center font-semibold text-base lead mt-3">
                   <input
                     type="checkbox"
                     name="source"
                     value={option.value}
                     onChange={handleCheckboxChange}
+                    placeholder='how did you find out'
                     checked={formik.values.source.includes(option.value)}
                     className="mr-2"
                   />
@@ -262,11 +283,19 @@ const ParticipationForm: React.FC = () => {
           {/* Rules Agreement */}
           <div className="mb-4">
             <h1 className='block text-gray-700 text-sm font-bold mb-2'>Rules of Másòyìnbó:</h1>
-            <p>1. You are prohibited to code-mix or speak other languages aside from Yoruba throughout the duration of the programme. Failure to adhere will lead to the deduction of your earnings.</p>
-            <p>2. It is required that all 10 questions are answered correctly to have the potential of earning up to N1,000,000.</p>
-            <p>3. If you are selected, please come onto the programme in colourful native attire, as we will not allow standard dressing - we are keen to conserve and promote our Yoruba culture.</p>
-            <p>4. You are expected and encouraged to know your Yoruba numbers; if not, it may impact your potential earnings.</p>
-            <div className='flex items-center'>
+            <p className=' font-semibold text-base lead mt-3'>
+              1. You are prohibited to code-mix or speak other languages aside from Yoruba throughout the duration of the programme. Failure to adhere will lead to the deduction of your earnings.
+            </p>
+            <p className=' font-semibold text-base lead mt-3'>
+              2. It is required that all 10 questions are answered correctly to have the potential of earning up to N1,000,000.
+            </p>
+            <p className=' font-semibold text-base lead mt-3'>
+              3. If you are selected, please come onto the programme in colourful native attire, as we will not allow standard dressing - we are keen to conserve and promote our Yoruba culture.
+            </p>
+            <p className='font-semibold text-base lead mt-3'>
+              4. You are expected and encouraged to know your Yoruba numbers; if not, it may impact your potential earnings.
+            </p>
+            <div className='flex items-center  mt-6'>
               <input
                 type="checkbox"
                 name="rulesAgreement"
