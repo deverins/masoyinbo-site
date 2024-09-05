@@ -3,6 +3,7 @@ import { API_URL } from "@/constants/api";
 import { userLoginSchema } from "@/validationSchema/loginSchema";
 import axios from "axios";
 import { useFormik } from "formik";
+import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLock, AiOutlineMail } from "react-icons/ai";
@@ -14,16 +15,23 @@ const LogIn = () => {
 
   const onSubmit = async (values: any) => {
     try {
-      setLoading(true);
-      const token = localStorage.getItem('token');
-      const response = await axios.post(URL, values, {});
-      localStorage.setItem('userDetails', JSON.stringify(response.data.user));
-      toast.success("User registered successfully.");
-      console.log(response);
-    } catch (error) {
-      toast.error("Sign up failed. Please try again later.");
-      console.error("Sign up error:", error);
+      setLoading(true)
+      const { data } = await axios.post(URL, values);
 
+      console.log("response", data);
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      // Redirect to dashboard if email is verified
+      if (data.user?.email) {
+
+        toast.success('Login successful');
+        const username = data.user.username;
+        // return navigate(`/${username}/profile`);
+
+      }
+    }
+    catch (error: any) {
+      toast.error(error.response.data.message)
     } finally {
 
       setLoading(false);
@@ -88,9 +96,20 @@ const LogIn = () => {
                   type="submit"
                   disabled={loading}
                 >
-                 Login as Admin
+                  Login as Admin
                 </button>
               )}
+              <div className="flex justify-between mt-2">
+                <div>
+                  <input type="checkbox" className="mr-2" />
+                  <span className="text-gray-500">Remember me</span>
+                </div>
+                <Link href="/forgot-password" className="text-secondary-saffronLight">Forgot password?</Link>
+              </div>
+              <div className="flex mt-2">
+                <p className="text-gray-500">Don't have an account <span>
+                  <Link href='/signup' className="text-gray-500 hover:underline hover:text-secondary-saffronLight">Register</Link></span></p>
+              </div>
             </form>
           </div>
         </main>
