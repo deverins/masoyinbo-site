@@ -1,5 +1,6 @@
 import { API_URL } from '@/constants/api';
 import axios from 'axios';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
 interface Stats {
@@ -18,7 +19,7 @@ const StatsCard: React.FC = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const { data } = await axios.get(`${API_URL}/v1/api/get-episode-stats`);
+        const { data } = await axios.get(`${API_URL}/v1/api/get-episode-stats?limit=4`);
         setStats(data.stats);
       } catch (err) {
         setError('Failed to fetch stats');
@@ -30,10 +31,6 @@ const StatsCard: React.FC = () => {
     fetchStats();
   }, []);
 
-  // if (loading) {
-  //   return <div className="loader mx-auto ease-linear rounded-full border-4 border-t-4 h-12 w-12" />;
-  // }
-
   if (error) {
     return <div>{error}</div>;
   }
@@ -42,10 +39,12 @@ const StatsCard: React.FC = () => {
     stats && (
       <div className='mt-20 mx-0 lg:mx-20 md:mx-10'>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 p-4">
-          <div className="p-4 bg-secondary-cream rounded-lg shadow-md">
-            <h3 className="text-lg font-semibold">Total Episodes</h3>
-            <p className="text-2xl">{stats.totalEpisodes}</p>
-          </div>
+            <div className="p-4 bg-secondary-cream rounded-lg shadow-md">
+          <Link href= 'all-episodes'>
+              <h3 className="text-lg font-semibold">Total Episodes</h3>
+              <p className="text-2xl">{stats.totalEpisodes}</p>
+          </Link>
+            </div>
           <div className="p-4 bg-secondary-cream rounded-lg shadow-md">
             <h3 className="text-lg font-semibold">Total Amount Won</h3>
             <p className="text-2xl">₦{stats.totalAmountWon.toLocaleString()}</p>

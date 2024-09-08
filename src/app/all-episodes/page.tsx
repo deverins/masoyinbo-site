@@ -1,3 +1,4 @@
+"use client"
 import { API_URL } from '@/constants/api';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
@@ -10,8 +11,7 @@ interface Stats {
   episodeLink: string;
 }
 
-
-const RecentEpisodes: React.FC = () => {
+const AllEpisodes: React.FC = () => {
   const [episodeLinks, setEpisodeLinks] = useState<Stats[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -41,15 +41,22 @@ const RecentEpisodes: React.FC = () => {
   }
 
   return (
-    <div className="mt-16 pb-5 mx-8">
-      <h2 className="text-2xl font-bold mb-4 text-secondary-dark text-center">Recent Episodes</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="mt-14 pb-5 mx-8">
+      <h2 className="text-2xl font-bold mb-9 text-secondary-dark text-center">All Episodes</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 transition-all duration-300">
         {episodeLinks.map((episodeLink, index) => (
           <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden">
             <div className="aspect-w-16 aspect-h-9">
-              <iframe width="560" height="315"
+              <iframe
+                width="560"
+                height="315"
                 src={`${episodeLink}`}
-                title={`Episode ${index + 1}`} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+                title={episodeLink.title}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
             </div>
           </div>
         ))}
@@ -58,4 +65,4 @@ const RecentEpisodes: React.FC = () => {
   );
 };
 
-export default RecentEpisodes;
+export default AllEpisodes;
