@@ -4,6 +4,7 @@ import { userRegisterationSchema } from "@/validationSchema/userSchema";
 import axios from "axios";
 import { useFormik } from "formik";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLock, AiOutlineMail, AiOutlineUser } from "react-icons/ai";
@@ -12,7 +13,7 @@ const SignUp = () => {
 
   const URL = `${API_URL}/v1/auth/signup`;
   const [loading, setLoading] = useState(false);
-
+  const navigate = useRouter()
   const onSubmit = async (values: any) => {
     try {
       setLoading(true);
@@ -21,6 +22,7 @@ const SignUp = () => {
       localStorage.setItem('userDetails', JSON.stringify(data.user));
       toast.success("User registered successfully.");
       console.log("response", data);
+      navigate.push('/login')
     } catch (error: any) {
       toast.error(error.response.data.message)
       console.error("Sign up error:", error);
