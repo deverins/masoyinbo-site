@@ -5,6 +5,7 @@ import axios from 'axios';
 import { participationSchema } from '@/validationSchema/participateSchema';
 import { API_URL } from '@/constants/api';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 interface Option {
   value: string;
@@ -14,6 +15,7 @@ interface Option {
 const ParticipationForm: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const URL = `${API_URL}/v1/auth/create-participant`;
+  const navigate = useRouter();
 
   const options: Option[] = [
     { value: 'social_media', label: 'EAYoruba' },
@@ -61,6 +63,7 @@ const ParticipationForm: React.FC = () => {
         setLoading(true);
         await axios.post(URL, restValues);
         toast.success("User registered successfully.");
+        navigate.push('/request-pool')
         resetForm();
       } catch (error) {
         toast.error("Sign up failed. Please try again later.");

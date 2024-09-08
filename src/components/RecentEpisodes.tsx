@@ -1,6 +1,7 @@
 import { API_URL } from '@/constants/api';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 interface Stats {
   id: string;
@@ -17,7 +18,6 @@ const RecentEpisodes: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Fetch recent episodes from the backend
     const fetchEpisodes = async () => {
       try {
         const { data } = await axios.get(`${API_URL}/v1/api/get-episode-stats`);
@@ -37,7 +37,7 @@ const RecentEpisodes: React.FC = () => {
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return toast.error(error)
   }
 
   return (
@@ -49,7 +49,7 @@ const RecentEpisodes: React.FC = () => {
             <div className="aspect-w-16 aspect-h-9">
               <iframe width="560" height="315"
                 src={`${episodeLink}`}
-                title={`Episode ${index + 1}`} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+                title={`Episode ${index + 1}`} frameBorder="0" allowFullScreen></iframe>
             </div>
           </div>
         ))}

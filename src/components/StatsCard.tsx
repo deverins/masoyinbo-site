@@ -6,9 +6,22 @@ import React, { useEffect, useState } from 'react';
 interface Stats {
   totalEpisodes: number;
   totalAmountWon: number;
-  totalAskedQuestions: number;
-  totalRightQuestions: number;
-  requestPool: number;
+  totalAskedQuestions: {
+    count: number;
+    questions: string[];
+  };
+  totalRightQuestions: {
+    count: number;
+    correctAnswers: string[];
+  };
+  requestPool: {
+    total: number;
+    participants: {
+      fullName: string;
+      email: string;
+      mobileNumber: string;
+    }[];
+  };
 }
 
 const StatsCard: React.FC = () => {
@@ -20,6 +33,7 @@ const StatsCard: React.FC = () => {
     const fetchStats = async () => {
       try {
         const { data } = await axios.get(`${API_URL}/v1/api/get-episode-stats?limit=4`);
+        console.log('response', data)
         setStats(data.stats);
       } catch (err) {
         setError('Failed to fetch stats');
@@ -30,36 +44,35 @@ const StatsCard: React.FC = () => {
 
     fetchStats();
   }, []);
-
   if (error) {
-    return <div>{error}</div>;
+    console.error(error)
   }
 
   return (
     stats && (
       <div className='mt-20 mx-0 lg:mx-20 md:mx-10'>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 p-4">
-            <div className="p-4 bg-secondary-cream rounded-lg shadow-md">
-          <Link href= 'all-episodes'>
+          <div className="p-4 bg-secondary-cream rounded-lg shadow-md">
+            <Link href='all-episodes'>
               <h3 className="text-lg font-semibold">Total Episodes</h3>
               <p className="text-2xl">{stats.totalEpisodes}</p>
-          </Link>
-            </div>
+            </Link>
+          </div>
           <div className="p-4 bg-secondary-cream rounded-lg shadow-md">
             <h3 className="text-lg font-semibold">Total Amount Won</h3>
             <p className="text-2xl">₦{stats.totalAmountWon.toLocaleString()}</p>
           </div>
           <div className="p-4 bg-secondary-cream rounded-lg shadow-md">
             <h3 className="text-lg font-semibold">Total Asked Questions</h3>
-            <p className="text-2xl">{stats.totalAskedQuestions}</p>
+            <p className="text-2xl">{stats.totalAskedQuestions.count}</p>
           </div>
           <div className="p-4 bg-secondary-cream rounded-lg shadow-md">
             <h3 className="text-lg font-semibold">Total Right Questions</h3>
-            <p className="text-2xl">{stats.totalRightQuestions}</p>
+            <p className="text-2xl">{stats.totalRightQuestions.count}</p>
           </div>
           <div className="p-4 bg-secondary-cream rounded-lg shadow-md">
             <h3 className="text-lg font-semibold">Request Pool</h3>
-            <p className="text-2xl">{stats.requestPool.toLocaleString()}</p>
+            <p className="text-2xl">{stats.requestPool.total.toLocaleString()}</p>
           </div>
         </div>
       </div>
