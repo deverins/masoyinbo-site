@@ -33,7 +33,6 @@ const StatsCard: React.FC = () => {
     const fetchStats = async () => {
       try {
         const { data } = await axios.get(`${API_URL}/v1/api/get-episode-stats?limit=4`);
-        console.log('response', data)
         setStats(data.stats);
       } catch (err) {
         setError('Failed to fetch stats');
@@ -71,8 +70,10 @@ const StatsCard: React.FC = () => {
             <p className="text-2xl">{stats.totalRightQuestions.count}</p>
           </div>
           <div className="p-4 bg-secondary-cream rounded-lg shadow-md">
-            <h3 className="text-lg font-semibold">Request Pool</h3>
-            <p className="text-2xl">{stats.requestPool.total.toLocaleString()}</p>
+            <Link href = '/request-pool'>
+              <h3 className="text-lg font-semibold">Request Pool</h3>
+              <p className="text-2xl">{stats.requestPool.total.toLocaleString()}</p>
+            </Link>
           </div>
         </div>
       </div>

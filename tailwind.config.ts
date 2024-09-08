@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        'custom': '934.44px',
+      },
       colors: {
         primary: {
           light: '#1C1F41',
@@ -51,6 +54,7 @@ const config: Config = {
       },
     },
   },
+
   darkMode: 'class',
   plugins: [],
 };
