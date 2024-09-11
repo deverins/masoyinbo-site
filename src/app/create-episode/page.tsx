@@ -5,8 +5,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { API_URL } from "@/constants/api";
 import { episodeSchema } from "@/validationSchema/episodeSchema";
-import AdminQuestionForm from "@/components/QuestionForm";
 import toast from "react-hot-toast";
+import EpisodeEventsForm from "@/components/EpisodeEventForm";
 
 interface Participant {
   _id: string;
@@ -92,7 +92,7 @@ const CreateEpisodeForm = () => {
 
           <form onSubmit={formik.handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="episodeLink" className="block text-sm font-medium text-gray-400">
+              <label htmlFor="episodeLink" className="block text-base font-medium text-gray-400">
                 Episode Link
               </label>
               <input
@@ -102,15 +102,15 @@ const CreateEpisodeForm = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 placeholder="https://example.com"
-                className="mt-1 p-2 block w-full outline-none border border-yellow-300 rounded-lg focus:ring focus:ring-yellow-200"
+                className="mt-1 py-4 p-2 block w-full outline-none border border-yellow-300 rounded-lg focus:ring focus:ring-yellow-200"
               />
               {formik.errors.episodeLink && formik.touched.episodeLink ? (
-                <div className="text-red-500 text-sm">{formik.errors.episodeLink}</div>
+                <div className="text-red-500 text-base">{formik.errors.episodeLink}</div>
               ) : null}
             </div>
 
             <div>
-              <label htmlFor="participant_id" className="block text-sm font-medium text-gray-400">
+              <label htmlFor="participant_id" className="block text-base font-medium text-gray-400">
                 Participant
               </label>
               <select
@@ -118,7 +118,7 @@ const CreateEpisodeForm = () => {
                 value={formik.values.participant_id}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="mt-1 block w-full p-2 outline-none border border-yellow-300 rounded-lg focus:ring focus:ring-yellow-200"
+                className="mt-1 py-4 block w-full p-2 outline-none border border-yellow-300 rounded-lg focus:ring focus:ring-yellow-200"
               >
                 <option value="">Select participant</option>
                 {participants.map((participant) => (
@@ -128,12 +128,12 @@ const CreateEpisodeForm = () => {
                 ))}
               </select>
               {formik.errors.participant_id && formik.touched.participant_id ? (
-                <div className="text-red-500 text-sm">{formik.errors.participant_id}</div>
+                <div className="text-red-500 text-base">{formik.errors.participant_id}</div>
               ) : null}
             </div>
 
             <div>
-              <label htmlFor="amountWon" className="block text-sm font-medium text-gray-400">
+              <label htmlFor="amountWon" className="block text-base font-medium text-gray-400">
                 Amount Won
               </label>
               <input
@@ -142,17 +142,17 @@ const CreateEpisodeForm = () => {
                 value={formik.values.amountWon}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="mt-1 p-2 block w-full outline-none border border-yellow-300 rounded-lg focus:ring focus:ring-yellow-200"
+                className="mt-1 py-4 p-2 block w-full outline-none border border-yellow-300 rounded-lg focus:ring focus:ring-yellow-200"
               />
               {formik.errors.amountWon && formik.touched.amountWon ? (
-                <div className="text-red-500 text-sm">{formik.errors.amountWon}</div>
+                <div className="text-red-500 text-base">{formik.errors.amountWon}</div>
               ) : null}
             </div>
 
             <div>
               <button
                 type="submit"
-                className="w-full bg-secondary-saffron text-white p-2 rounded-md"
+                className="w-full py-4 text-lg font-bold bg-secondary-saffron text-white p-2 rounded-md"
                 disabled={
                   formik.isSubmitting || participantHasEpisode(formik.values.participant_id)
                 }
@@ -161,7 +161,7 @@ const CreateEpisodeForm = () => {
               </button>
             </div>
           </form>
-          <AdminQuestionForm />
+          <EpisodeEventsForm />
         </div>
       </main>
     </>

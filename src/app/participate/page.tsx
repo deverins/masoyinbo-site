@@ -1,11 +1,12 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { participationSchema } from '@/validationSchema/participateSchema';
 import { API_URL } from '@/constants/api';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface Option {
   value: string;
@@ -16,6 +17,11 @@ const ParticipationForm: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const URL = `${API_URL}/v1/auth/create-participant`;
   const navigate = useRouter();
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
 
   const options: Option[] = [
     { value: 'social_media', label: 'EAYoruba' },
@@ -74,279 +80,307 @@ const ParticipationForm: React.FC = () => {
     },
 
   });
-
+  if (!hydrated) {
+    return null;
+  }
   return (
-    <section className="flex justify-center items-center py-10 px-4">
-      <div className="bg-slate-100 shadow-md rounded-lg p-8 w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl transition-all duration-300">
-        <form onSubmit={formik.handleSubmit}>
-          {/* Email */}
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Email
-              <span className=' text-secondary-dark ml-3'>*</span>
-
-            </label>
-            <input
-              type="email"
-              name="email"
-              onChange={formik.handleChange}
-              placeholder='email'
-              value={formik.values.email}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-            {formik.errors.email && formik.touched.email && (
-              <div className="text-red-500 text-xs mt-1">
-                {formik.errors.email}
+    <>
+      <section>
+        <div className="flex items-center justify-center mt-8 mx-2">
+          <div className=" border-t-8 border-secondary-saffron rounded-t-lg container">
+            <div className="bg-white p-6 w-full rounded-b-lg">
+              <h2 className=" text-[32px] text-gray-900 font-black">Másòyìnbó</h2>
+              <p className=" mt-4 text-base">
+                Thank you for your interest in joining <strong>Másòyìnbó</strong>, an edutainment programme and
+                gameshow designed to educate on the Yoruba language and culture. Másòyìnbó is an
+                initiative that aims to promote, safeguard and conserve our cultural heritage as Yorubas.
+              </p>
+              <p className=" mt-4 text-base">
+                Please note that we are experiencing high levels of demand from willing participants worldwide, we
+                endeavour to responbv d within a reasonable timeframe and would like to thank you for your
+                understanding and patience ahead of time.
+              </p>
+              <div className=" mt-4 text-base">
+                Please contact us at <Link href="tel:+2347033331389" className=" text-text-light font-bold">
+                  +234 703 333 1389
+                </Link> if you would like to support or sponsor the programme.
               </div>
-            )}
-          </div>
-
-          {/* Full Name */}
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Full Name (Name and Surname)
-              <span className=' text-secondary-dark ml-3'>*</span>
-
-            </label>
-            <input
-              type="text"
-              name="fullName"
-              onChange={formik.handleChange}
-              placeholder='full name'
-              value={formik.values.fullName}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-            {formik.errors.fullName && formik.touched.fullName && (
-              <div className="text-red-500 text-xs mt-1">
-                {formik.errors.fullName}
-              </div>
-            )}
-          </div>
-
-          {/* Gender */}
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">Gender
-              <span className=' text-secondary-dark ml-3'>*</span>
-
-            </label>
-            <select
-              name="gender"
-              onChange={formik.handleChange}
-              value={formik.values.gender}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            >
-              <option value="">Select Gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
-            </select>
-            {formik.errors.gender && formik.touched.gender && (
-              <div className="text-red-500 text-xs mt-1">
-                {formik.errors.gender}
-              </div>
-            )}
-          </div>
-
-          {/* Mobile Number */}
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Mobile Number (Include Dialling/Area Code)
-            </label>
-            <input
-              type="text"
-              name="mobileNumber"
-              onChange={formik.handleChange}
-              placeholder='mobile number'
-              value={formik.values.mobileNumber}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-            {formik.errors.mobileNumber && formik.touched.mobileNumber && (
-              <div className="text-red-500 text-xs mt-1">
-                {formik.errors.mobileNumber}
-              </div>
-            )}
-          </div>
-
-          {/* Place of Residence */}
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Place of Residence
-              <span className=' text-secondary-dark ml-3'>*</span>
-
-            </label>
-            <input
-              type="text"
-              name="placeOfResidence"
-              onChange={formik.handleChange}
-              placeholder='place of residence'
-              value={formik.values.placeOfResidence}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-            {formik.errors.placeOfResidence && formik.touched.placeOfResidence && (
-              <div className="text-red-500 text-xs mt-1">
-                {formik.errors.placeOfResidence}
-              </div>
-            )}
-          </div>
-
-          {/* State of Origin */}
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              State of Origin
-              <span className=' text-secondary-dark ml-3'>*</span>
-
-            </label>
-            <input
-              type="text"
-              name="state"
-              onChange={formik.handleChange}
-              placeholder='state of origin'
-              value={formik.values.state}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-            {formik.errors.state && formik.touched.state && (
-              <div className="text-red-500 text-xs mt-1">
-                {formik.errors.state}
-              </div>
-            )}
-          </div>
-
-          {/* Social Media Platform */}
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Most Active/Frequently Used Social Media Platform Link
-              <span className=' text-secondary-dark ml-3'>*</span>
-            </label>
-            <input
-              type="text"
-              name="platformLink"
-              onChange={formik.handleChange}
-              placeholder='social media platform link'
-              value={formik.values.platformLink}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-            {formik.errors.platformLink && formik.touched.platformLink && (
-              <div className="text-red-500 text-xs mt-1">
-                {formik.errors.platformLink}
-              </div>
-            )}
-          </div>
-
-          {/* Social Media Handle */}
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Social Media Handle
-              <span className=' text-secondary-dark ml-3'>*</span>
-
-            </label>
-            <input
-              type="text"
-              name="socialMediaHandle"
-              onChange={formik.handleChange}
-              placeholder='social media handle'
-              value={formik.values.socialMediaHandle}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-            {formik.errors.socialMediaHandle && formik.touched.socialMediaHandle && (
-              <div className="text-red-500 text-xs mt-1">
-                {formik.errors.socialMediaHandle}
-              </div>
-            )}
-          </div>
-
-          {/* How Did You Find Out */}
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              How did you find out about Másòyìnbó?
-              <span className=' text-secondary-dark ml-3'>*</span>
-            </label>
-            <div className="flex flex-col">
-              {options.map((option: Option) => (
-                <label key={option.value} className="flex items-center font-semibold text-base lead mt-3">
-                  <input
-                    type="checkbox"
-                    name="source"
-                    value={option.value}
-                    onChange={handleCheckboxChange}
-                    placeholder='how did you find out'
-                    checked={formik.values.source.includes(option.value)}
-                    className="mr-2"
-                  />
-                  {option.label}
-                </label>
-              ))}
-              {formik.errors.source && formik.touched.source && (
-                <div className="text-red-500 text-xs mt-1">
-                  {formik.errors.source}
-                </div>
-              )}
             </div>
           </div>
+        </div>
+      </section>
+      <section className="flex justify-center items-center py-10 px-4">
+        <div className="bg-slate-100 shadow-md rounded-lg p-8 w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl transition-all duration-300">
+          <form onSubmit={formik.handleSubmit}>
+            {/* Email */}
+            <div className="mb-4">
+              <label className="block text-gray-700  text-base font-bold mb-2">
+                Email
+                <span className=' text-secondary-dark ml-3'>*</span>
 
-          {/* Rules Agreement */}
-          <div className="mb-4">
-            <h1 className='block text-gray-700 text-sm font-bold mb-2'>Rules of Másòyìnbó:</h1>
-            <p className=' font-semibold text-base lead mt-3'>
-              1. You are prohibited to code-mix or speak other languages aside from Yoruba throughout the duration of the programme. Failure to adhere will lead to the deduction of your earnings.
-            </p>
-            <p className=' font-semibold text-base lead mt-3'>
-              2. It is required that all 10 questions are answered correctly to have the potential of earning up to N1,000,000.
-            </p>
-            <p className=' font-semibold text-base lead mt-3'>
-              3. If you are selected, please come onto the programme in colourful native attire, as we will not allow standard dressing - we are keen to conserve and promote our Yoruba culture.
-            </p>
-            <p className='font-semibold text-base lead mt-3'>
-              4. You are expected and encouraged to know your Yoruba numbers; if not, it may impact your potential earnings.
-            </p>
-            <div className='flex items-center  mt-6'>
-              <input
-                type="checkbox"
-                name="rulesAgreement"
-                onChange={formik.handleChange}
-                checked={formik.values.rulesAgreement}
-                className="mr-2"
-              />
-              <label className="block text-gray-700 text-sm font-bold">
-                Yes, I Understand
               </label>
-              {formik.errors.rulesAgreement && formik.touched.rulesAgreement && (
+              <input
+                type="email"
+                name="email"
+                onChange={formik.handleChange}
+                placeholder='email'
+                value={formik.values.email}
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+              {formik.errors.email && formik.touched.email && (
                 <div className="text-red-500 text-xs mt-1">
-                  {formik.errors.rulesAgreement}
+                  {formik.errors.email}
                 </div>
               )}
             </div>
-          </div>
 
-          {/* Additional Comments */}
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Any further comments/questions?
-            </label>
-            <textarea
-              name="comment"
-              onChange={formik.handleChange}
-              value={formik.values.comment}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder='Your answer'
-            />
-            {formik.errors.comment && formik.touched.comment && (
-              <div className="text-red-500 text-xs mt-1">
-                {formik.errors.comment}
+            {/* Full Name */}
+            <div className="mb-4">
+              <label className="block text-gray-700  text-base font-bold mb-2">
+                Full Name (Name and Surname)
+                <span className=' text-secondary-dark ml-3'>*</span>
+
+              </label>
+              <input
+                type="text"
+                name="fullName"
+                onChange={formik.handleChange}
+                placeholder='full name'
+                value={formik.values.fullName}
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+              {formik.errors.fullName && formik.touched.fullName && (
+                <div className="text-red-500 text-xs mt-1">
+                  {formik.errors.fullName}
+                </div>
+              )}
+            </div>
+
+            {/* Gender */}
+            <div className="mb-4">
+              <label className="block text-gray-700  text-base font-bold mb-2">Gender
+                <span className=' text-secondary-dark ml-3'>*</span>
+
+              </label>
+              <select
+                name="gender"
+                onChange={formik.handleChange}
+                value={formik.values.gender}
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              >
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+              {formik.errors.gender && formik.touched.gender && (
+                <div className="text-red-500 text-xs mt-1">
+                  {formik.errors.gender}
+                </div>
+              )}
+            </div>
+
+            {/* Mobile Number */}
+            <div className="mb-4">
+              <label className="block text-gray-700  text-base font-bold mb-2">
+                Mobile Number (Include Dialling/Area Code)
+              </label>
+              <input
+                type="text"
+                name="mobileNumber"
+                onChange={formik.handleChange}
+                placeholder='mobile number'
+                value={formik.values.mobileNumber}
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+              {formik.errors.mobileNumber && formik.touched.mobileNumber && (
+                <div className="text-red-500 text-xs mt-1">
+                  {formik.errors.mobileNumber}
+                </div>
+              )}
+            </div>
+
+            {/* Place of Residence */}
+            <div className="mb-4">
+              <label className="block text-gray-700  text-base font-bold mb-2">
+                Place of Residence
+                <span className=' text-secondary-dark ml-3'>*</span>
+
+              </label>
+              <input
+                type="text"
+                name="placeOfResidence"
+                onChange={formik.handleChange}
+                placeholder='place of residence'
+                value={formik.values.placeOfResidence}
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+              {formik.errors.placeOfResidence && formik.touched.placeOfResidence && (
+                <div className="text-red-500 text-xs mt-1">
+                  {formik.errors.placeOfResidence}
+                </div>
+              )}
+            </div>
+
+            {/* State of Origin */}
+            <div className="mb-4">
+              <label className="block text-gray-700  text-base font-bold mb-2">
+                State of Origin
+                <span className=' text-secondary-dark ml-3'>*</span>
+
+              </label>
+              <input
+                type="text"
+                name="state"
+                onChange={formik.handleChange}
+                placeholder='state of origin'
+                value={formik.values.state}
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+              {formik.errors.state && formik.touched.state && (
+                <div className="text-red-500 text-xs mt-1">
+                  {formik.errors.state}
+                </div>
+              )}
+            </div>
+
+            {/* Social Media Platform */}
+            <div className="mb-4">
+              <label className="block text-gray-700  text-base font-bold mb-2">
+                Most Active/Frequently Used Social Media Platform Link
+                <span className=' text-secondary-dark ml-3'>*</span>
+              </label>
+              <input
+                type="text"
+                name="platformLink"
+                onChange={formik.handleChange}
+                placeholder='social media platform link'
+                value={formik.values.platformLink}
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+              {formik.errors.platformLink && formik.touched.platformLink && (
+                <div className="text-red-500 text-xs mt-1">
+                  {formik.errors.platformLink}
+                </div>
+              )}
+            </div>
+
+            {/* Social Media Handle */}
+            <div className="mb-4">
+              <label className="block text-gray-700  text-base font-bold mb-2">
+                Social Media Handle
+                <span className=' text-secondary-dark ml-3'>*</span>
+
+              </label>
+              <input
+                type="text"
+                name="socialMediaHandle"
+                onChange={formik.handleChange}
+                placeholder='social media handle'
+                value={formik.values.socialMediaHandle}
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+              {formik.errors.socialMediaHandle && formik.touched.socialMediaHandle && (
+                <div className="text-red-500 text-xs mt-1">
+                  {formik.errors.socialMediaHandle}
+                </div>
+              )}
+            </div>
+
+            {/* How Did You Find Out */}
+            <div className="mb-4">
+              <label className="block text-gray-700  text-base font-bold mb-2">
+                How did you find out about Másòyìnbó?
+                <span className=' text-secondary-dark ml-3'>*</span>
+              </label>
+              <div className="flex flex-col">
+                {options.map((option: Option) => (
+                  <label key={option.value} className="flex items-center font-semibold text-base lead mt-3">
+                    <input
+                      type="checkbox"
+                      name="source"
+                      value={option.value}
+                      onChange={handleCheckboxChange}
+                      placeholder='how did you find out'
+                      checked={formik.values.source.includes(option.value)}
+                      className="mr-2"
+                    />
+                    {option.label}
+                  </label>
+                ))}
+                {formik.errors.source && formik.touched.source && (
+                  <div className="text-red-500 text-xs mt-1">
+                    {formik.errors.source}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-          <div className=' flex justify-end'>
-            <button
-              type="submit"
-              disabled={loading}
-              className=" bg-secondary-saffron text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              {loading ? 'Submitting...' : 'Submit'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </section>
+            </div>
+
+            {/* Rules Agreement */}
+            <div className="mb-4">
+              <h1 className='block text-gray-700  text-base font-bold mb-2'>Rules of Másòyìnbó:</h1>
+              <p className=' font-semibold text-base lead mt-3'>
+                1. You are prohibited to code-mix or speak other languages aside from Yoruba throughout the duration of the programme. Failure to adhere will lead to the deduction of your earnings.
+              </p>
+              <p className=' font-semibold text-base lead mt-3'>
+                2. It is required that all 10 questions are answered correctly to have the potential of earning up to N1,000,000.
+              </p>
+              <p className=' font-semibold text-base lead mt-3'>
+                3. If you are selected, please come onto the programme in colourful native attire, as we will not allow standard dressing - we are keen to conserve and promote our Yoruba culture.
+              </p>
+              <p className='font-semibold text-base lead mt-3'>
+                4. You are expected and encouraged to know your Yoruba numbers; if not, it may impact your potential earnings.
+              </p>
+              <div className='flex items-center  mt-6'>
+                <input
+                  type="checkbox"
+                  name="rulesAgreement"
+                  onChange={formik.handleChange}
+                  checked={formik.values.rulesAgreement}
+                  className="mr-2"
+                />
+                <label className="block text-gray-700  text-base font-bold">
+                  Yes, I Understand
+                </label>
+                {formik.errors.rulesAgreement && formik.touched.rulesAgreement && (
+                  <div className="text-red-500 text-xs mt-1">
+                    {formik.errors.rulesAgreement}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Additional Comments */}
+            <div className="mb-4">
+              <label className="block text-gray-700  text-base font-bold mb-2">
+                Any further comments/questions?
+              </label>
+              <textarea
+                name="comment"
+                onChange={formik.handleChange}
+                value={formik.values.comment}
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                placeholder='Your answer'
+              />
+              {formik.errors.comment && formik.touched.comment && (
+                <div className="text-red-500 text-xs mt-1">
+                  {formik.errors.comment}
+                </div>
+              )}
+            </div>
+            <div className=' flex justify-end'>
+              <button
+                type="submit"
+                disabled={loading}
+                className=" bg-secondary-saffron text-white font-bold px-4 rounded py-4 focus:outline-none focus:shadow-outline"
+              >
+                {loading ? 'Submitting...' : 'Submit'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </>
   );
 };
 

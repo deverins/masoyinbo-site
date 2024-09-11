@@ -9,7 +9,7 @@ interface QuestionFormValues {
   response: string;
 }
 
-const AdminQuestionForm: React.FC = () => {
+const EpisodeEventsForm: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const formik = useFormik<QuestionFormValues>({
@@ -47,49 +47,49 @@ const AdminQuestionForm: React.FC = () => {
 
   return (
     <div >
-      <h1 className="text-2xl font-bold mb-6 text-gray-400 text-center mt-10">Set Episode Questions</h1>
+      <h1 className="text-2xl font-bold mb-6 text-gray-400 text-center mt-10">Add episode events Question</h1>
       {error && <div className="text-red-500 mb-2">{error}</div>}
 
       <form onSubmit={formik.handleSubmit}>
         <div>
-          <label className="block text-sm font-medium text-gray-400 mb-2">Question</label>
+          <label className="block text-base font-medium text-gray-400 mb-2">Question</label>
           <input
             type="text"
             name="question"
             value={formik.values.question}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            className="w-full p-2 outline-none border border-yellow-300 rounded-lg focus:ring focus:ring-yellow-200"
+            className="w-full py-4 p-2 outline-none border border-yellow-300 rounded-lg focus:ring focus:ring-yellow-200"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-400 mb-2">Correct Answer</label>
+          <label className="block text-base font-medium text-gray-400 mb-2">Correct Answer</label>
           <input
             type="text"
             name="correctAnswer"
             value={formik.values.correctAnswer}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            className="w-full p-2 outline-none border border-yellow-300 rounded-lg focus:ring focus:ring-yellow-200"
+            className="w-full py-4 p-2 outline-none border border-yellow-300 rounded-lg focus:ring focus:ring-yellow-200"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-400 mb-2">Response</label>
+          <label className="block text-base font-medium text-gray-400 mb-2">Response</label>
           <input
             type="text"
             name="response"
             value={formik.values.response}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            className="w-full p-2 outline-none border border-yellow-300 rounded-lg focus:ring focus:ring-yellow-200"
+            className="w-full py-4 p-2 outline-none border border-yellow-300 rounded-lg focus:ring focus:ring-yellow-200"
           />
         </div>
 
         <button
           type="submit"
-          className="mt-6 w-full bg-secondary-saffron text-white py-2 rounded-md px-4 "
+          className="mt-6 w-full py-4 text-lg font-bold bg-secondary-saffron text-white rounded-md px-4 "
         >
           Submit
         </button>
@@ -98,4 +98,4 @@ const AdminQuestionForm: React.FC = () => {
   );
 };
 
-export default AdminQuestionForm;
+export default EpisodeEventsForm;
