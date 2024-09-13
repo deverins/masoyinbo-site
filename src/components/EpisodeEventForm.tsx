@@ -92,7 +92,7 @@ const EpisodeEventsForm: React.FC = () => {
           type="submit"
           className="mt-6 w-full py-4 text-lg font-bold bg-secondary-saffron text-white rounded-md px-4 "
         >
-          Add
+          Submit
         </button>
       </form>
     </div>
