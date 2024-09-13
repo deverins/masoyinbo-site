@@ -71,7 +71,7 @@ const StatsCard: React.FC = () => {
           </div>
           <div className="p-4 bg-secondary-cream rounded-lg text-center shadow-md">
             <Link href = '/request-pool'>
-              <h3 className="text-lg font-semibold">Request Pool</h3>
+              <h3 className="text-lg font-semibold">Waiting Queue</h3>
               <p className="text-2xl font-bold text-orange-500">{stats.requestPool.total.toLocaleString()}</p>
             </Link>
           </div>

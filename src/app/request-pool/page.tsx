@@ -37,7 +37,7 @@ const RequestPoolPage = () => {
 
   return (
     <main className="p-4">
-      <h1 className="text-2xl font-bold text-center mb-8 mt-8 text-red-500">Request Pool</h1>
+      <h1 className="text-2xl font-bold text-center mb-8 mt-8 text-red-500">Waiting Queue</h1>
 
       {/* Mobile and Tablet View (870px and below) */}
       <div className="block max-[870px]:block custom:hidden">
@@ -82,7 +82,7 @@ const RequestPoolPage = () => {
               </div>
             ))
           ) : (
-            <p className="text-center text-secondary-dark">No request pool data available.</p>
+            <p className="text-center text-secondary-dark">No waiting queue data available.</p>
           )}
         </div>
       </div>
