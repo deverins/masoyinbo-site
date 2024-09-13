@@ -46,8 +46,9 @@ const EpisodeEventsForm: React.FC = () => {
   });
 
   return (
-    <div >
-      <h1 className="text-2xl font-bold mb-6 text-gray-400 text-center mt-10">Add episode events Question</h1>
+    <main className="flex justify-center items-center py-10 px-4">
+        <div className=" w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl transition-all duration-300 shadow-lg p-6 rounded">
+      <h1 className="text-2xl font-bold mb-4 text-gray-400 text-center mt-10">Add episode events Question</h1>
       {error && <div className="text-red-500 mb-2">{error}</div>}
 
       <form onSubmit={formik.handleSubmit}>
@@ -91,10 +92,11 @@ const EpisodeEventsForm: React.FC = () => {
           type="submit"
           className="mt-6 w-full py-4 text-lg font-bold bg-secondary-saffron text-white rounded-md px-4 "
         >
-          Submit
+          Add
         </button>
       </form>
     </div>
+    </ main>
   );
 };
 

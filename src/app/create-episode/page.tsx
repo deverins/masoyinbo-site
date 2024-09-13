@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { API_URL } from "@/constants/api";
 import { episodeSchema } from "@/validationSchema/episodeSchema";
 import toast from "react-hot-toast";
-import EpisodeEventsForm from "@/components/EpisodeEventForm";
 
 interface Participant {
   _id: string;
@@ -45,6 +44,7 @@ const CreateEpisodeForm = () => {
       episodeLink: "",
       participant_id: "",
       amountWon: 0,
+      episodeDate:"",
     },
     validationSchema: episodeSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
@@ -63,10 +63,11 @@ const CreateEpisodeForm = () => {
           ...values,
           createdBy: userId,
         });
-        console.log(response)
+        console.log("response", response)
         const episodeId = response.data.episode._id;
         localStorage.setItem("episodeId", episodeId);
         resetForm();
+        navigate.push('/episode-events')
       } catch (error: any) {
         toast.error(error?.response?.data?.message || "An unexpected error occurred");
       } finally {
@@ -148,6 +149,21 @@ const CreateEpisodeForm = () => {
                 <div className="text-red-500 text-base">{formik.errors.amountWon}</div>
               ) : null}
             </div>
+            <div>
+              <label htmlFor="episodeDate" className="block text-base font-medium text-gray-400">
+                Episode Date
+              </label>
+              <input
+                name="episodeDate"
+                value={formik.values.episodeDate}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                className="mt-1 py-4 p-2 block w-full outline-none border border-yellow-300 rounded-lg focus:ring focus:ring-yellow-200"
+              />
+              {formik.errors.episodeDate && formik.touched.episodeDate ? (
+                <div className="text-red-500 text-base">{formik.errors.episodeDate}</div>
+              ) : null}
+            </div>
 
             <div>
               <button
@@ -161,7 +177,6 @@ const CreateEpisodeForm = () => {
               </button>
             </div>
           </form>
-          <EpisodeEventsForm />
         </div>
       </main>
     </>
