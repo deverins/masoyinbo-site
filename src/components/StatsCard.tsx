@@ -1,4 +1,5 @@
 import { API_URL } from '@/constants/api';
+import { CheckCircleIcon, CurrencyDollarIcon, PlayIcon, QuestionMarkCircleIcon, UserGroupIcon } from '@heroicons/react/16/solid';
 import axios from 'axios';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
@@ -51,27 +52,51 @@ const StatsCard: React.FC = () => {
     stats && (
       <div className='mt-20 mx-0 lg:mx-20 md:mx-10'>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 p-4">
+          {/* Total Episodes */}
           <div className="p-4 bg-secondary-cream rounded-lg text-center shadow-md">
             <Link href='all-episodes'>
-              <h3 className="text-lg font-semibold">Total Episodes</h3>
+              <h3 className="text-lg font-semibold flex justify-center items-center">
+                Total Episodes
+                <PlayIcon className="h-6 w-6 text-blue-500 mr-2" />
+              </h3>
               <p className="text-2xl font-bold text-blue-500">{stats.totalEpisodes}</p>
             </Link>
           </div>
+
+          {/* Total Amount Won */}
           <div className="p-4 bg-secondary-cream rounded-lg text-center shadow-md">
-            <h3 className="text-lg font-semibold">Total Amount Won</h3>
-            <p className=" text-2xl font-bold text-green-500">₦{stats.totalAmountWon.toLocaleString()}</p>
+            <h3 className="text-lg font-semibold flex justify-center items-center">
+              Total Amount Won
+              <div className="h-6 w-6 bg-green-500 rounded-full mr-2" > <span className='text-white'>&#x20A6;</span></div>
+            </h3>
+            <p className="text-2xl font-bold text-green-500">₦{stats.totalAmountWon.toLocaleString()}</p>
           </div>
+
+          {/* Total Asked Questions */}
           <div className="p-4 bg-secondary-cream rounded-lg text-center shadow-md">
-            <h3 className="text-lg font-semibold">Total Asked Questions</h3>
-            <p className=" text-2xl font-bold text-secondary-saffronLight">{stats.totalAskedQuestions.count}</p>
+            <h3 className="text-lg font-semibold flex justify-center items-center">
+              Total Asked Questions
+              <QuestionMarkCircleIcon className="h-6 w-6 text-secondary-saffronLight mr-2" />
+            </h3>
+            <p className="text-2xl font-bold text-secondary-saffronLight">{stats.totalAskedQuestions.count}</p>
           </div>
+
+          {/* Total Right Questions */}
           <div className="p-4 bg-secondary-cream rounded-lg text-center shadow-md">
-            <h3 className="text-lg font-semibold">Total Right Questions</h3>
-            <p className=" text-2xl font-bold text-teal-500">{stats.totalRightQuestions.count}</p>
+            <h3 className="text-lg font-semibold flex justify-center items-center">
+              Total Right Questions
+              <CheckCircleIcon className="h-6 w-6 text-teal-500 mr-2" />
+            </h3>
+            <p className="text-2xl font-bold text-teal-500">{stats.totalRightQuestions.count}</p>
           </div>
+
+          {/* Waiting Queue */}
           <div className="p-4 bg-secondary-cream rounded-lg text-center shadow-md">
-            <Link href = '/request-pool'>
-              <h3 className="text-lg font-semibold">Waiting Queue</h3>
+            <Link href='/request-pool'>
+              <h3 className="text-lg font-semibold flex justify-center items-center">
+                Waiting Queue
+                <UserGroupIcon className="h-6 w-6 text-orange-500 mr-2" />
+              </h3>
               <p className="text-2xl font-bold text-orange-500">{stats.requestPool.total.toLocaleString()}</p>
             </Link>
           </div>
