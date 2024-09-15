@@ -2,7 +2,7 @@ import { API_URL } from '@/constants/api';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import VideoPreview from './VideoPreview'; // Import the reusable VideoPreview component
+import VideoPreview from './VideoPreview'; 
 import Link from 'next/link';
 
 interface Stats {
