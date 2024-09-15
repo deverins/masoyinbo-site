@@ -1,3 +1,4 @@
+// src/components/EpisodeEventsTable
 import React from 'react'
 
 const EpisodeEventsTable = () => {
