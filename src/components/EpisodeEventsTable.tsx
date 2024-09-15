@@ -1,6 +1,8 @@
 import { API_URL } from '@/constants/api';
+import { PencilIcon, TrashIcon } from '@heroicons/react/16/solid';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { CiSaveUp1 } from 'react-icons/ci';
 
 interface EpisodeEvent {
   question: string;
@@ -35,124 +37,80 @@ const EpisodeEventsTable: React.FC<{ onEdit: any }> = ({ onEdit }) => {
     try {
       const episodeId = localStorage.getItem("episodeId");
       if (!episodeId) {
-        alert("No episode ID found. Please create an episode first.");
         return;
       }
 
-      await axios.post(`${API_URL}/v1/api/episode-events`, { episodeId, events });
+      const eventsToSave = events.map(({ question, correctAnswer, response, type, amount, balance }) => ({
+        question,
+        correctAnswer,
+        response,
+        type,
+        amount,
+        balance,
+      }));
+
+      await axios.post(`${API_URL}/v1/api/episode-events`, { episodeId, events: eventsToSave });
+
       localStorage.removeItem('episodeEvents');
-      setEvents([]); // Clear state and update UI
-      alert('Data successfully saved to backend.');
+      setEvents([]);
     } catch (error) {
       console.error('Failed to save data:', error);
     }
   };
 
+
   return (
-    <div className="p-4">
+    <div>
       {/* Mobile and Tablet View (870px and below) */}
-      <div className="block max-[870px]:block custom:hidden">
+      <div className={`block max-[870px]:block custom:hidden mx-4 mt-6 bg-gray-200 p-4 rounded ${events.length > 3 ? 'overflow-y-auto max-h-[400px]' : ''}`}>
         <div className="flex flex-col gap-6">
           {events.length > 0 ? (
             events.map((event, index) => (
               <div
                 key={index}
-                className="flex flex-col p-4 bg-gray-100 border border-gray-300 rounded-lg shadow-md transition-all duration-500 hover:bg-gray-200"
+                className="flex flex-col p-4 bg-gray-100 border border-gray-300 rounded-lg shadow-md transition-all duration-500"
               >
                 <div className="flex flex-col gap-4">
-                  {/* Question and Response */}
-                  <div className="flex flex-col gap-2">
-                    <div>
+                  <div className="flex gap-32">
+                    <div className="min-w-[100px] w-[50%] max-h-20 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
                       <h2 className="font-semibold">Question</h2>
-                      <p>{event.question}</p>
+                      <p className='pl-2'>{event.question}</p>
                     </div>
                     <div>
                       <h2 className="font-semibold">Response</h2>
-                      <p>{event.response}</p>
+                      <p className='text-center'>{event.response}</p>
                     </div>
                   </div>
-                  {/* Other details */}
-                  <div className="flex flex-col gap-2 bg-gray-200 p-3 rounded-lg">
-                    <div className="flex gap-1">
-                      <h2 className="font-semibold">Correct Answer:</h2>
-                      <p>{event.correctAnswer}</p>
+                  <div className="flex flex-col gap-2 bg-gray-200 p-3 rounded-lg px-10">
+                    <div className="flex justify-around">
+                      <div>
+                        <h2 className="font-semibold">Correct Answer</h2>
+                        <p className='text-center'>{event.correctAnswer}</p>
+                      </div>
+                      <div>
+                        <h2 className="font-semibold">Type</h2>
+                        <p className='text-center lowercase'>{event.type}</p>
+                      </div>
                     </div>
-                    <div className="flex gap-1">
-                      <h2 className="font-semibold">Type:</h2>
-                      <p>{event.type}</p>
-                    </div>
-                    <div className="flex gap-1">
-                      <h2 className="font-semibold">Amount:</h2>
-                      <p>{event.amount}</p>
-                    </div>
-                    <div className="flex gap-1">
-                      <h2 className="font-semibold">Balance:</h2>
-                      <p>{event.balance}</p>
+                    <div className="flex justify-around">
+                      <div>
+                        <h2 className="font-semibold">Amount</h2>
+                        <p className='text-center'>₦{event.amount}</p>
+                      </div>
+                      <div>
+                        <h2 className="font-semibold">Balance</h2>
+                        <p className='text-center'>₦{event.balance}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div className="flex gap-2 mt-4">
-                  <button onClick={() => handleEdit(index)} className="text-blue-500 hover:underline">Edit</button>
-                  <button onClick={() => handleDelete(index)} className="text-red-500 hover:underline">Delete</button>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div></div>
-             )}
-        </div>
-        {events.length > 0 && (
-          <div className=' items-end flex'>
-          <button
-            onClick={handleSave}
-            className="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-          >
-            Save
-          </button>
-          </div>
-        )}
-      </div>
-
-      {/* Desktop View (Above 870px) */}
-      <div className="hidden custom:block max-[870px]:hidden">
-        <div className="flex flex-col gap-6">
-          {events.length > 0 ? (
-            events.map((event, index) => (
-              <div
-                key={index}
-                className="flex flex-col md:flex-row lg:justify-around md:justify-between md:items-center p-4 bg-gray-100 border border-gray-300 rounded-lg shadow-md transition-all duration-500 hover:bg-gray-200"
-              >
-                <div className="flex flex-col md:flex-row gap-20">
-                  <div>
-                    <h2 className="font-semibold">Question</h2>
-                    <p>{event.question}</p>
-                  </div>
-                  <div>
-                    <h2 className="font-semibold">Response</h2>
-                    <p>{event.response}</p>
-                  </div>
-                </div>
-                <div className="flex flex-col md:flex-row gap-8">
-                  <div>
-                    <h2 className="font-semibold">Correct Answer</h2>
-                    <p>{event.correctAnswer}</p>
-                  </div>
-                  <div>
-                    <h2 className="font-semibold">Type</h2>
-                    <p>{event.type}</p>
-                  </div>
-                  <div>
-                    <h2 className="font-semibold">Amount</h2>
-                    <p>{event.amount}</p>
-                  </div>
-                  <div>
-                    <h2 className="font-semibold">Balance</h2>
-                    <p>{event.balance}</p>
-                  </div>
-                </div>
-                <div className="flex gap-2 mt-4">
-                  <button onClick={() => handleEdit(index)} className="text-blue-500 hover:underline">Edit</button>
-                  <button onClick={() => handleDelete(index)} className="text-red-500 hover:underline">Delete</button>
+                <div className="flex gap-2 mt-4 justify-end">
+                  <button onClick={() => handleEdit(index)} className="bg-blue-500 text-white hover:bg-blue-600 p-1 rounded w-[60px] flex items-center justify-center">
+                    <PencilIcon className="h-5 w-5" />
+                  </button>
+                  <button onClick={() => handleDelete(index)} className="bg-red-500 text-white hover:bg-red-600 p-1 rounded w-[60px] flex items-center justify-center">
+                    <TrashIcon className="h-5 w-5" />
+                  </button>
                 </div>
               </div>
             ))
@@ -161,12 +119,59 @@ const EpisodeEventsTable: React.FC<{ onEdit: any }> = ({ onEdit }) => {
           )}
         </div>
         {events.length > 0 && (
-          <button
-            onClick={handleSave}
-            className="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-          >
-            Save All to Backend
-          </button>
+          <div className='flex justify-center'>
+            <button onClick={handleSave} className="mt-4 bg-green-500 w-32 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center justify-center">
+              Save
+              <CiSaveUp1 className="h-5 w-5 mr-2" />
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Desktop View (Above 870px) */}
+      <div className={`hidden custom:block max-[870px]:hidden ${events.length > 3 ? 'overflow-y-auto max-h-[400px]' : ''}`}>
+        {events.length > 0 ? (
+          <>
+            <div className="flex flex-col bg-gray-200 mx-4 rounded-lg p-2 mt-6 gap-2">
+              <div className="flex justify-between font-bold mb-2 p-2">
+                <div className="w-[150px]">Question</div>
+                <div className="w-[120px] text-center">Response</div>
+                <div className="w-[130px] text-center">Correct Answer</div>
+                <div className="w-[90px] text-center">Type</div>
+                <div className="w-[80px] text-center">Amount</div>
+                <div className="w-[80px] text-center">Balance</div>
+                <div className="w-[130px] text-center">Actions</div>
+              </div>
+              {events.map((event, index) => (
+                <div key={index} className="flex justify-between items-center bg-gray-100 border-b border-gray-300 rounded-lg p-4">
+                  <div className="w-[150px] max-h-20 overflow-y-auto">{event.question}</div>
+                  <div className="w-[120px] text-center">{event.response}</div>
+                  <div className="w-[130px] text-center">{event.correctAnswer}</div>
+                  <div className="w-[90px] text-center lowercase">{event.type}</div>
+                  <div className="w-[80px] text-center">₦{event.amount}</div>
+                  <div className="w-[80px] text-center">₦{event.balance}</div>
+                  <div className="flex gap-1 justify-center w-[130px]">
+                    <button onClick={() => handleEdit(index)} className="bg-blue-500 text-white hover:bg-blue-600 p-1 rounded w-[60px] flex items-center justify-center">
+                      <PencilIcon className="h-5 w-5" />
+                    </button>
+                    <button onClick={() => handleDelete(index)} className="bg-red-500 text-white hover:bg-red-600 p-1 rounded w-[60px] flex items-center justify-center">
+                      <TrashIcon className="h-5 w-5" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <div></div>
+        )}
+        {events.length > 0 && (
+          <div className='flex justify-center'>
+            <button onClick={handleSave} className="mt-4 bg-green-500 w-32 text-white px-4 py-2 rounded hover:bg-green-600 flex items-center justify-center">
+              Save
+              <CiSaveUp1 className="h-5 w-5 mr-2" />
+            </button>
+          </div>
         )}
       </div>
     </div>

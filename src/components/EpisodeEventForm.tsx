@@ -49,7 +49,7 @@ const EpisodeEventsForm: React.FC<{ onEdit?: any }> = ({ onEdit }) => {
       }} />
       <main className="flex justify-center items-center py-10 px-4">
         <div className="w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl transition-all duration-300 shadow-lg p-6 rounded">
-          <h1 className="text-2xl font-bold mb-4 text-secondary-saffron text-center mt-10">Add Episode Event</h1>
+          <h1 className="text-2xl font-bold mb-4 text-secondary-saffron text-center">Add Episode Event</h1>
           {error && <div className="text-red-500 mb-2">{error}</div>}
 
           <form onSubmit={formik.handleSubmit}>
