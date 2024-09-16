@@ -65,29 +65,35 @@ const StatsCard: React.FC = () => {
 
           {/* Total Amount Won */}
           <div className="p-4 bg-secondary-cream rounded-lg text-center shadow-md">
-            <h3 className="text-lg font-semibold flex justify-center items-center">
-              Total Amount Won
-              <div className="h-6 w-6 bg-green-500 rounded-full mr-2" > <span className='text-white'>&#x20A6;</span></div>
-            </h3>
-            <p className="text-2xl font-bold text-green-500">₦{stats.totalAmountWon.toLocaleString()}</p>
+            <Link href='/episode-events-details'>
+              <h3 className="text-lg font-semibold flex justify-center items-center">
+                Total Amount Won
+                <div className="h-6 w-6 bg-green-500 rounded-full mr-2" > <span className='text-white'>&#x20A6;</span></div>
+              </h3>
+              <p className="text-2xl font-bold text-green-500">₦{stats.totalAmountWon.toLocaleString()}</p>
+            </Link>
           </div>
 
           {/* Total Asked Questions */}
           <div className="p-4 bg-secondary-cream rounded-lg text-center shadow-md">
+          <Link href='/episode-events-details'>
             <h3 className="text-lg font-semibold flex justify-center items-center">
               Total Asked Questions
               <QuestionMarkCircleIcon className="h-6 w-6 text-secondary-saffronLight mr-2" />
             </h3>
             <p className="text-2xl font-bold text-secondary-saffronLight">{stats.totalAskedQuestions.count}</p>
+          </Link>
           </div>
 
           {/* Total Right Questions */}
           <div className="p-4 bg-secondary-cream rounded-lg text-center shadow-md">
+          <Link href='/episode-events-details'>
             <h3 className="text-lg font-semibold flex justify-center items-center">
               Total Right Questions
               <CheckCircleIcon className="h-6 w-6 text-teal-500 mr-2" />
             </h3>
             <p className="text-2xl font-bold text-teal-500">{stats.totalRightQuestions.count}</p>
+          </Link>
           </div>
 
           {/* Waiting Queue */}
