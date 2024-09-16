@@ -32,7 +32,6 @@ const EpisodeEventsForm: React.FC<{ onEdit?: any }> = ({ onEdit }) => {
     },
   });
 
-  // Update form fields only when `onEdit` changes
   useEffect(() => {
     if (onEdit && editIndex !== onEdit.index) {
       const { question, correctAnswer, response, type, amount, balance, index } = onEdit;
