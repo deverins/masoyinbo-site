@@ -22,7 +22,12 @@ const RecentEpisodes: React.FC = () => {
     const fetchEpisodes = async () => {
       try {
         const { data } = await axios.get(`${API_URL}/v1/api/get-episode-stats`);
-        setEpisodeLinks(data.stats.episodeLinks || []);
+        console.log("Fetched Data:", data); // Log the fetched data to verify the structure
+        if (data && data.stats && Array.isArray(data.stats.episodeLinks)) {
+          setEpisodeLinks(data.stats.episodeLinks);
+        } else {
+          setError('Invalid data structure');
+        }
       } catch (err) {
         setError('Failed to fetch episodes');
       } finally {
@@ -38,8 +43,9 @@ const RecentEpisodes: React.FC = () => {
   }
 
   if (error) {
-    return toast.error(error);
+    return <p className="text-center text-red-500">{error}</p>;
   }
+
 
   return (
     <div className="mt-16 pb-5 mx-8">
@@ -52,7 +58,7 @@ const RecentEpisodes: React.FC = () => {
               videoLink={episodeLink}
               title={`Episode ${episodeLinks.length - index}`}
             />
-            <Link href={`/episodes/${episodeLink.id}`} >
+            <Link href={`/episode/${index}`} >
               <p className="block mt-2 text-secondary font-semibold text-lg text-center hover:underline">
                 {`View details for Episode ${episodeLinks.length - index}`}
               </p>
