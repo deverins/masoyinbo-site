@@ -23,7 +23,6 @@ const EpisodeEventsTable: React.FC<{ onEdit: any }> = ({ onEdit }) => {
 
   const handleDelete = (index: number) => {
     const updatedEvents = events.filter((_, i) => i !== index);
-    console.log("Updated events after deletion:", updatedEvents);
     localStorage.setItem('episodeEvents', JSON.stringify(updatedEvents));
     setEvents(updatedEvents);
   };
@@ -62,7 +61,7 @@ const EpisodeEventsTable: React.FC<{ onEdit: any }> = ({ onEdit }) => {
   return (
     <div>
       {/* Mobile and Tablet View (870px and below) */}
-      <div className={`block max-[870px]:block custom:hidden mx-4 mt-6 bg-gray-200 p-4 rounded ${events.length > 3 ? 'overflow-y-auto max-h-[400px]' : ''}`}>
+      <div className="block max-[870px]:block custom:hidden mx-4 mt-6 bg-gray-200 p-4 rounded ">
         <div className="flex flex-col gap-6">
           {events.length > 0 ? (
             events.map((event, index) => (
@@ -70,38 +69,35 @@ const EpisodeEventsTable: React.FC<{ onEdit: any }> = ({ onEdit }) => {
                 key={index}
                 className="flex flex-col p-4 bg-gray-100 border border-gray-300 rounded-lg shadow-md transition-all duration-500"
               >
-                <div className="flex flex-col gap-4">
-                  <div className="flex gap-32">
-                    <div className="min-w-[100px] w-[50%] max-h-20 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
-                      <h2 className="font-semibold">Question</h2>
-                      <p className='pl-2'>{event.question}</p>
-                    </div>
-                    <div>
-                      <h2 className="font-semibold">Response</h2>
-                      <p className='text-center'>{event.response}</p>
-                    </div>
+                <div className="flex flex-col gap-4 ml-4">
+                  <div>
+                    <h2 className="font-semibold">Type</h2>
+                    <p className='lowercase'>{event.type}</p>
                   </div>
-                  <div className="flex flex-col gap-2 bg-gray-200 p-3 rounded-lg px-10">
-                    <div className="flex justify-around">
+                  {/* Conditionally hide question and correctAnswer for codemix type */}
+                  {event.type !== 'CODE_MIX' && (
+                    <>
+                      <div className="w-full max-h-32 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
+                        <h2 className="font-semibold">Question</h2>
+                        <p className='pl-2'>{event.question}</p>
+                      </div>
                       <div>
                         <h2 className="font-semibold">Correct Answer</h2>
-                        <p className='text-center'>{event.correctAnswer}</p>
+                        <p className=''>{event.correctAnswer}</p>
                       </div>
-                      <div>
-                        <h2 className="font-semibold">Type</h2>
-                        <p className='text-center lowercase'>{event.type}</p>
-                      </div>
-                    </div>
-                    <div className="flex justify-around">
-                      <div>
-                        <h2 className="font-semibold">Amount</h2>
-                        <p className='text-center'>₦{event.amount}</p>
-                      </div>
-                      <div>
-                        <h2 className="font-semibold">Balance</h2>
-                        <p className='text-center'>₦{event.balance}</p>
-                      </div>
-                    </div>
+                    </>
+                  )}
+                  <div>
+                    <h2 className="font-semibold">Response</h2>
+                    <p className=''>{event.response}</p>
+                  </div>
+                  <div>
+                    <h2 className="font-semibold">Amount</h2>
+                    <p className=''>₦{event.amount}</p>
+                  </div>
+                  <div>
+                    <h2 className="font-semibold">Balance</h2>
+                    <p className=''>₦{event.balance}</p>
                   </div>
                 </div>
                 <div className="flex gap-2 mt-4 justify-end">
@@ -134,20 +130,20 @@ const EpisodeEventsTable: React.FC<{ onEdit: any }> = ({ onEdit }) => {
           <>
             <div className="flex flex-col bg-gray-200 mx-4 rounded-lg p-2 mt-6 gap-2">
               <div className="flex justify-between font-bold mb-2 p-2">
+                <div className="w-[90px] text-center">Type</div>
                 <div className="w-[150px]">Question</div>
                 <div className="w-[120px] text-center">Response</div>
                 <div className="w-[130px] text-center">Correct Answer</div>
-                <div className="w-[90px] text-center">Type</div>
                 <div className="w-[80px] text-center">Amount</div>
                 <div className="w-[80px] text-center">Balance</div>
                 <div className="w-[130px] text-center">Actions</div>
               </div>
               {events.map((event, index) => (
                 <div key={index} className="flex justify-between items-center bg-gray-100 border-b border-gray-300 rounded-lg p-4">
+                  <div className="w-[90px] text-center lowercase">{event.type}</div>
                   <div className="w-[150px] max-h-20 overflow-y-auto">{event.question}</div>
                   <div className="w-[120px] text-center">{event.response}</div>
                   <div className="w-[130px] text-center">{event.correctAnswer}</div>
-                  <div className="w-[90px] text-center lowercase">{event.type}</div>
                   <div className="w-[80px] text-center">₦{event.amount}</div>
                   <div className="w-[80px] text-center">₦{event.balance}</div>
                   <div className="flex gap-1 justify-center w-[130px]">

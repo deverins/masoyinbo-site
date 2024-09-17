@@ -89,7 +89,7 @@ const StatsCard: React.FC = () => {
           <div className="p-4 bg-secondary-cream rounded-lg text-center shadow-md">
           <Link href='/episode-events-details'>
             <h3 className="text-lg font-semibold flex justify-center items-center">
-              Total Right Questions
+              Total Correct Answer
               <CheckCircleIcon className="h-6 w-6 text-teal-500 mr-2" />
             </h3>
             <p className="text-2xl font-bold text-teal-500">{stats.totalRightQuestions.count}</p>
@@ -100,7 +100,7 @@ const StatsCard: React.FC = () => {
           <div className="p-4 bg-secondary-cream rounded-lg text-center shadow-md">
             <Link href='/request-pool'>
               <h3 className="text-lg font-semibold flex justify-center items-center">
-                Waiting Queue
+                Participant Request
                 <UserGroupIcon className="h-6 w-6 text-orange-500 mr-2" />
               </h3>
               <p className="text-2xl font-bold text-orange-500">{stats.requestPool.total.toLocaleString()}</p>

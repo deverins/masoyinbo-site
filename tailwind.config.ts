@@ -10,6 +10,7 @@ const config: Config = {
     extend: {
       screens: {
         'custom': '934.44px',
+        '870px': '870px',
       },
       colors: {
         primary: {
