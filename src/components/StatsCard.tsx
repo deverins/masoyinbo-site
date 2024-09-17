@@ -1,5 +1,5 @@
 import { API_URL } from '@/constants/api';
-import { CheckCircleIcon, CurrencyDollarIcon, PlayIcon, QuestionMarkCircleIcon, UserGroupIcon } from '@heroicons/react/16/solid';
+import { CheckCircleIcon, PlayIcon, QuestionMarkCircleIcon, UserGroupIcon } from '@heroicons/react/16/solid';
 import axios from 'axios';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
@@ -45,13 +45,13 @@ const StatsCard: React.FC = () => {
     fetchStats();
   }, []);
   if (error) {
-    console.error(error)
+    console.error(error);
   }
 
   return (
     stats && (
       <div className='mt-20 mx-0 lg:mx-20 md:mx-10'>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
           {/* Total Episodes */}
           <div className="p-4 bg-secondary-cream rounded-lg text-center shadow-md">
             <Link href='all-episodes'>
@@ -76,27 +76,29 @@ const StatsCard: React.FC = () => {
 
           {/* Total Asked Questions */}
           <div className="p-4 bg-secondary-cream rounded-lg text-center shadow-md">
-          <Link href='/episode-events-details'>
-            <h3 className="text-lg font-semibold flex justify-center items-center">
-              Total Asked Questions
-              <QuestionMarkCircleIcon className="h-6 w-6 text-secondary-saffronLight mr-2" />
-            </h3>
-            <p className="text-2xl font-bold text-secondary-saffronLight">{stats.totalAskedQuestions.count}</p>
-          </Link>
+            <Link href='/episode-events-details'>
+              <h3 className="text-lg font-semibold flex justify-center items-center">
+                Total Asked Questions
+                <QuestionMarkCircleIcon className="h-6 w-6 text-secondary-saffronLight mr-2" />
+              </h3>
+              <p className="text-2xl font-bold text-secondary-saffronLight">{stats.totalAskedQuestions.count}</p>
+            </Link>
           </div>
 
           {/* Total Right Questions */}
           <div className="p-4 bg-secondary-cream rounded-lg text-center shadow-md">
-          <Link href='/episode-events-details'>
-            <h3 className="text-lg font-semibold flex justify-center items-center">
-              Total Correct Answer
-              <CheckCircleIcon className="h-6 w-6 text-teal-500 mr-2" />
-            </h3>
-            <p className="text-2xl font-bold text-teal-500">{stats.totalRightQuestions.count}</p>
-          </Link>
+            <Link href='/episode-events-details'>
+              <h3 className="text-lg font-semibold flex justify-center items-center">
+                Total Correct Answer
+                <CheckCircleIcon className="h-6 w-6 text-teal-500 mr-2" />
+              </h3>
+              <p className="text-2xl font-bold text-teal-500">{stats.totalRightQuestions.count}</p>
+            </Link>
           </div>
+        </div>
 
-          {/* Waiting Queue */}
+        {/*larger screens centered card*/}
+        <div className="flex justify-center">
           <div className="p-4 bg-secondary-cream rounded-lg text-center shadow-md">
             <Link href='/request-pool'>
               <h3 className="text-lg font-semibold flex justify-center items-center">
