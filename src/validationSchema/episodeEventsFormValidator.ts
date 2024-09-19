@@ -12,11 +12,7 @@ export const episodeEventsFormValidator = Yup.object().shape({
       ? Yup.string().required('Correct Answer is required')
       : Yup.string().notRequired();
   }),
-  response: Yup.lazy((value, context) => {
-    return context.parent.type !== 'CODE_MIX'
-      ? Yup.string().required('Response is required')
-      : Yup.string().notRequired();
-  }),
+  response: Yup.string().required('Response is required'),
   amount: Yup.number()
     .required('Amount is required')
     .min(0, 'Amount must be at least 0'),

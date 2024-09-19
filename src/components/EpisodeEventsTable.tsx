@@ -92,9 +92,12 @@ const EpisodeEventsTable: React.FC<{ onEdit: any }> = ({ onEdit }) => {
                     <p className=''>{event.response}</p>
                   </div>
                   <div>
-                    <h2 className="font-semibold">Amount</h2>
-                    <p className=''>₦{event.amount}</p>
+                    <h2 className="font-semibold">Deducted Amount</h2>
+                    <p className=''>
+                      {event.amount !== 0 ? `-₦${event.amount}` : `₦${event.amount}`}
+                    </p>
                   </div>
+
                   <div>
                     <h2 className="font-semibold">Balance</h2>
                     <p className=''>₦{event.balance}</p>
@@ -144,7 +147,9 @@ const EpisodeEventsTable: React.FC<{ onEdit: any }> = ({ onEdit }) => {
                   <div className="w-[150px] max-h-20 overflow-y-auto">{event.question}</div>
                   <div className="w-[120px] text-center">{event.response}</div>
                   <div className="w-[130px] text-center">{event.correctAnswer}</div>
-                  <div className="w-[80px] text-center">₦{event.amount}</div>
+                  <div className="w-[80px] text-center">
+                    {event.amount !== 0 ? `-₦${event.amount}` : `₦${event.amount}`}
+                  </div>
                   <div className="w-[80px] text-center">₦{event.balance}</div>
                   <div className="flex gap-1 justify-center w-[130px]">
                     <button onClick={() => handleEdit(index)} className="bg-blue-500 text-white hover:bg-blue-600 p-1 rounded w-[60px] flex items-center justify-center">

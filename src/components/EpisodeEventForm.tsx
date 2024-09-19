@@ -13,23 +13,33 @@ const EpisodeEventsForm: React.FC<{ onEdit?: any }> = ({ onEdit }) => {
       correctAnswer: '',
       response: '',
       type: '',
-      amount: '',
+      amount: 0,
       balance: '',
     },
     validationSchema: episodeEventsFormValidator,
     onSubmit: (values, { resetForm }) => {
       setError(null);
+
+      const { question, correctAnswer, ...rest } = values;
+      let payload;
+      if (values.type === 'CODE_MIX') {
+        payload = { ...rest };
+      } else {
+        payload = { question, correctAnswer, ...rest };
+      }
+
       const storedEvents = JSON.parse(localStorage.getItem('episodeEvents') || '[]');
       if (editIndex !== null) {
-        storedEvents[editIndex] = values;
+        storedEvents[editIndex] = payload;
         setEditIndex(null);
       } else {
-        storedEvents.push(values);
+        storedEvents.push(payload);
       }
       localStorage.setItem('episodeEvents', JSON.stringify(storedEvents));
       resetForm();
       if (onEdit) onEdit();
-    },
+    }
+    ,
   });
 
   useEffect(() => {
@@ -124,9 +134,9 @@ const EpisodeEventsForm: React.FC<{ onEdit?: any }> = ({ onEdit }) => {
               )}
             </div>
 
-            {/* Amount */}
+            {/* Deducted Amount */}
             <div>
-              <label className="block text-base font-medium text-gray-400 mb-2 mt-2">Amount</label>
+              <label className="block text-base font-medium text-gray-400 mb-2 mt-2">Deducted Amount</label>
               <input
                 type="number"
                 name="amount"

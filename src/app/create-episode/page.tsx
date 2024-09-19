@@ -43,7 +43,8 @@ const CreateEpisodeForm = () => {
     initialValues: {
       episodeLink: "",
       participant_id: "",
-      amountWon: 0,
+      amountWon:0,
+      availableAmounToWin:"",
       episodeDate:"",
     },
     validationSchema: episodeSchema,
@@ -55,6 +56,7 @@ const CreateEpisodeForm = () => {
       if (!userId) {
         toast.error("User is not logged in.");
         setSubmitting(false);
+        navigate.push("/user/signup")
         return;
       }
 
@@ -133,6 +135,22 @@ const CreateEpisodeForm = () => {
               ) : null}
             </div>
 
+            <div>
+              <label htmlFor="availableAmounToWin" className="block text-base font-medium text-gray-400">
+                Amount Available to Win
+              </label>
+              <input
+                type="number"
+                name="availableAmounToWin"
+                value={formik.values.availableAmounToWin}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                className="mt-1 py-4 p-2 block w-full outline-none border border-yellow-300 rounded-lg focus:ring focus:ring-yellow-200"
+              />
+              {formik.errors.availableAmounToWin && formik.touched.availableAmounToWin ? (
+                <div className="text-red-500 text-base">{formik.errors.availableAmounToWin}</div>
+              ) : null}
+            </div>
             <div>
               <label htmlFor="amountWon" className="block text-base font-medium text-gray-400">
                 Amount Won
