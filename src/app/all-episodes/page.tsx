@@ -46,14 +46,13 @@ const AllEpisodes: React.FC = () => {
     <div className="mt-14 pb-5 mx-8">
       <h2 className="text-2xl font-bold mb-9 text-secondary-dark text-center">All Episodes</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 transition-all duration-300">
-      {episodeLinks.map((episodeLink: any, index: any) => (
-          <div key={index} className="relative shadow-3xl pb-2 rounded-2xl">
+        {episodeLinks.map((episode, index) => (
+          <div key={episode.id} className="relative shadow-3xl pb-2 rounded-2xl">
             <VideoPreview
-              key={index}
-              videoLink={episodeLink}
-              title={`Episode ${episodeLinks.length - index}`}
-            />
-            <Link href={`/episodes/${episodeLink.id}`} >
+              key={episode.id}
+              videoLink={episode.episodeLink}
+              title={episode.title || `Episode ${episodeLinks.length - index}`} episodeId={''} />
+            <Link href={`/episode/${episode.id}`}>
               <p className="block mt-2 text-secondary font-semibold text-lg text-center hover:underline">
                 {`View details for Episode ${episodeLinks.length - index}`}
               </p>

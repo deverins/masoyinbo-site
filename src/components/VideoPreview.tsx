@@ -1,28 +1,27 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { transformYouTubeURL } from '@/hooks/transformYouTubeURL ';
+import React, { useState, useRef, useEffect } from 'react';
 
 interface VideoPreviewProps {
   videoLink: string;
   title: string;
+  episodeId: string;
 }
 
-const VideoPreview: React.FC<VideoPreviewProps> = ({ videoLink, title }) => {
+const VideoPreview: React.FC<VideoPreviewProps> = ({ videoLink, title, episodeId }) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // Function to close the modal
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
 
-  // Function to handle clicks outside of the modal
   const handleClickOutside = (event: MouseEvent) => {
     if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
       handleCloseModal();
     }
   };
 
-  // Add event listener on mount and cleanup on unmount
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
@@ -30,20 +29,22 @@ const VideoPreview: React.FC<VideoPreviewProps> = ({ videoLink, title }) => {
     };
   }, []);
 
+  const embedLink = transformYouTubeURL(videoLink);
+
   return (
     <>
       {/* Video Preview Card */}
       <div
-        className="relative group bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer"
+        className="relative group rounded-lg shadow-lg overflow-hidden cursor-pointer"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={() => setIsModalOpen(true)}
       >
         <div className="aspect-w-16 aspect-h-9">
           <iframe
-            width="560"
+            width="600"
             height="315"
-            src={videoLink}
+            src={embedLink}
             title={title}
             frameBorder="0"
             allowFullScreen
@@ -78,8 +79,8 @@ const VideoPreview: React.FC<VideoPreviewProps> = ({ videoLink, title }) => {
             </button>
             <iframe
               width="100%"
-              height="450"
-              src={videoLink}
+              height="400"
+              src={embedLink}
               title="Selected Episode"
               frameBorder="0"
               allowFullScreen
