@@ -7,10 +7,7 @@ import React, { useEffect, useState } from 'react';
 interface Stats {
   totalEpisodes: number;
   totalAmountWon: number;
-  totalAskedQuestions: {
-    count: number;
-    questions: string[];
-  };
+  totalAskedQuestions:number
   totalRightQuestions: {
     count: number;
     correctAnswers: string[];
@@ -78,7 +75,7 @@ const StatsCard: React.FC = () => {
               Total Asked Questions
               <QuestionMarkCircleIcon className="h-6 w-6 text-secondary-saffronLight" />
             </h3>
-            <p className="text-2xl font-bold text-secondary-saffronLight">{stats.totalAskedQuestions.count}</p>
+            <p className="text-2xl font-bold text-secondary-saffronLight">{stats.totalAskedQuestions}</p>
           </div>
 
           {/* Total Right Questions */}
