@@ -1,150 +1,112 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 import { API_URL } from '@/constants/api';
+import PieChart from '@/hooks/PieChart';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { FaChevronRight } from 'react-icons/fa';
 
-interface ApiResponse {
-  totalAmountWon: {
-    QUESTION: { totalAmountWon: number; totalCorrectQuestions: number };
-    QUESTION_NUMBER: { totalAmountWon: number; totalCorrectQuestions: number };
-  };
-  totalAmountLost: {
-    QUESTION: { totalAmountLost: number; totalIncorrectQuestions: number };
-    QUESTION_NUMBER: { totalAmountLost: number; totalIncorrectQuestions: number };
-  };
-  codemixWordLoss: { _id: string; totalAmountLost: number }[];
-}
-
-const PerformanceStatsPieChart: React.FC = () => {
-  const [data, setData] = useState<ApiResponse | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+const PerformanceStats: React.FC = () => {
+  const [lostAmountData, setLostAmountData] = useState<{ name: string; value: number }[]>([]);
+  const [countData, setCountData] = useState<{ name: string; value: number }[]>([]);
+  const [codemixWordData, setCodemixWordData] = useState<{ name: string; value: number }[]>([]);
+  const [wonAmountData, setWonAmountData] = useState<{ name: string; value: number }[]>([]); // For totalAmountWonOnType
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${API_URL}/v1/api/participant-performance`);
-        setData(response.data);
-        setLoading(false);
+
+        const lostAmountByType = response.data.totalAmounLostOnType;
+        const totalCodemixResponses = response.data.totalCodemixResponses;
+        const wonAmountByType = response.data.totalAmountWonOnType;
+
+        // Formatting data for the pie charts
+        const formattedLostAmountData = lostAmountByType.map((item: any) => ({
+          name: item.type,
+          value: item.totalAmountLost,
+        }));
+
+        const formattedCountData = lostAmountByType.map((item: any) => ({
+          name: item.type,
+          value: item.count,
+        }));
+
+        const formattedCodemixWordData = totalCodemixResponses.map((item: any) => ({
+          name: item.words,
+          value: item.totalAmountLost,
+        }));
+
+        const formattedWonAmountData = wonAmountByType.map((item: any) => ({
+          name: item.type,
+          value: item.totalAmountLost,
+        }));
+
+        setLostAmountData(formattedLostAmountData);
+        setCountData(formattedCountData);
+        setCodemixWordData(formattedCodemixWordData);
+        setWonAmountData(formattedWonAmountData);
+
       } catch (error) {
-        setError('Failed to fetch data');
-        setLoading(false);
+        console.error('Error fetching performance stats:', error);
       }
     };
 
     fetchData();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-
-  const correctAnswerData = [
-    { name: 'Q', value: data?.totalAmountWon?.QUESTION?.totalAmountWon || 0 },
-    { name: 'QN', value: data?.totalAmountWon?.QUESTION_NUMBER?.totalAmountWon || 0 },
-  ];
-
-  const incorrectAnswerData = [
-    { name: 'Q', value: data?.totalAmountLost?.QUESTION?.totalAmountLost || 0 },
-    { name: 'QN', value: data?.totalAmountLost?.QUESTION_NUMBER?.totalAmountLost || 0 },
-  ];
-
-  const codemixData = data?.codemixWordLoss?.map((word) => ({
-    name: word._id,
-    value: word.totalAmountLost,
-  })) || [];
-
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-
-  const renderLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, name }: any) => {
-    const RADIAN = Math.PI / 180;
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-    return (
-      <text
-        x={x}
-        y={y}
-        fill="white"
-        textAnchor={x > cx ? 'start' : 'end'}
-        dominantBaseline="central"
-      >
-        {`${name}: ${(percent * 100).toFixed(0)}%`}
-      </text>
-    );
-  };
-
   return (
-    <div className="flex flex-wrap">
-      {/* Correct Answer Pie Chart */}
-      <div className="w-full md:w-1/3 p-4">
-        <h2 className="text-center mb-2">Correct Answers - Total Amount Won</h2>
-        <PieChart width={400} height={400}>
-          <Pie
-            data={correctAnswerData}
-            cx={200}
-            cy={200}
-            outerRadius={80}
-            fill="#8884d8"
-            dataKey="value"
-            label={renderLabel}
-            labelLine={false}
-          >
-            {/* Apply background color to each segment using Cell */}
-            {correctAnswerData.map((entry, index) => (
-              <Cell key={`cell-correct-${index}`} fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Pie>
-          <Tooltip />
-        </PieChart>
-      </div>
+    <section className="py-4 mt-16">
+      <div className="mx-8 px-4">
+        <h2 className='text-center text-xl font-bold mb-10 text-[#FFCE56]'>Performance Overview</h2>
+        <div className="flex overflow-x-auto no-scrollbar gap-8">
+          {/* First Pie Chart - Amount Lost by Type */}
+          <div className="flex-shrink-0">
+            <PieChart
+              data={lostAmountData}
+              title="Amount Lost by Type"
+              currencySymbol="₦"
+              titleClassName="text-center text-sm font-semibold mb-2 text-[#3CBA9F]"
+            />
+          </div>
+          {/* Second Pie Chart - Amount Won by Type */}
+          <div className="flex-shrink-0">
+            <PieChart
+              data={wonAmountData}
+              title="Amount Won by Type"
+              currencySymbol="₦"
+              titleClassName="text-center text-sm font-semibold mb-2 text-[#8E5EA2]"
+            />
+          </div>
 
-      {/* Incorrect Answer Pie Chart */}
-      <div className="w-full md:w-1/3 p-4">
-        <h2 className="text-center mb-2">Incorrect Answers - Total Amount Lost</h2>
-        <PieChart width={400} height={400}>
-          <Pie
-            data={incorrectAnswerData}
-            cx={200}
-            cy={200}
-            outerRadius={80}
-            fill="#8884d8"
-            dataKey="value"
-            label={renderLabel}
-            labelLine={false}
-          >
-            {/* Apply background color to each segment using Cell */}
-            {incorrectAnswerData.map((entry, index) => (
-              <Cell key={`cell-incorrect-${index}`} fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Pie>
-          <Tooltip />
-        </PieChart>
-      </div>
+          {/* Third Pie Chart - Amount Lost by Codemix Words */}
+          <div className="flex-shrink-0">
+            <PieChart
+              data={codemixWordData}
+              title="Amount Lost by Codemix Words"
+              currencySymbol="₦"
+              titleClassName="text-center text-sm font-semibold mb-2 text-[#FFCE56]"
+            />
+          </div>
 
-      {/* Codemix Loss Pie Chart */}
-      <div className="w-full md:w-1/3 p-4">
-        <h2 className="text-center mb-2">Codemix Losses</h2>
-        <PieChart width={400} height={400}>
-          <Pie
-            data={codemixData}
-            cx={200}
-            cy={200}
-            outerRadius={80}
-            fill="#8884d8"
-            dataKey="value"
-            label={renderLabel}
-          >
-            {/* Apply background color to each segment using Cell */}
-            {codemixData.map((entry, index) => (
-              <Cell key={`cell-codemix-${index}`} fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Pie>
-          <Tooltip />
-        </PieChart>
+          {/* Fourth Pie Chart - Count by Type */}
+          <div className="flex-shrink-0">
+            <PieChart
+              data={countData}
+              title="Count by Type"
+              currencySymbol=""
+              titleClassName="text-center text-sm font-semibold mb-2 text-[#36A2EB]"
+            />
+          </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="flex justify-center mt-4">
+          <span className="text-xl text-secondary">
+            <FaChevronRight />
+          </span>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
-export default PerformanceStatsPieChart;
+export default PerformanceStats;

@@ -5,7 +5,7 @@ import StatsCard from './StatsCard'
 import RecentEpisodes from './RecentEpisodes'
 import AboutSection from './AboutSection'
 import PerformanceStatsPieChart from './PerformanceStatsPieChart'
-import { CodemixWordLossBarChart } from '@/hooks/CodemixWordLossBarChart'
+// import { CodemixWordLossBarChart } from '@/hooks/CodemixWordLossBarChart'
 
 const HomePage = () => {
   
@@ -15,7 +15,7 @@ const HomePage = () => {
       <AboutSection />
       <StatsCard />
       <PerformanceStatsPieChart />
-      <CodemixWordLossBarChart />
+      {/* <CodemixWordLossBarChart /> */}
       <RecentEpisodes />
     </>
   )

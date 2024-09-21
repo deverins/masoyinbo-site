@@ -48,7 +48,7 @@ const RecentEpisodes: React.FC = () => {
 
   return (
     <div className="mt-16 pb-5 mx-8">
-      <h2 className="text-2xl font-bold mb-4 text-secondary-dark text-center">Recent Episodes</h2>
+      <h2 className="text-2xl font-bold mb-8 text-secondary-dark text-center">Recent Episodes</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {episodeLinks.map((episode, index) => (
           <div key={episode.id} className="relative shadow-3xl pb-2 rounded-2xl">

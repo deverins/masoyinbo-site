@@ -19,8 +19,6 @@ const LogIn = () => {
     try {
       setLoading(true)
       const { data } = await axios.post(URL, values);
-
-      console.log("response", data);
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
       // Redirect to dashboard if email is verified
@@ -29,8 +27,6 @@ const LogIn = () => {
         toast.success('Login successful');
         const username = data.user.username;
         return navigate.push(`/create-episode`);
-        // return navigate(`/${username}/profile`);
-
       }
     }
     catch (error: any) {
@@ -52,7 +48,6 @@ const LogIn = () => {
 
   return (
     <div>
-      (
       <section>
         <main className="flex justify-center items-center py-10 px-4">
           <div className=" w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl transition-all duration-300 shadow-lg p-6 rounded">
@@ -117,7 +112,6 @@ const LogIn = () => {
           </div>
         </main>
       </section>
-      )
     </div>
   );
 };

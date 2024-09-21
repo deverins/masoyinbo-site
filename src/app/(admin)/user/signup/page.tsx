@@ -46,7 +46,6 @@ const SignUp = () => {
 
   return (
     <div>
-      (
       <section>
         <main className="flex justify-center items-center py-10 px-4">
           <div className=" w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl transition-all duration-300 shadow-lg p-6 rounded">
@@ -140,7 +139,6 @@ const SignUp = () => {
           </div>
         </main>
       </section>
-      )
     </div>
   );
 };
