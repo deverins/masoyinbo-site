@@ -11,13 +11,12 @@ const PerformanceStats: React.FC = () => {
   const [wonAmountData, setWonAmountData] = useState<{ name: string; value: number }[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const containerRef = useRef<HTMLDivElement>(null); // Reference for the scrollable container
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${API_URL}/v1/api/participant-performance`);
-        console.log(response.data);
 
         const lostAmountByType = response.data.totalAmounLostOnType;
         const totalCodemixResponses = response.data.totalCodemixResponses;
@@ -60,7 +59,7 @@ const PerformanceStats: React.FC = () => {
 
   const handleScrollRight = () => {
     if (containerRef.current) {
-      containerRef.current.scrollLeft += 300; // Adjust the value as per the scrolling need
+      containerRef.current.scrollLeft += 300;
     }
   };
 
