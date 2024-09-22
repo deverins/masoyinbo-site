@@ -3,6 +3,7 @@ import axios from 'axios';
 import { API_URL } from '@/constants/api';
 import VideoPreview from './VideoPreview';
 import { formatDate } from '@/hooks/formatDate ';
+import { formatType } from '@/hooks/formatType ';
 
 interface Event {
   _id: string;
@@ -104,7 +105,7 @@ const EpisodeEventDetails: React.FC = () => {
                     {/* Data Rows */}
                     {events.map((event, index) => (
                       <div key={index} className="grid grid-cols-6 gap-4 bg-gray-100 border-b border-gray-300 p-2">
-                        <div className="col-span-1 w-[100px] text-center lowercase">{event.type}</div>
+                        <div className="col-span-1 w-[100px] text-center lowercase">{formatType(event.type)}</div>
                         <div className="col-span-1 w-[150px] ml-6 max-h-36 overflow-x-auto overflow-y-auto no-scrollbar">{event.question.join(', ')}</div>
                         <div className="col-span-1 w-[120px] text-center">{event.response}</div>
                         <div className="col-span-1 w-[150px] text-center">{event.correctAnswer}</div>
@@ -161,7 +162,7 @@ const EpisodeEventDetails: React.FC = () => {
                         <div className="flex flex-col gap-4 ml-4">
                           <div>
                             <h2 className="font-semibold">Type</h2>
-                            <p className='lowercase'>{event.type}</p>
+                            <p className='lowercase'>{formatType(event.type)}</p>
                           </div>
                           {event.type !== 'CODE_MIX' && (
                             <>

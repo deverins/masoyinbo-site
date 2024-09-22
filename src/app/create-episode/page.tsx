@@ -10,42 +10,38 @@ import toast from "react-hot-toast";
 interface Participant {
   _id: string;
   fullName: string;
-}
-
-interface Episode {
-  participant_id: string;
+  status: string;
+  hasEpisode: boolean;
 }
 
 const CreateEpisodeForm = () => {
-  const participantsURL = `${API_URL}/v1/api/get-participants`;
-  const episodesURL = `${API_URL}/v1/api/get-episode-stats`;
+  const participantsURL = `${API_URL}/v1/api/get-pending-participants`;
+  const createEpisodeURL = `${API_URL}/v1/api/create-episode`;
+
   const [participants, setParticipants] = useState<Participant[]>([]);
-  const [existingEpisodes, setExistingEpisodes] = useState<Episode[]>([]);
   const [error, setError] = useState<string | null>(null);
   const navigate = useRouter();
 
   useEffect(() => {
-    const fetchParticipantsAndEpisodes = async () => {
+    const fetchPendingParticipants = async () => {
       try {
         const participantData = await axios.get(participantsURL);
-        const episodeData = await axios.get(episodesURL);
-        setParticipants(participantData.data.data);
-        setExistingEpisodes(episodeData.data.episodes || []);
+        setParticipants(participantData.data.participants);
       } catch (error) {
-        toast.error("Failed to load participants or episodes");
+        toast.error("Failed to load participants");
       }
     };
 
-    fetchParticipantsAndEpisodes();
+    fetchPendingParticipants();
   }, []);
 
   const formik = useFormik({
     initialValues: {
       episodeLink: "",
       participant_id: "",
-      amountWon:0,
-      availableAmounToWin:"",
-      episodeDate:"",
+      amountWon: 0,
+      availableAmounToWin: "",
+      episodeDate: "",
     },
     validationSchema: episodeSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
@@ -56,20 +52,20 @@ const CreateEpisodeForm = () => {
       if (!userId) {
         toast.error("User is not logged in.");
         setSubmitting(false);
-        navigate.push("/user/signup")
+        navigate.push("/user/signup");
         return;
       }
 
       try {
-        const response = await axios.post(`${API_URL}/v1/api/create-episode`, {
+        const response = await axios.post(createEpisodeURL, {
           ...values,
           createdBy: userId,
         });
-        console.log("response", response)
+
         const episodeId = response.data.episode._id;
         localStorage.setItem("episodeId", episodeId);
         resetForm();
-        navigate.push('/episode-events')
+        navigate.push("/episode-events");
       } catch (error: any) {
         toast.error(error?.response?.data?.message || "An unexpected error occurred");
       } finally {
@@ -77,14 +73,6 @@ const CreateEpisodeForm = () => {
       }
     },
   });
-
-  // Check if the selected participant already has an episode
-  const participantHasEpisode = (participantId: string) => {
-    return existingEpisodes.some(
-      (episode) => episode.participant_id === participantId
-    );
-  };
-
   return (
     <>
       <main className="flex justify-center items-center py-10 px-4">
@@ -124,11 +112,13 @@ const CreateEpisodeForm = () => {
                 className="mt-1 py-4 block w-full p-2 outline-none border border-yellow-300 rounded-lg focus:ring focus:ring-yellow-200"
               >
                 <option value="">Select participant</option>
-                {participants.map((participant) => (
-                  <option key={participant._id} value={participant._id}>
-                    {participant.fullName}
-                  </option>
-                ))}
+                {participants
+                  .filter((participant) => !participant.hasEpisode)
+                  .map((participant) => (
+                    <option key={participant._id} value={participant._id}>
+                      {participant.fullName}
+                    </option>
+                  ))}
               </select>
               {formik.errors.participant_id && formik.touched.participant_id ? (
                 <div className="text-red-500 text-base">{formik.errors.participant_id}</div>
@@ -187,11 +177,9 @@ const CreateEpisodeForm = () => {
               <button
                 type="submit"
                 className="w-full py-4 text-lg font-bold bg-secondary-saffron text-white p-2 rounded-md"
-                disabled={
-                  formik.isSubmitting || participantHasEpisode(formik.values.participant_id)
-                }
+                disabled={formik.isSubmitting}
               >
-                {formik.isSubmitting ? "Creating..." : participantHasEpisode(formik.values.participant_id) ? "Participant Already Has an Episode" : "Create Episode"}
+                {formik.isSubmitting ? "Creating..." : "Create Episode"}
               </button>
             </div>
           </form>
