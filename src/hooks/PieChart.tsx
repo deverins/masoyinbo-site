@@ -10,7 +10,7 @@ interface PieChartProps {
 }
 
 const PieChart: React.FC<PieChartProps> = ({ data, title, currencySymbol = '', titleClassName = '' }) => {
-  const COLORS = ['#CB6F35', '#36A2EB', '#FFCE56', '#8E5EA2', '#3CBA9F'];
+  const COLORS = ['#CB4335', '#1F618D', '#F1C40F', '#27AE60', '#884EA0', '#D35400'];
   const formatTooltip = (value: number, name: string) => {
     const formattedName = name.replace(/_/g, ' ').toLowerCase();
     return [`${formattedName}: ${currencySymbol}${value.toLocaleString()}`];
@@ -23,7 +23,7 @@ const PieChart: React.FC<PieChartProps> = ({ data, title, currencySymbol = '', t
           {title}
         </h2>
       )}
-      <RechartsPieChart width={350} height={300}>
+      <RechartsPieChart width={350} height={350}>
         <Pie
           data={data}
           dataKey="value"

@@ -108,7 +108,10 @@ const EpisodeEventDetails: React.FC = () => {
                         <div className="col-span-1 w-[150px] ml-6 max-h-36 overflow-x-auto overflow-y-auto no-scrollbar">{event.question.join(', ')}</div>
                         <div className="col-span-1 w-[120px] text-center">{event.response}</div>
                         <div className="col-span-1 w-[150px] text-center">{event.correctAnswer}</div>
-                        <div className="col-span-1 w-[100px] text-center">₦{event.amount}</div>
+                        <div className="col-span-1 w-[100px] text-center">
+                          {event.amount > 0 ? `-₦${event.amount}` : event.amount}
+                        </div>
+
                         <div className="col-span-1 w-[100px] text-center">₦{event.balance}</div>
                       </div>
                     ))}
@@ -178,7 +181,7 @@ const EpisodeEventDetails: React.FC = () => {
                           </div>
                           <div>
                             <h2 className="font-semibold">Amount</h2>
-                            <p className=''>₦{event.amount}</p>
+                            <p className=''>{event.amount > 0 ? `-₦${event.amount}` : event.amount}</p>
                           </div>
                           <div>
                             <h2 className="font-semibold">Balance</h2>
