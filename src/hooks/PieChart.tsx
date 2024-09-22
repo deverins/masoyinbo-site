@@ -23,7 +23,7 @@ const PieChart: React.FC<PieChartProps> = ({ data, title, currencySymbol = '', t
           {title}
         </h2>
       )}
-      <RechartsPieChart width={350} height={350}>
+      <RechartsPieChart width={400} height={400}>
         <Pie
           data={data}
           dataKey="value"

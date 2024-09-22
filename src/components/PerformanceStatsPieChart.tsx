@@ -92,7 +92,7 @@ const PerformanceStats: React.FC = () => {
             </div>
 
             {/* Third Pie Chart - Amount Lost by Codemix Words */}
-            <div className="flex-shrink-0 bg-red-0 overflow-y-auto w-[350px] h-[350px] no-scrollbar">
+            <div className="flex-shrink-0 bg-red-0 overflow-y-auto w-[400px] h-[400px] no-scrollbar">
               <PieChart
                 data={codemixWordData}
                 title="Amount Lost by Codemix Words"
