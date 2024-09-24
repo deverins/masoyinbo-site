@@ -20,20 +20,21 @@ const RequestPoolPage = () => {
   useEffect(() => {
     const fetchRequestPool = async () => {
       try {
-        const { data } = await axios.get(`${API_URL}/v1/api/get-episode-stats`);
-
-        if (data.stats.requestPool.participants) {
-          setRequestPool(data.stats.requestPool.participants);
+        const { data } = await axios.get(`${API_URL}/v1/api/get-pending-participants`);
+     
+        if (data.participants) {
+          setRequestPool(data.participants);
         } else {
-          console.error("No requestPool participants found in the response");
+          console.error("No participants found in the response");
         }
       } catch (error) {
         console.error("Error fetching request pool", error);
       }
     };
-
+  
     fetchRequestPool();
   }, []);
+  
 
   return (
     <main className="p-4">

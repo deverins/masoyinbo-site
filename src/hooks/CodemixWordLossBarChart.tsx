@@ -17,18 +17,15 @@ const CodemixWordLossBarChart: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const { theme } = useTheme();
 
+  // Reference for scrollable container
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${API_URL}/v1/api/participant-performance`);
-        const totalCodemixResponses = response.data.totalCodemixResponses;
-        const formattedData = totalCodemixResponses.map((item: any) => ({
-          words: item.words,
-          totalAmountLost: item.totalAmountLost,
-        }));
-        setCodemixData(formattedData);
+        const { data } = await axios.get(`${API_URL}/v1/api/get-performance-stats`);
+        const totalCodemixResponses = data.stats.codemixData;
+        setCodemixData(totalCodemixResponses);
       } catch (error) {
         console.error('Error fetching performance data:', error);
       } finally {
@@ -39,6 +36,7 @@ const CodemixWordLossBarChart: React.FC = () => {
     fetchData();
   }, []);
 
+  // Extract labels and data values
   const labels = codemixData.map((item) => item.words);
   const dataValues = codemixData.map((item) => item.totalAmountLost);
 
@@ -103,10 +101,13 @@ const CodemixWordLossBarChart: React.FC = () => {
     },
   };
 
+  // Function to auto-scroll back to the beginning
   const handleScroll = () => {
     if (scrollRef.current) {
       const { scrollWidth, scrollLeft, clientWidth } = scrollRef.current;
+      // Check if the user has reached the end of the scrollable area
       if (scrollLeft + clientWidth >= scrollWidth - 5) {
+        // Scroll back to the start
         scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
       }
     }

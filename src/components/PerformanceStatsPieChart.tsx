@@ -1,124 +1,117 @@
-import { API_URL } from '@/constants/api';
-import PieChart from '@/hooks/PieChart';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react';
-import { FaChevronRight } from 'react-icons/fa';
+import { FaChevronRight, FaChevronDown } from 'react-icons/fa';
+import PieChart from '@/hooks/PieChart';
+import { API_URL } from '@/constants/api';
+import CodemixWordLossBarChart from '@/hooks/CodemixWordLossBarChart';
 
 const PerformanceStats: React.FC = () => {
   const [lostAmountData, setLostAmountData] = useState<{ name: string; value: number }[]>([]);
   const [countData, setCountData] = useState<{ name: string; value: number }[]>([]);
   const [codemixWordData, setCodemixWordData] = useState<{ name: string; value: number }[]>([]);
-  const [wonAmountData, setWonAmountData] = useState<{ name: string; value: number }[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [showStats, setShowStats] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${API_URL}/v1/api/participant-performance`);
-
-        const lostAmountByType = response.data.totalAmounLostOnType;
-        const totalCodemixResponses = response.data.totalCodemixResponses;
-        const wonAmountByType = response.data.totalAmountWonOnType;
-
+        const { data } = await axios.get(`${API_URL}/v1/api/get-performance-stats`);
+        console.log("API Response:", data);
+  
+        const lostAmountByType = data.stats.lossTypeData;
+        const totalCodemixResponses = data.stats.codemixData;
+  
         const formattedLostAmountData = lostAmountByType.map((item: any) => ({
           name: item.type,
           value: item.totalAmountLost,
         }));
-
+  
         const formattedCountData = lostAmountByType.map((item: any) => ({
           name: item.type,
           value: item.count,
         }));
-
+  
         const formattedCodemixWordData = totalCodemixResponses.map((item: any) => ({
           name: item.words,
           value: item.totalAmountLost,
         }));
-
-        const formattedWonAmountData = wonAmountByType.map((item: any) => ({
-          name: item.type,
-          value: item.totalAmountLost,
-        }));
-
+  
         setLostAmountData(formattedLostAmountData);
         setCountData(formattedCountData);
         setCodemixWordData(formattedCodemixWordData);
-        setWonAmountData(formattedWonAmountData);
-
         setLoading(false);
       } catch (error) {
         console.error('Error fetching performance stats:', error);
         setLoading(false);
       }
     };
-
+  
     fetchData();
   }, []);
+  
 
-  const handleScrollRight = () => {
-    if (containerRef.current) {
-      containerRef.current.scrollLeft += 300;
-    }
-  };
+  const handleToggle = () => setShowStats(!showStats);
 
   return (
     <section className="py-4 mt-16">
       <div className="mx-4 px-4">
         <h2 className="text-center text-xl font-bold mb-10 text-[#FFCE56]">Performance Overview</h2>
+        <button
+          onClick={handleToggle}
+          className="mb-4 p-2 bg-blue-500 text-white rounded flex items-center justify-center"
+        >
+          {showStats ? 'Collapse Statistics' : 'View Statistics Performance'}
+          {showStats ? <FaChevronDown className="ml-2" /> : <FaChevronRight className="ml-2" />}
+        </button>
 
-        {loading ? (
-          <div className="loader mt-20 mx-auto ease-linear rounded-full border-4 border-t-4 h-12 w-12 animate-spin" />
-        ) : (
-          <div className="flex overflow-x-auto no-scrollbar gap-8" ref={containerRef}>
-            {/* First Pie Chart - Amount Lost by Type */}
-            <div className="flex-shrink-0">
-              <PieChart
-                data={lostAmountData}
-                title="Amount Lost by Type"
-                currencySymbol="₦"
-                titleClassName="text-center text-sm font-semibold mb-2 text-[#3CBA9F]"
-              />
-            </div>
-            {/* Second Pie Chart - Amount Won by Type */}
-            <div className="flex-shrink-0">
-              <PieChart
-                data={wonAmountData}
-                title="Amount Won by Type"
-                currencySymbol="₦"
-                titleClassName="text-center text-sm font-semibold mb-2 text-[#8E5EA2]"
-              />
-            </div>
+        {showStats && (
+          <div className="flex flex-col lg:flex-wrap gap-8">
+            {/* Desktop / Tablet Layout */}
+            <div className="flex flex-wrap lg:w-full gap-8">
+              {/* First Pie Chart - Amount Lost by Type */}
+              <div className="w-full sm:w-1/2 lg:w-1/2">
+                <PieChart
+                  data={lostAmountData}
+                  title="Amount Lost by Type"
+                  currencySymbol="₦"
+                  titleClassName="text-center text-sm font-semibold mb-2 text-[#3CBA9F]"
+                />
+              </div>
 
-            {/* Third Pie Chart - Amount Lost by Codemix Words */}
-            <div className="flex-shrink-0 bg-red-0 overflow-y-auto w-[400px] h-[400px] no-scrollbar">
-              <PieChart
-                data={codemixWordData}
-                title="Amount Lost by Codemix Words"
-                currencySymbol="₦"
-                titleClassName="text-center text-sm font-semibold mb-2 text-[#FFCE56]"
-              />
+              {/* Bar Chart - Amount Lost by Type */}
+              <div className="w-full sm:w-1/2 lg:w-1/2">
+                <CodemixWordLossBarChart />
+              </div>
             </div>
 
-            {/* Fourth Pie Chart - Count by Type */}
-            <div className="flex-shrink-0">
-              <PieChart
-                data={countData}
-                title="Count by Type"
-                currencySymbol=""
-                titleClassName="text-center text-sm font-semibold mb-2 text-[#36A2EB]"
-              />
+            <div className="flex flex-wrap lg:w-full gap-8">
+              {/* Second Pie Chart - Count by Type */}
+              <div className="w-full sm:w-1/2 lg:w-1/2">
+                <PieChart
+                  data={countData}
+                  title="Count by Type"
+                  currencySymbol=""
+                  titleClassName="text-center text-sm font-semibold mb-2 text-[#36A2EB]"
+                />
+              </div>
             </div>
-          </div>
-        )}
 
-        {/* Scroll Indicator */}
-        {!loading && (
-          <div className="flex justify-center mt-4 cursor-pointer" onClick={handleScrollRight}>
-            <span className="text-xl text-secondary">
-              <FaChevronRight />
-            </span>
+            {/* Third Pie Chart and Bar Chart for Codemix Words */}
+            <div className="flex flex-wrap lg:w-full gap-8">
+              <div className="w-full sm:w-1/2 lg:w-1/2">
+                <PieChart
+                  data={codemixWordData}
+                  title="Amount Lost by Codemix Words"
+                  currencySymbol="₦"
+                  titleClassName="text-center text-sm font-semibold mb-2 text-[#FFCE56]"
+                />
+              </div>
+
+              {/* Bar Chart - Codemix Words */}
+              <div className="w-full sm:w-1/2 lg:w-1/2">
+                <CodemixWordLossBarChart />
+              </div>
+            </div>
           </div>
         )}
       </div>

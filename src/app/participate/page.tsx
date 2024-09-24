@@ -87,8 +87,8 @@ const ParticipationForm: React.FC = () => {
     <>
       <section>
         <div className="flex items-center justify-center mt-8 mx-2">
-          <div className=" border-t-8 border-secondary-saffron rounded-t-lg container">
-            <div className="bg-white p-6 w-full rounded-b-lg">
+          <div className=" border-t-8 border-primary dark:border-[#40456E] rounded-t-lg container">
+            <div className="bg-white dark:bg-gray-100 dark:text-400 p-6 w-full rounded-b-lg">
               <h2 className=" text-[32px] text-gray-900 font-black">Másòyìnbó</h2>
               <p className=" mt-4 text-base">
                 Thank you for your interest in joining <strong>Másòyìnbó</strong>, an edutainment programme and
@@ -110,11 +110,11 @@ const ParticipationForm: React.FC = () => {
         </div>
       </section>
       <section className="flex justify-center items-center py-10 px-4">
-        <div className="bg-slate-100 shadow-md rounded-lg p-8 w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl transition-all duration-300">
+        <div className="shadow-md rounded-lg dark:shadow-2xl p-8 w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl transition-all duration-300">
           <form onSubmit={formik.handleSubmit}>
             {/* Email */}
             <div className="mb-4">
-              <label className="block text-gray-700  text-base font-bold mb-2">
+              <label className="block text-gray-700  dark:text-gray-400 text-base font-bold mb-2">
                 Email
                 <span className=' text-secondary-dark ml-3'>*</span>
 
@@ -125,7 +125,7 @@ const ParticipationForm: React.FC = () => {
                 onChange={formik.handleChange}
                 placeholder='email'
                 value={formik.values.email}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 dark:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
               />
               {formik.errors.email && formik.touched.email && (
                 <div className="text-red-500 text-xs mt-1">
@@ -136,7 +136,7 @@ const ParticipationForm: React.FC = () => {
 
             {/* Full Name */}
             <div className="mb-4">
-              <label className="block text-gray-700  text-base font-bold mb-2">
+              <label className="block text-gray-700 dark:text-gray-400  text-base font-bold mb-2">
                 Full Name (Name and Surname)
                 <span className=' text-secondary-dark ml-3'>*</span>
 
@@ -147,7 +147,7 @@ const ParticipationForm: React.FC = () => {
                 onChange={formik.handleChange}
                 placeholder='full name'
                 value={formik.values.fullName}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 dark:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
               />
               {formik.errors.fullName && formik.touched.fullName && (
                 <div className="text-red-500 text-xs mt-1">
@@ -158,7 +158,7 @@ const ParticipationForm: React.FC = () => {
 
             {/* Gender */}
             <div className="mb-4">
-              <label className="block text-gray-700  text-base font-bold mb-2">Gender
+              <label className="block text-gray-700 dark:text-gray-400  text-base font-bold mb-2">Gender
                 <span className=' text-secondary-dark ml-3'>*</span>
 
               </label>
@@ -166,7 +166,7 @@ const ParticipationForm: React.FC = () => {
                 name="gender"
                 onChange={formik.handleChange}
                 value={formik.values.gender}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 dark:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
               >
                 <option value="">Select Gender</option>
                 <option value="Male">Male</option>
@@ -182,7 +182,7 @@ const ParticipationForm: React.FC = () => {
 
             {/* Mobile Number */}
             <div className="mb-4">
-              <label className="block text-gray-700  text-base font-bold mb-2">
+              <label className="block text-gray-700 dark:text-gray-400  text-base font-bold mb-2">
                 Mobile Number (Include Dialling/Area Code)
               </label>
               <input
@@ -191,7 +191,7 @@ const ParticipationForm: React.FC = () => {
                 onChange={formik.handleChange}
                 placeholder='mobile number'
                 value={formik.values.mobileNumber}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 dark:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
               />
               {formik.errors.mobileNumber && formik.touched.mobileNumber && (
                 <div className="text-red-500 text-xs mt-1">
@@ -202,7 +202,7 @@ const ParticipationForm: React.FC = () => {
 
             {/* Place of Residence */}
             <div className="mb-4">
-              <label className="block text-gray-700  text-base font-bold mb-2">
+              <label className="block text-gray-700 dark:text-gray-400  text-base font-bold mb-2">
                 Place of Residence
                 <span className=' text-secondary-dark ml-3'>*</span>
 
@@ -213,7 +213,7 @@ const ParticipationForm: React.FC = () => {
                 onChange={formik.handleChange}
                 placeholder='place of residence'
                 value={formik.values.placeOfResidence}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 dark:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
               />
               {formik.errors.placeOfResidence && formik.touched.placeOfResidence && (
                 <div className="text-red-500 text-xs mt-1">
@@ -224,7 +224,7 @@ const ParticipationForm: React.FC = () => {
 
             {/* State of Origin */}
             <div className="mb-4">
-              <label className="block text-gray-700  text-base font-bold mb-2">
+              <label className="block text-gray-700 dark:text-gray-400  text-base font-bold mb-2">
                 State of Origin
                 <span className=' text-secondary-dark ml-3'>*</span>
 
@@ -235,7 +235,7 @@ const ParticipationForm: React.FC = () => {
                 onChange={formik.handleChange}
                 placeholder='state of origin'
                 value={formik.values.state}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 dark:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
               />
               {formik.errors.state && formik.touched.state && (
                 <div className="text-red-500 text-xs mt-1">
@@ -246,7 +246,7 @@ const ParticipationForm: React.FC = () => {
 
             {/* Social Media Platform */}
             <div className="mb-4">
-              <label className="block text-gray-700  text-base font-bold mb-2">
+              <label className="block text-gray-700 dark:text-gray-400  text-base font-bold mb-2">
                 Most Active/Frequently Used Social Media Platform Link
                 <span className=' text-secondary-dark ml-3'>*</span>
               </label>
@@ -256,7 +256,7 @@ const ParticipationForm: React.FC = () => {
                 onChange={formik.handleChange}
                 placeholder='social media platform link'
                 value={formik.values.platformLink}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 dark:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
               />
               {formik.errors.platformLink && formik.touched.platformLink && (
                 <div className="text-red-500 text-xs mt-1">
@@ -267,7 +267,7 @@ const ParticipationForm: React.FC = () => {
 
             {/* Social Media Handle */}
             <div className="mb-4">
-              <label className="block text-gray-700  text-base font-bold mb-2">
+              <label className="block text-gray-700 dark:text-gray-400  text-base font-bold mb-2">
                 Social Media Handle
                 <span className=' text-secondary-dark ml-3'>*</span>
 
@@ -278,7 +278,7 @@ const ParticipationForm: React.FC = () => {
                 onChange={formik.handleChange}
                 placeholder='social media handle'
                 value={formik.values.socialMediaHandle}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 dark:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
               />
               {formik.errors.socialMediaHandle && formik.touched.socialMediaHandle && (
                 <div className="text-red-500 text-xs mt-1">
@@ -289,13 +289,13 @@ const ParticipationForm: React.FC = () => {
 
             {/* How Did You Find Out */}
             <div className="mb-4">
-              <label className="block text-gray-700  text-base font-bold mb-2">
+              <label className="block text-gray-700  text-base font-bold mb-2 dark:text-gray-200">
                 How did you find out about Másòyìnbó?
                 <span className=' text-secondary-dark ml-3'>*</span>
               </label>
               <div className="flex flex-col">
                 {options.map((option: Option) => (
-                  <label key={option.value} className="flex items-center font-semibold text-base lead mt-3">
+                  <label key={option.value} className="flex items-center font-semibold text-base lead mt-3 dark:text-gray-400">
                     <input
                       type="checkbox"
                       name="source"
@@ -318,17 +318,17 @@ const ParticipationForm: React.FC = () => {
 
             {/* Rules Agreement */}
             <div className="mb-4">
-              <h1 className='block text-gray-700  text-base font-bold mb-2'>Rules of Másòyìnbó:</h1>
-              <p className=' font-semibold text-base lead mt-3'>
+              <h1 className='block text-gray-700  text-base font-bold mb-2 dark:text-gray-200'>Rules of Másòyìnbó:</h1>
+              <p className=' font-semibold text-base lead mt-3 dark:text-gray-400'>
                 1. You are prohibited to code-mix or speak other languages aside from Yoruba throughout the duration of the programme. Failure to adhere will lead to the deduction of your earnings.
               </p>
-              <p className=' font-semibold text-base lead mt-3'>
+              <p className=' font-semibold text-base lead mt-3 dark:text-gray-400'>
                 2. It is required that all 10 questions are answered correctly to have the potential of earning up to N1,000,000.
               </p>
-              <p className=' font-semibold text-base lead mt-3'>
+              <p className=' font-semibold text-base lead mt-3 dark:text-gray-400'>
                 3. If you are selected, please come onto the programme in colourful native attire, as we will not allow standard dressing - we are keen to conserve and promote our Yoruba culture.
               </p>
-              <p className='font-semibold text-base lead mt-3'>
+              <p className='font-semibold text-base lead mt-3 dark:text-gray-400'>
                 4. You are expected and encouraged to know your Yoruba numbers; if not, it may impact your potential earnings.
               </p>
               <div className='flex items-center  mt-6'>
@@ -339,7 +339,7 @@ const ParticipationForm: React.FC = () => {
                   checked={formik.values.rulesAgreement}
                   className="mr-2"
                 />
-                <label className="block text-gray-700  text-base font-bold">
+                <label className="block text-gray-700 dark:text-gray-200  text-base font-bold">
                   Yes, I Understand
                 </label>
                 {formik.errors.rulesAgreement && formik.touched.rulesAgreement && (
@@ -352,7 +352,7 @@ const ParticipationForm: React.FC = () => {
 
             {/* Additional Comments */}
             <div className="mb-4">
-              <label className="block text-gray-700  text-base font-bold mb-2">
+              <label className="block text-gray-700 dark:text-gray-200  text-base font-bold mb-2">
                 Any further comments/questions?
               </label>
               <textarea
@@ -372,7 +372,7 @@ const ParticipationForm: React.FC = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className=" bg-secondary-saffron text-white font-bold px-4 rounded py-4 focus:outline-none focus:shadow-outline"
+                className="bg-primary-light text-white font-bold px-4 rounded py-4 focus:outline-none focus:shadow-outline"
               >
                 {loading ? 'Submitting...' : 'Submit'}
               </button>

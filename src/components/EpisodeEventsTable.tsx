@@ -11,6 +11,7 @@ interface EpisodeEvent {
   type: string;
   amount: number;
   balance: number;
+  isCorrect: boolean;
 }
 
 const EpisodeEventsTable: React.FC<{ onEdit: any }> = ({ onEdit }) => {
@@ -38,24 +39,26 @@ const EpisodeEventsTable: React.FC<{ onEdit: any }> = ({ onEdit }) => {
       if (!episodeId) {
         return;
       }
-
-      const eventsToSave = events.map(({ question, correctAnswer, response, type, amount, balance }) => ({
+  
+      const eventsToSave = events.map(({ question, correctAnswer, response, type, amount, balance, isCorrect }) => ({
         question,
         correctAnswer,
         response,
         type,
         amount,
         balance,
+        isCorrect,  // Add this line
       }));
-
+  
       await axios.post(`${API_URL}/v1/api/episode-events`, { episodeId, events: eventsToSave });
-
+      
       localStorage.removeItem('episodeEvents');
       setEvents([]);
     } catch (error) {
       console.error('Failed to save data:', error);
     }
   };
+  
 
 
   return (
@@ -94,7 +97,7 @@ const EpisodeEventsTable: React.FC<{ onEdit: any }> = ({ onEdit }) => {
                   <div>
                     <h2 className="font-semibold">Deducted Amount</h2>
                     <p className=''>
-                      {event.amount !== 0 ? `-₦${event.amount}` : `₦${event.amount}`}
+                      { `₦$event.amount`}
                     </p>
                   </div>
 
@@ -148,7 +151,7 @@ const EpisodeEventsTable: React.FC<{ onEdit: any }> = ({ onEdit }) => {
                   <div className="w-[120px] text-center">{event.response}</div>
                   <div className="w-[130px] text-center">{event.correctAnswer}</div>
                   <div className="w-[80px] text-center">
-                    {event.amount !== 0 ? `-₦${event.amount}` : `₦${event.amount}`}
+                    {event.amount}
                   </div>
                   <div className="w-[80px] text-center">₦{event.balance}</div>
                   <div className="flex gap-1 justify-center w-[130px]">

@@ -12,6 +12,10 @@
     border-top-color:#B30205;
     animation: spin 1s linear infinite;
   }
+
+  .cap1stL {
+    @apply first-letter:capitalize;
+  }
 }
 
 .no-scrollbar::-webkit-scrollbar {

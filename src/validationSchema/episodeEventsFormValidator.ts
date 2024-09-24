@@ -13,10 +13,10 @@ export const episodeEventsFormValidator = Yup.object().shape({
       : Yup.string().notRequired();
   }),
   response: Yup.string().required('Response is required'),
-  amount: Yup.number()
-    .required('Amount is required')
-    .min(0, 'Amount must be at least 0'),
+  isCorrect: Yup.boolean().required('Is Correct is required'),
+  amount: Yup.number().required('Amount is required'),
   balance: Yup.number()
     .required('Balance is required')
     .min(0, 'Balance must be at least 0'),
 });
+
