@@ -16,6 +16,14 @@
   .cap1stL {
     @apply first-letter:capitalize;
   }
+  input::placeholder,
+textarea::placeholder {
+  @apply text-gray-600; 
+}
+
+select {
+  @apply text-gray-600; 
+}
 }
 
 .no-scrollbar::-webkit-scrollbar {

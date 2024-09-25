@@ -6,7 +6,7 @@ import { participationSchema } from '@/validationSchema/participateSchema';
 import { API_URL } from '@/constants/api';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import AboutSection from '@/components/AboutSection';
 
 interface Option {
   value: string;
@@ -68,8 +68,8 @@ const ParticipationForm: React.FC = () => {
       try {
         setLoading(true);
         await axios.post(URL, restValues);
-        toast.success("User registered successfully.");
         navigate.push('/request-pool')
+        toast.success("User registered successfully.");
         resetForm();
       } catch (error) {
         toast.error("Sign up failed. Please try again later.");
@@ -85,30 +85,8 @@ const ParticipationForm: React.FC = () => {
   }
   return (
     <>
-      <section>
-        <div className="flex items-center justify-center mt-8 mx-2">
-          <div className=" border-t-8 border-primary dark:border-[#40456E] rounded-t-lg container">
-            <div className="bg-white dark:bg-gray-100 dark:text-400 p-6 w-full rounded-b-lg">
-              <h2 className=" text-[32px] text-gray-900 font-black">Másòyìnbó</h2>
-              <p className=" mt-4 text-base">
-                Thank you for your interest in joining <strong>Másòyìnbó</strong>, an edutainment programme and
-                gameshow designed to educate on the Yoruba language and culture. Másòyìnbó is an
-                initiative that aims to promote, safeguard and conserve our cultural heritage as Yorubas.
-              </p>
-              <p className=" mt-4 text-base">
-                Please note that we are experiencing high levels of demand from willing participants worldwide, we
-                endeavour to responbv d within a reasonable timeframe and would like to thank you for your
-                understanding and patience ahead of time.
-              </p>
-              <div className=" mt-4 text-base">
-                Please contact us at <Link href="tel:+2347033331389" className=" text-text-light font-bold">
-                  +234 703 333 1389
-                </Link> if you would like to support or sponsor the programme.
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <AboutSection />
+
       <section className="flex justify-center items-center py-10 px-4">
         <div className="shadow-md rounded-lg dark:shadow-2xl p-8 w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl transition-all duration-300">
           <form onSubmit={formik.handleSubmit}>
@@ -125,7 +103,7 @@ const ParticipationForm: React.FC = () => {
                 onChange={formik.handleChange}
                 placeholder='email'
                 value={formik.values.email}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 dark:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
               {formik.errors.email && formik.touched.email && (
                 <div className="text-red-500 text-xs mt-1">
@@ -147,7 +125,7 @@ const ParticipationForm: React.FC = () => {
                 onChange={formik.handleChange}
                 placeholder='full name'
                 value={formik.values.fullName}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 dark:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700  leading-tight focus:outline-none focus:shadow-outline"
               />
               {formik.errors.fullName && formik.touched.fullName && (
                 <div className="text-red-500 text-xs mt-1">
@@ -166,7 +144,7 @@ const ParticipationForm: React.FC = () => {
                 name="gender"
                 onChange={formik.handleChange}
                 value={formik.values.gender}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 dark:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               >
                 <option value="">Select Gender</option>
                 <option value="Male">Male</option>
@@ -191,7 +169,7 @@ const ParticipationForm: React.FC = () => {
                 onChange={formik.handleChange}
                 placeholder='mobile number'
                 value={formik.values.mobileNumber}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 dark:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700  leading-tight focus:outline-none focus:shadow-outline"
               />
               {formik.errors.mobileNumber && formik.touched.mobileNumber && (
                 <div className="text-red-500 text-xs mt-1">
@@ -213,7 +191,7 @@ const ParticipationForm: React.FC = () => {
                 onChange={formik.handleChange}
                 placeholder='place of residence'
                 value={formik.values.placeOfResidence}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 dark:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700  leading-tight focus:outline-none focus:shadow-outline"
               />
               {formik.errors.placeOfResidence && formik.touched.placeOfResidence && (
                 <div className="text-red-500 text-xs mt-1">
@@ -235,7 +213,7 @@ const ParticipationForm: React.FC = () => {
                 onChange={formik.handleChange}
                 placeholder='state of origin'
                 value={formik.values.state}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 dark:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700  leading-tight focus:outline-none focus:shadow-outline"
               />
               {formik.errors.state && formik.touched.state && (
                 <div className="text-red-500 text-xs mt-1">
@@ -256,7 +234,7 @@ const ParticipationForm: React.FC = () => {
                 onChange={formik.handleChange}
                 placeholder='social media platform link'
                 value={formik.values.platformLink}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 dark:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700  leading-tight focus:outline-none focus:shadow-outline"
               />
               {formik.errors.platformLink && formik.touched.platformLink && (
                 <div className="text-red-500 text-xs mt-1">
@@ -278,7 +256,7 @@ const ParticipationForm: React.FC = () => {
                 onChange={formik.handleChange}
                 placeholder='social media handle'
                 value={formik.values.socialMediaHandle}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 dark:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700  leading-tight focus:outline-none focus:shadow-outline"
               />
               {formik.errors.socialMediaHandle && formik.touched.socialMediaHandle && (
                 <div className="text-red-500 text-xs mt-1">

@@ -23,10 +23,9 @@ const LogIn = () => {
       localStorage.setItem('user', JSON.stringify(data.user));
       // Redirect to dashboard if email is verified
       if (data.user?.email) {
-
         toast.success('Login successful');
-        const username = data.user.username;
         return navigate.push(`/create-episode`);
+        const username = data.user.username;
       }
     }
     catch (error: any) {

@@ -19,10 +19,9 @@ const SignUp = () => {
       setLoading(true);
       const token = localStorage.getItem('token');
       const { data } = await axios.post(URL, values, {});
+      navigate.push('/login')
       localStorage.setItem('userDetails', JSON.stringify(data.user));
       toast.success("User registered successfully.");
-      console.log("response", data);
-      navigate.push('/login')
     } catch (error: any) {
       toast.error(error.response.data.message)
       console.error("Sign up error:", error);

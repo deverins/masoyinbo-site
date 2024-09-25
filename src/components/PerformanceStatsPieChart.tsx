@@ -55,14 +55,15 @@ const PerformanceStats: React.FC = () => {
   return (
     <section className="py-4 mt-16">
       <div className="mx-4 px-4">
-        <h2 className="text-center text-xl font-bold mb-10 text-[#FFCE56]">Performance Overview</h2>
-        <button
-          onClick={handleToggle}
-          className="mb-4 p-2 bg-blue-500 text-white rounded flex items-center justify-center"
-        >
-          {showStats ? 'Collapse Statistics' : 'View Statistics Performance'}
-          {showStats ? <FaChevronDown className="ml-2" /> : <FaChevronRight className="ml-2" />}
-        </button>
+        <div className=' flex justify-center'>
+          <button
+            onClick={handleToggle}
+            className="mb-4 p-2 bg-primary-light dark:bg-[rgba(255,255,255,0.1)] dark:backdrop-blur-lg dark:bg-opacity-10 shadow-md max-w-full overflow-hidden transition duration-300 pb-2 text-white rounded flex items-center justify-center"
+          >
+            {showStats ? 'Collapse Statistics' : 'View Statistics Performance'}
+            {showStats ? <FaChevronDown className="ml-2" /> : <FaChevronRight className="ml-2" />}
+          </button>
+        </div>
 
         {showStats && (
           <div className="flex flex-col lg:flex-wrap gap-8">

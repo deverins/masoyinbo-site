@@ -47,7 +47,7 @@ const EpisodeEventsTable: React.FC<{ onEdit: any }> = ({ onEdit }) => {
         type,
         amount,
         balance,
-        isCorrect,  // Add this line
+        isCorrect, 
       }));
   
       await axios.post(`${API_URL}/v1/api/episode-events`, { episodeId, events: eventsToSave });
