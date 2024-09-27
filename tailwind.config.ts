@@ -16,8 +16,9 @@ const config: Config = {
         primary: {
           light: '#1C1F41',
           DEFAULT: '#1C1F41', 
-          dark: '#000000', 
+          lightBlack: '[rgba(255,255,255,0.1)]', 
           lightPink:'#F7E6E6',
+          
         },
         secondary: {
           saffron: '#F9BC33', 

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { API_URL } from "@/constants/api";
 import { episodeSchema } from "@/validationSchema/episodeSchema";
 import toast from "react-hot-toast";
+import { useAuth } from "@/hooks/AuthContext";
 
 interface Participant {
   _id: string;
@@ -53,11 +54,11 @@ const CreateEpisodeForm = () => {
       if (!userId) {
         toast.error("User is not logged in.");
         setSubmitting(false);
-        navigate.push("/user/signup");
+        navigate.push("/admin/login");
         return;
       }
 
-      try {
+      try { 
         const response = await axios.post(createEpisodeURL, {
           ...values,
           createdBy: userId,
@@ -66,7 +67,7 @@ const CreateEpisodeForm = () => {
         const episodeId = response.data.episode._id;
         localStorage.setItem("episodeId", episodeId);
         resetForm();
-        navigate.push("/episode-events");
+        navigate.push("/add-episode-event");
       } catch (error: any) {
         toast.error(error?.response?.data?.message || "An unexpected error occurred");
       } finally {
@@ -205,4 +206,8 @@ const CreateEpisodeForm = () => {
   );
 };
 
-export default CreateEpisodeForm;
+export default () => {
+  const { withAdminAuth } = useAuth();
+  const ProtectedCreateEpisodeForm = withAdminAuth(CreateEpisodeForm);
+  return <ProtectedCreateEpisodeForm />;
+};

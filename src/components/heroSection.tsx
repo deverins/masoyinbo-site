@@ -35,28 +35,6 @@ const HeroSection = () => {
           </div>
         </div>
       </section>
-
-
-      {/* <div className="flex flex-col items-center justify-end text-white">
-        <h1 className="text-4xl font-bold text-center mb-4">Másòyìnbó</h1>
-        <div className="flex space-x-4 pb-4">
-          <div className="bg-terracottaOrange bg-opacity-10 backdrop-blur-md p-4 rounded-lg">
-            <p>Total episodes</p>
-          </div>
-          <div className="bg-terracottaOrange bg-opacity-10 backdrop-blur-md p-4 rounded-lg">
-            <p>Total amount</p>
-          </div>
-          <div className="bg-terracottaOrange bg-opacity-10 backdrop-blur-md p-4 rounded-lg">
-            <p>Total asked episodes</p>
-          </div>
-          <div className="bg-terracottaOrange bg-opacity-10 backdrop-blur-md p-4 rounded-lg">
-            <p>Total right answers</p>
-          </div>
-          <div className="bg-terracottaOrange bg-opacity-10 backdrop-blur-md p-4 rounded-lg">
-            <p>Request pool</p>
-          </div>
-        </div>
-      </div> */}
     </>
   )
 }
