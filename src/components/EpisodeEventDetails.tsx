@@ -2,48 +2,84 @@ import React, { useRef, useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_URL } from '@/constants/api';
 import VideoPreview from './VideoPreview';
-import { Episode, EpisodeEvent, EpisodeEventsApiResponse, formatCurrency, formatDate, formatType } from '@/types';
-
+import {
+  Episode,
+  EpisodeEvent,
+  EpisodeEventsApiResponse,
+  formatCurrency,
+  formatDate,
+  formatType,
+} from '@/types';
 
 const EpisodeEventDetails: React.FC = () => {
   const [events, setEvents] = useState<EpisodeEvent[]>([]);
-  const [episode, setEpisode] = useState<Episode>();
+  const [episode, setEpisode] = useState<Episode | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [noEventsError, setNoEventsError] = useState<string | null>(null); 
+  const [userRole, setUserRole] = useState<string>('');
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      setUserRole(user.role);
+    }
+  }, []);
 
   useEffect(() => {
     const episodeId = localStorage.getItem('episodeIdToSelect');
     if (!episodeId) {
       setLoading(false);
+      setError('Episode ID not found.');
       return;
     }
 
     const fetchEvents = async () => {
       try {
         const endpoint = `${API_URL}/v1/api/episode-events-by-episodeId?id=${episodeId}`;
-        const { data } = await axios.get<EpisodeEventsApiResponse>(endpoint);
-        setEvents(data.events);
-        setEpisode(data.episode);
-      } catch (error) {
+        const response = await axios.get<EpisodeEventsApiResponse>(endpoint);
+        const { data, status } = response;
+
+        if (status === 200) {
+          setEvents(data.events);
+          setEpisode(data.episode);
+
+          if (data.events.length === 0 && userRole === 'admin') {
+            setNoEventsError('No added episode events.');
+          } else {
+            setNoEventsError(null); }
+        }
+      } catch (error: any) {
         console.error('Error fetching events:', error);
-        setError('Failed to fetch events.');
+
+        // Handle 404 error
+        if (error.response?.status === 404) {
+          setError('Episode event not found.');
+        } else {
+          setError('Failed to fetch events.');
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchEvents();
-  }, []);
+  }, [userRole]);
 
-  const groupedEvents = events.reduce((acc: { [key: string]: EpisodeEvent[] }, event) => {
-    const participantName = event.participantFullName || 'Unknown Participant';
-    if (!acc[participantName]) {
-      acc[participantName] = [];
-    }
-    acc[participantName].push(event);
-    return acc;
-  }, {});
+  // Group events by participant
+  const groupedEvents = events.reduce(
+    (acc: { [key: string]: EpisodeEvent[] }, event) => {
+      const participantName = event.participantFullName || 'Unknown Participant';
+      if (!acc[participantName]) {
+        acc[participantName] = [];
+      }
+      acc[participantName].push(event);
+      return acc;
+    },
+    {}
+  );
 
   const episodeLink = episode?.episodeLink;
   const totalAmountAvailable = episode ? episode.availableAmountToWin : 0;
@@ -58,9 +94,10 @@ const EpisodeEventDetails: React.FC = () => {
             <div className="loader mt-20 mx-auto ease-linear rounded-full border-4 border-t-4 border-gray-200 border-t-secondary h-12 w-12 animate-spin" />
           ) : error ? (
             <p className="text-center text-red-500">{error}</p>
-          ) : Object.keys(groupedEvents).length > 0 ? (
+          ) : Object.keys(groupedEvents).length ? (
             Object.entries(groupedEvents).map(([participantFullName, events]) => (
               <div key={participantFullName} className="mb-4 w-full">
+              
                 <div className="flex flex-col items-center">
                   {episodeLink && (
                     <VideoPreview
@@ -78,8 +115,11 @@ const EpisodeEventDetails: React.FC = () => {
                     </div>
                     <div className="dark:text-neutral-300 font-semibold">Episode Date: {formatDate(episode?.episodeDate ?? '')}</div>
                   </div>
+                  <div className=' text-center dark:text-neutral-200 mb-4'>
+                  <h2>Episode event</h2>
+                </div>
                   <div className="overflow-auto w-full rounded-lg">
-                    <div className="grid grid-cols-6 gap-4 bg-gray-300 p-2 font-bold">
+                    <div className="grid grid-cols-6 gap-4 bg-gray-300 p-2 font-bold dark:bg-[rgba(255,255,255,0.1)] dark:backdrop-blur-lg dark:bg-opacity-10 rounded-lg shadow-md max-w-full overflow-hidden transition duration-300 dark:text-neutral-200">
                       <div className="col-span-1 w-[100px] text-center">Type</div>
                       <div className="col-span-1 w-[150px]">Question</div>
                       <div className="col-span-1 w-[120px] text-center">Response</div>
@@ -158,7 +198,7 @@ const EpisodeEventDetails: React.FC = () => {
                         {/* Large Screens (Above 865px): Display all in two columns */}
                         <div className="hidden lg:grid grid-cols-2 gap-4">
                           <div>
-                            <h2 className="font-bold text-lg dark:text-neutral-400">Type</h2>
+                            <h2 className="font-bold text-lg dark:text-neutral-200">Type</h2>
                             <span
                               className={`inline-block flex-none size-2 items-center ml-2 ${event.isCorrect ? 'bg-green-500' : 'bg-red-500'
                                 } rounded-full`}
@@ -169,28 +209,28 @@ const EpisodeEventDetails: React.FC = () => {
                           </div>
                           {event.type !== 'CODE_MIX' && (
                             <div>
-                              <h2 className="font-bold text-lg dark:text-neutral-400">Question</h2>
+                              <h2 className="font-bold text-lg dark:text-neutral-200">Question</h2>
                               <p className="dark:text-neutral-300">{event.question}</p>
                             </div>
                           )}
                           <div>
-                            <h2 className="font-bold text-lg dark:text-neutral-400">Response</h2>
+                            <h2 className="font-bold text-lg dark:text-neutral-200">Response</h2>
                             <p className="dark:text-neutral-300">{event.response}</p>
                           </div>
                           {event.type !== 'CODE_MIX' && (
                             <div>
-                              <h2 className="font-bold text-lg dark:text-neutral-400">Correct Answer</h2>
+                              <h2 className="font-bold text-lg dark:text-neutral-200">Correct Answer</h2>
                               <p className="dark:text-neutral-300">{event.correctAnswer}</p>
                             </div>
                           )}
                           <div>
-                            <h2 className="font-bold text-lg dark:text-neutral-400">Amount</h2>
+                            <h2 className="font-bold text-lg dark:text-neutral-200">Amount</h2>
                             <p className="dark:text-neutral-300">
                               {formatCurrency(event.amount)}
                             </p>
                           </div>
                           <div>
-                            <h2 className="font-bold text-lg dark:text-neutral-400">Balance</h2>
+                            <h2 className="font-bold text-lg dark:text-neutral-200">Balance</h2>
                             <p className="dark:text-neutral-300">{formatCurrency(event.balance)}</p>
                           </div>
                         </div>
@@ -199,7 +239,7 @@ const EpisodeEventDetails: React.FC = () => {
                         <div className="hidden md:grid lg:hidden grid-cols-1 gap-4">
                           <div className="flex justify-between">
                             <div>
-                              <h2 className="font-bold text-lg dark:text-neutral-400">Type</h2>
+                              <h2 className="font-bold text-lg dark:text-neutral-200">Type</h2>
                               <span
                                 className={`inline-block flex-none size-2 items-center ml-2 ${event.isCorrect ? 'bg-green-500' : 'bg-red-500'
                                   } rounded-full`}
@@ -210,7 +250,7 @@ const EpisodeEventDetails: React.FC = () => {
                             </div>
                             {event.type !== 'CODE_MIX' && (
                               <div>
-                                <h2 className="font-bold text-lg dark:text-neutral-400">Question</h2>
+                                <h2 className="font-bold text-lg dark:text-neutral-200">Question</h2>
                                 <p className="dark:text-neutral-300">{event.question}</p>
                               </div>
                             )}
@@ -218,12 +258,12 @@ const EpisodeEventDetails: React.FC = () => {
 
                           <div className="flex justify-between">
                             <div>
-                              <h2 className="font-bold text-lg dark:text-neutral-400">Response</h2>
+                              <h2 className="font-bold text-lg dark:text-neutral-200">Response</h2>
                               <p className="dark:text-neutral-300">{event.response}</p>
                             </div>
                             {event.type !== 'CODE_MIX' && (
                               <div>
-                                <h2 className="font-bold text-lg dark:text-neutral-400">Correct Answer</h2>
+                                <h2 className="font-bold text-lg dark:text-neutral-200">Correct Answer</h2>
                                 <p className="dark:text-neutral-300">{event.correctAnswer}</p>
                               </div>
                             )}
@@ -231,13 +271,13 @@ const EpisodeEventDetails: React.FC = () => {
 
                           <div className="flex justify-between">
                             <div>
-                              <h2 className="font-bold text-lg dark:text-neutral-400">Amount</h2>
+                              <h2 className="font-bold text-lg dark:text-neutral-200">Amount</h2>
                               <p className="dark:text-neutral-300">
                                 {formatCurrency(event.amount)}
                               </p>
                             </div>
                             <div>
-                              <h2 className="font-bold text-lg dark:text-neutral-400">Balance</h2>
+                              <h2 className="font-bold text-lg dark:text-neutral-200">Balance</h2>
                               <p className="dark:text-neutral-300">{formatCurrency(event.balance)}</p>
                             </div>
                           </div>
@@ -246,7 +286,7 @@ const EpisodeEventDetails: React.FC = () => {
                         {/* Small Screens (Below 600px): Display everything in one column */}
                         <div className="grid md:hidden grid-cols-1 gap-4">
                           <div>
-                            <h2 className="font-bold text-lg dark:text-neutral-400">Type</h2>
+                            <h2 className="font-bold text-lg dark:text-neutral-200">Type</h2>
                             <span
                               className={`inline-block flex-none size-2 items-center ml-2 ${event.isCorrect ? 'bg-green-500' : 'bg-red-500'
                                 } rounded-full`}
@@ -257,32 +297,32 @@ const EpisodeEventDetails: React.FC = () => {
                           </div>
                           {event.type !== 'CODE_MIX' && (
                             <div>
-                              <h2 className="font-bold text-lg dark:text-neutral-400">Question</h2>
+                              <h2 className="font-bold text-lg dark:text-neutral-200">Question</h2>
                               <p className="dark:text-neutral-300">{event.question}</p>
                             </div>
                           )}
 
                           <div>
-                            <h2 className="font-bold text-lg dark:text-neutral-400">Response</h2>
+                            <h2 className="font-bold text-lg dark:text-neutral-200">Response</h2>
                             <p className="dark:text-neutral-300">{event.response}</p>
                           </div>
 
                           {event.type !== 'codemix' && (
                             <div>
-                              <h2 className="font-bold text-lg dark:text-neutral-400">Correct Answer</h2>
+                              <h2 className="font-bold text-lg dark:text-neutral-200">Correct Answer</h2>
                               <p className="dark:text-neutral-300">{event.correctAnswer}</p>
                             </div>
                           )}
 
                           <div>
-                            <h2 className="font-bold text-lg dark:text-neutral-400">Amount</h2>
+                            <h2 className="font-bold text-lg dark:text-neutral-200">Amount</h2>
                             <p className="dark:text-neutral-300">
                               {formatCurrency(event.amount)}
                             </p>
                           </div>
 
                           <div>
-                            <h2 className="font-bold text-lg dark:text-neutral-400">Balance</h2>
+                            <h2 className="font-bold text-lg dark:text-neutral-200">Balance</h2>
                             <p className="dark:text-neutral-300">{formatCurrency(event.balance)}</p>
                           </div>
                         </div>

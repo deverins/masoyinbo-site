@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { API_URL } from "@/constants/api";
 import { userLoginSchema } from "@/validationSchema/loginSchema";
 import axios from "axios";
@@ -10,28 +10,30 @@ import toast from "react-hot-toast";
 import { AiOutlineLock, AiOutlineMail } from "react-icons/ai";
 
 const LogIn = () => {
-
   const URL = `${API_URL}/v1/auth/login`;
   const [loading, setLoading] = useState(false);
-  const navigate = useRouter()
+  const navigate = useRouter();
 
   const onSubmit = async (values: any) => {
     try {
-      setLoading(true)
+      setLoading(true);
       const { data } = await axios.post(URL, values);
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      // Redirect to dashboard if email is verified
-      if (data.user?.email) {
-        toast.success('Login successful');
-        return navigate.push(`/create-episode`);
-        const username = data.user.username;
-      }
-    }
-    catch (error: any) {
-      toast.error(error.response.data.message)
-    } finally {
 
+      // Store user details from the backend
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      // Redirect to create-episode if the user is an admin
+      if (data.user?.role === "admin") {
+        toast.success("Login successful as Admin");
+        return navigate.push(`/create-episode`);
+      } else {
+        toast.success("Login successful");
+        // Redirect to user-specific dashboard or home if not admin
+        return navigate.push(`/dashboard`);
+      }
+    } catch (error: any) {
+      toast.error(error.response.data.message || "Login failed");
+    } finally {
       setLoading(false);
     }
   };
@@ -68,6 +70,7 @@ const LogIn = () => {
                 </div>
                 <span className="text-red-500">{errors.email}</span>
               </div>
+
               <div className="mb-4">
                 <label htmlFor="password" className="block text-sm font-medium text-gray-500">
                   Password
@@ -85,27 +88,38 @@ const LogIn = () => {
                 </div>
                 <span className="text-red-500">{errors.password}</span>
               </div>
+
               {loading ? (
-                <div></div>
+                <div>Loading...</div>
               ) : (
                 <button
-                  className="w-full  bg-secondary-saffron text-black text-sm sm:text-base font-bold py-2 px-4 rounded-md hover:bg-secondary-saffronLight outline-none focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-2 focus:ring-offset-yellow-100"
+                  className="w-full bg-secondary-saffron text-black text-sm sm:text-base font-bold py-2 px-4 rounded-md hover:bg-secondary-saffronLight outline-none focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-2 focus:ring-offset-yellow-100"
                   type="submit"
                   disabled={loading}
                 >
-                  Login as Admin
+                  Login
                 </button>
               )}
+
               <div className="flex justify-between mt-2">
                 <div>
                   <input type="checkbox" className="mr-2" />
                   <span className="text-gray-500">Remember me</span>
                 </div>
-                <Link href="/forgot-password" className="text-secondary-saffronLight">Forgot password?</Link>
+                <Link href="/forgot-password" className="text-secondary-saffronLight">
+                  Forgot password?
+                </Link>
               </div>
+
               <div className="flex mt-2">
-                <p className="text-gray-500">Don't have an account <span>
-                  <Link href='/user/signup' className="text-gray-500 hover:underline hover:text-secondary-saffronLight">Register</Link></span></p>
+                <p className="text-gray-500">
+                  Don&apos;t have an account{" "}
+                  <span>
+                    <Link href="/user/signup" className="text-gray-500 hover:underline hover:text-secondary-saffronLight">
+                      Register
+                    </Link>
+                  </span>
+                </p>
               </div>
             </form>
           </div>

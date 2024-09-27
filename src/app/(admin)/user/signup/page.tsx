@@ -17,7 +17,6 @@ const SignUp = () => {
   const onSubmit = async (values: any) => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
       const { data } = await axios.post(URL, values, {});
       navigate.push('/login')
       localStorage.setItem('userDetails', JSON.stringify(data.user));
