@@ -17,7 +17,6 @@ const CodemixWordLossBarChart: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const { theme } = useTheme();
 
-  // Reference for scrollable container
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

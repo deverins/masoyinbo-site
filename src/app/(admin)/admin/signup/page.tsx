@@ -1,5 +1,5 @@
 "use client"
-import { API_URL } from "@/constants/api";
+import { API_URL } from '@/constants/api';
 import { userRegisterationSchema } from "@/validationSchema/userSchema";
 import axios from "axios";
 import { useFormik } from "formik";
@@ -18,18 +18,17 @@ const SignUp = () => {
     try {
       setLoading(true);
       const { data } = await axios.post(URL, values, {});
-      navigate.push('/admin/login')
       localStorage.setItem('userDetails', JSON.stringify(data.user));
       toast.success("User registered successfully.");
     } catch (error: any) {
-      toast.error(error.response.data.message)
+      toast.error(error.response?.data?.message || "An error occurred");
       console.error("Sign up error:", error);
-
     } finally {
-
       setLoading(false);
+      navigate.push('/admin/login'); 
     }
   };
+  
 
   const { handleChange, handleSubmit, values, errors } = useFormik({
     initialValues: {

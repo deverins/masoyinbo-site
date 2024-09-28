@@ -5,7 +5,7 @@ import '../globals.css';
 import { Toaster } from 'react-hot-toast';
 import { ThemeProvider } from '@/hooks/themeContext';
 import Main from '@/components/layouts/Main';
-import { AuthProvider } from '@/hooks/AuthContext'; 
+import { AuthProvider } from '@/hooks/AuthContext';
 import AuthNav from '@/components/UI/AuthNavigation';
 
 const instrumentSans = Instrument_Sans({
@@ -13,7 +13,7 @@ const instrumentSans = Instrument_Sans({
 });
 
 export const metadata = {
-  title: 'Másòyìnbó',
+  title: '',
   description: '',
 };
 

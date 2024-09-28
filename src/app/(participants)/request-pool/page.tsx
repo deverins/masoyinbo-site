@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { API_URL } from "@/constants/api";
+import { API_URL } from '@/constants/api';
 
 interface Participant {
   _id: string;

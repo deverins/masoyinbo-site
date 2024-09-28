@@ -1,13 +1,12 @@
-
 "use client";
-import { API_URL } from "@/constants/api";
+import { API_URL } from '@/constants/api';
 import { useAuth } from "@/hooks/AuthContext";
 import { userLoginSchema } from "@/validationSchema/loginSchema";
 import axios from "axios";
 import { useFormik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLock, AiOutlineMail } from "react-icons/ai";
 
@@ -16,14 +15,19 @@ const LogIn = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useRouter();
   const { login } = useAuth();
-  const onSubmit = async (values: any, ) => {
+
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const onSubmit = async (values: any) => {
     try {
       setLoading(true);
       const { data } = await axios.post(URL, values);
       login(data.user);
       window.dispatchEvent(new Event("loginStatusChanged"));
 
-      // Redirect based on role
       if (data.user?.role === "admin") {
         toast.success("Login successful as Admin");
         return navigate.push(`/admin/dashboard`);
@@ -38,7 +42,7 @@ const LogIn = () => {
     }
   };
 
-  const { handleChange, handleSubmit, values, errors,  } = useFormik({
+  const { handleChange, handleSubmit, values, errors } = useFormik({
     initialValues: {
       email: "",
       password: "",
@@ -46,6 +50,10 @@ const LogIn = () => {
     validationSchema: userLoginSchema,
     onSubmit,
   });
+
+  if (!isMounted) {
+    return <div className="loader mx-auto mt-56 items-center ease-linear rounded-full border-4 border-t-4 h-12 w-12 animate-spin" />;
+  }
   return (
     <div>
       <section>
@@ -89,7 +97,7 @@ const LogIn = () => {
               </div>
 
               {loading ? (
-                <div>Loading...</div>
+                <div className="loader mt-20 mx-auto ease-linear rounded-full border-4 border-t-4 h-12 w-12 animate-spin" />
               ) : (
                 <button
                   className="w-full bg-primary-light text-neutral-200  text-sm sm:text-base font-bold py-2 px-4 rounded-md  outline-none focus:outline-none focus:ring-2 focus:ring-yellow-100 focus:ring-offset-2 focus:ring-offset-yellow-100"

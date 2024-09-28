@@ -1,11 +1,19 @@
+// src/components/Navbar.tsx
 "use client"
 import Image from 'next/image';
 import React from 'react';
 import Link from 'next/link';
 import ThemeToggle from './UI/ThemeToggle';
 import logo from '/public/logo.png';
+import { useAuth } from '@/hooks/AuthContext';
 
 const Navbar = () => {
+  const { isLoggedIn, userRole } = useAuth();
+
+  // Don't show Navbar if the user is an admin
+  if (isLoggedIn && userRole === 'admin') {
+    return null;
+  }
 
   return (
     <nav
