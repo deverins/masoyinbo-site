@@ -1,23 +1,9 @@
-
 import { API_URL } from '@/constants/api';
-import { formatCurrency } from '@/types';
+import { formatCurrency, Stats } from '@/types';
 import { CheckCircleIcon, PlayIcon, QuestionMarkCircleIcon, UserGroupIcon } from '@heroicons/react/16/solid';
 import axios from 'axios';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-
-interface Stats {
-  totalEpisodes: number;
-  totalAmountWon: number;
-  totalCorrectAnwers: number;
-  totalQuestions: number;
-  totalWaitingPaticipants: number;
-  totalAmountAvailable: number;
-  codemixData: {
-    totalAmountLost: number;
-    words: string;
-  }[];
-}
 
 const StatsCard: React.FC = () => {
   const [stats, setStats] = useState<Stats | null>(null);

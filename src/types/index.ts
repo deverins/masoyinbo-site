@@ -1,4 +1,3 @@
-//src/types/index.ts
 export interface Episode {
   _id: string;
   episodeLink: string;
@@ -12,7 +11,8 @@ export interface Episode {
 }
 
 export interface EpisodeEvent {
-  _id: string;
+  id: any;
+  _id?: string;
   question: string;
   correctAnswer: string;
   response: string;
@@ -24,9 +24,11 @@ export interface EpisodeEvent {
 }
 
 export interface EpisodeEventsApiResponse {
+  participantFullName: string;
   events: EpisodeEvent[];
   message: string;
   episode: Episode
+
 }
 
 
@@ -42,7 +44,18 @@ export type CodemixWords = {
   count: number
 }
 
-
+export type Stats = {
+  totalEpisodes: number;
+  totalAmountWon: number;
+  totalCorrectAnwers: number;
+  totalQuestions: number;
+  totalWaitingPaticipants: number;
+  totalAmountAvailable: number;
+  codemixData: {
+    totalAmountLost: number;
+    words: string;
+  }[];
+}
 export type PerformanceStats = {
   totalEpisodes: number,
   totalQuestions: number,
@@ -54,6 +67,14 @@ export type PerformanceStats = {
   lossTypeData: LossType[],
   codemixData: CodemixWords[]
 }
+export type EventActionsProps = {
+  event: EpisodeEvent;
+  index: number;
+  episodeId: string;
+  events: EpisodeEvent[];
+  updateEvents: (updatedEvents: EpisodeEvent[]) => void;
+}
+
 
 export const formatType = (type: string) => {
   return type

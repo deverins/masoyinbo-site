@@ -21,7 +21,7 @@ const RequestPoolPage = () => {
     const fetchRequestPool = async () => {
       try {
         const { data } = await axios.get(`${API_URL}/v1/api/get-pending-participants`);
-     
+
         if (data.participants) {
           setRequestPool(data.participants);
         } else {
@@ -31,10 +31,10 @@ const RequestPoolPage = () => {
         console.error("Error fetching request pool", error);
       }
     };
-  
+
     fetchRequestPool();
   }, []);
-  
+
 
   return (
     <main className="p-4">

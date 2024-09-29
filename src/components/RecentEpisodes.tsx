@@ -1,5 +1,5 @@
-import { API_URL } from '@/constants/api';
 import axios from 'axios';
+import { API_URL } from '@/constants/api';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import VideoPreview from './VideoPreview';

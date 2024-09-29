@@ -12,7 +12,7 @@ interface EpisodePageProps {
 const EpisodePage: React.FC<EpisodePageProps> = ({ params }) => {
   const { episodeId } = params;
   if (!episodeId) {
-    return <div>Loading...</div>;
+    return <div className="loader mt-20 mx-auto ease-linear rounded-full border-4 border-t-4 h-12 w-12" />;
   }
 
   return (

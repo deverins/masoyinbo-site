@@ -2,8 +2,12 @@ import { useFormik } from 'formik';
 import { useState, useEffect } from 'react';
 import { episodeEventsFormValidator } from '@/validationSchema/episodeEventsFormValidator';
 import EpisodeEventsTable from './EpisodeEventsTable';
+interface EpisodeEventsFormProps {
+  onEdit?: any;
+  episodeId: string;
+}
 
-const EpisodeEventsForm: React.FC<{ onEdit?: any }> = ({ onEdit }) => {
+const EpisodeEventsForm: React.FC<EpisodeEventsFormProps> = ({ onEdit, episodeId }) => {
   const [error, setError] = useState<string | null>(null);
   const [editIndex, setEditIndex] = useState<number | null>(null);
 
@@ -20,16 +24,16 @@ const EpisodeEventsForm: React.FC<{ onEdit?: any }> = ({ onEdit }) => {
     validationSchema: episodeEventsFormValidator,
     onSubmit: (values, { resetForm }) => {
       setError(null);
-    
+
       const { question, correctAnswer, isCorrect, ...rest } = values;
-      const parsedIsCorrect = formik.values.isCorrect === 'true';    
+      const parsedIsCorrect = formik.values.isCorrect === 'true';
       let payload;
       if (values.type === 'CODE_MIX') {
         payload = { ...rest, isCorrect: parsedIsCorrect };
       } else {
         payload = { question, correctAnswer, ...rest, isCorrect: parsedIsCorrect };
       }
-    
+
       const storedEvents = JSON.parse(localStorage.getItem('episodeEvents') || '[]');
       if (editIndex !== null) {
         storedEvents[editIndex] = payload;
@@ -41,8 +45,6 @@ const EpisodeEventsForm: React.FC<{ onEdit?: any }> = ({ onEdit }) => {
       resetForm();
       if (onEdit) onEdit();
     }
-    
-    ,
   });
 
   useEffect(() => {
@@ -52,14 +54,16 @@ const EpisodeEventsForm: React.FC<{ onEdit?: any }> = ({ onEdit }) => {
       setEditIndex(index);
     }
   }, [onEdit, editIndex]);
-  
 
   return (
     <>
-      <EpisodeEventsTable onEdit={(editedEvent: any) => {
-        formik.setValues(editedEvent);
-        setEditIndex(editedEvent.index);
-      }} />
+      <EpisodeEventsTable
+        onEdit={(editedEvent: any) => {
+          formik.setValues(editedEvent);
+          setEditIndex(editedEvent.index);
+        }}
+        episodeId={episodeId}
+      />
       <main className="flex justify-center items-center py-10 px-4">
         <div className="w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl transition-all duration-300 shadow-lg p-6 rounded">
           <h1 className="text-2xl font-bold mb-6 dark:text-gray-400 text-center">Add Episode Event</h1>
@@ -170,39 +174,38 @@ const EpisodeEventsForm: React.FC<{ onEdit?: any }> = ({ onEdit }) => {
               )}
             </div>
             {/* Is Correct */}
-<div>
-  <label className="block text-base font-medium dark:text-gray-400 mb-2 mt-4">Is Correct</label>
-  <div className="flex items-center space-x-4">
-    <label className="flex items-center dark:text-gray-200">
-      <input
-        type="radio"
-        name="isCorrect"
-        value="true"
-        checked={formik.values.isCorrect === 'true'}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        className="mr-2"
-      />
-      True
-    </label>
-    <label className="flex items-center dark:text-gray-200">
-      <input
-        type="radio"
-        name="isCorrect"
-        value="false"
-        checked={formik.values.isCorrect === 'false'}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        className="mr-2"
-      />
-      False
-    </label>
-  </div>
-  {formik.errors.isCorrect && formik.touched.isCorrect && (
-    <div className="text-red-500">{formik.errors.isCorrect}</div>
-  )}
-</div>
-
+            <div>
+              <label className="block text-base font-medium dark:text-gray-400 mb-2 mt-4">Is Correct</label>
+              <div className="flex items-center space-x-4">
+                <label className="flex items-center dark:text-gray-200">
+                  <input
+                    type="radio"
+                    name="isCorrect"
+                    value="true"
+                    checked={formik.values.isCorrect === 'true'}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="mr-2"
+                  />
+                  True
+                </label>
+                <label className="flex items-center dark:text-gray-200">
+                  <input
+                    type="radio"
+                    name="isCorrect"
+                    value="false"
+                    checked={formik.values.isCorrect === 'false'}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="mr-2"
+                  />
+                  False
+                </label>
+              </div>
+              {formik.errors.isCorrect && formik.touched.isCorrect && (
+                <div className="text-red-500">{formik.errors.isCorrect}</div>
+              )}
+            </div>
             {/* Submit button */}
             <button
               type="submit"

@@ -58,7 +58,7 @@ const CreateEpisodeForm = () => {
         return;
       }
 
-      try { 
+      try {
         const response = await axios.post(createEpisodeURL, {
           ...values,
           createdBy: userId,
@@ -67,7 +67,7 @@ const CreateEpisodeForm = () => {
         const episodeId = response.data.episode._id;
         localStorage.setItem("episodeId", episodeId);
         resetForm();
-        navigate.push("/add-episode-event");
+        navigate.push(`/add-episode-events/${episodeId}`);
       } catch (error: any) {
         toast.error(error?.response?.data?.message || "An unexpected error occurred");
       } finally {

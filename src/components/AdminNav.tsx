@@ -1,4 +1,3 @@
-// src/components/AdminNav.tsx
 "use client";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
@@ -13,6 +12,7 @@ import { GrUserAdmin } from "react-icons/gr";
 const AdminNav = () => {
   const { isLoggedIn, userRole, logout } = useAuth();
   const [isAdmin, setIsAdmin] = useState(userRole === 'admin');
+  const [episodeId, setEpisodeId] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -22,6 +22,9 @@ const AdminNav = () => {
 
       setIsAdmin(storedUserRole === 'admin' && storedIsLoggedIn);
     };
+
+    const storedEpisodeId = localStorage.getItem("episodeIdToSelect");
+    setEpisodeId(storedEpisodeId);
 
     window.addEventListener("loginStatusChanged", handleLoginStatusChange);
 
@@ -75,15 +78,15 @@ const AdminNav = () => {
                   </li>
                   <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
                     <FiEdit3 className="mr-2" />
-                    <Link href="/add-episode-event">Add Episode Event</Link>
+                    <Link href={`/add-episode-events/${episodeId}`}>Add Episode Event</Link>
                   </li>
                   <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
                     <FiEdit className="mr-2" />
-                    <Link href="/edit-episode-event">Edit Episode Event</Link>
+                    <Link href={`/episode/${episodeId}`}>Edit Episode Event</Link>
                   </li>
                   <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
                     <FiTrash2 className="mr-2" />
-                    <Link href="/delete-episode-event">Delete Episode Event</Link>
+                    <Link href={`/episode/${episodeId}`}>Delete Episode Event</Link>
                   </li>
                   <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
                     <FiLogOut className="mr-2" />
