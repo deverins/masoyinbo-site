@@ -49,9 +49,9 @@ const EventInputFields: React.FC<EventInputFieldsProps> = ({ event, onSubmit }) 
         )}
       </div>
 
-      {/* Correct Answer */}
+      {/* Expected Answer */}
       <div>
-        <label className="block text-base font-medium dark:text-gray-400 mb-2 mt-4">Correct Answer</label>
+        <label className="block text-base font-medium dark:text-gray-400 mb-2 mt-4">Expected Answer</label>
         <input
           type="text"
           name="correctAnswer"
@@ -66,9 +66,9 @@ const EventInputFields: React.FC<EventInputFieldsProps> = ({ event, onSubmit }) 
         )}
       </div>
 
-      {/* Response */}
+      {/* Given Answer */}
       <div>
-        <label className="block text-base font-medium dark:text-gray-400 mb-2 mt-4">Response</label>
+        <label className="block text-base font-medium dark:text-gray-400 mb-2 mt-4">Given Answer</label>
         <input
           type="text"
           name="response"

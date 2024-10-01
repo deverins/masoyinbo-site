@@ -23,6 +23,23 @@ export interface EpisodeEvent {
   participantFullName?: string;
 }
 
+export interface Participant {
+  _id: string;
+  fullName: string;
+  email: string;
+  gender: string;
+  socialMediaHandle: string;
+  state: string;
+  status: string;
+}
+export interface Users {
+  _id: string;
+  fullName: string;
+  email: string;
+  username: string;
+  role: string;
+}
+
 export interface EpisodeEventsApiResponse {
   participantFullName: string;
   events: EpisodeEvent[];
@@ -50,6 +67,8 @@ export type Stats = {
   totalCorrectAnwers: number;
   totalQuestions: number;
   totalWaitingPaticipants: number;
+  totalParticipants: number;
+  totalUsers: number;
   totalAmountAvailable: number;
   codemixData: {
     totalAmountLost: number;
