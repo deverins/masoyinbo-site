@@ -1,57 +1,39 @@
 import { Bar } from 'react-chartjs-2';
 import { Chart, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
-import { API_URL } from '@/constants/api';
-import { useTheme } from './themeContext';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useTheme } from '../hooks/themeContext';
+import { ChartData } from '@/types';
 
 Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-interface CodemixResponse {
-  words: string;
-  totalAmountLost: number;
+interface DataProps {
+ barchatData: ChartData[];
 }
 
-const CodemixWordLossBarChart: React.FC = () => {
-  const [codemixData, setCodemixData] = useState<CodemixResponse[]>([]);
-  const [loading, setLoading] = useState(true);
+const BarChart: React.FC<DataProps> = ({barchatData}) => {
   const { theme } = useTheme();
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data } = await axios.get(`${API_URL}/v1/api/get-performance-stats`);
-        const totalCodemixResponses = data.stats.codemixData;
-        setCodemixData(totalCodemixResponses);
-      } catch (error) {
-        console.error('Error fetching performance data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
 
-    fetchData();
-  }, []);
-
-  // Extract labels and data values
-  const labels = codemixData.map((item) => item.words);
-  const dataValues = codemixData.map((item) => item.totalAmountLost);
-
+  const propData = useMemo(()=>{
+    return {
+      colors: barchatData.map(data=>data.color),
+      labels: barchatData.map(data=>data.name),
+      dataValues:  barchatData.map(data=>data.value),
+    }
+  }, [barchatData])
   const colorPalette = [
     '#884EA0', '#36A2EB', '#3CBA9F', '#c45850', '#FF9F40', '#4BC0C0', '#CB4335', '#1F618D', '#F1C40F', '#27AE60', '#A030F1', '#D35400',
   ];
 
-  const backgroundColors = labels.map((_, index) => colorPalette[index % colorPalette.length]);
-
   const data = {
-    labels,
+    labels: propData.labels,
     datasets: [
       {
         label: 'Amount Lost',
-        data: dataValues,
-        backgroundColor: backgroundColors,
+        data: propData.dataValues,
+        backgroundColor: propData.colors,
         borderWidth: 1,
         borderRadius: 10,
       },
@@ -121,20 +103,14 @@ const CodemixWordLossBarChart: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full">
-      {loading ? (
-        <div className="flex justify-center items-center h-80"></div>
-      ) : (
         <div
           ref={scrollRef}
-          className="mt-16 mx-auto relative overflow-x-auto no-scrollbar"
-          style={{ height: '400px', maxWidth: '100%', width: '80%' }}
+          className="mx-auto relative overflow-x-auto no-scrollbar"
+          style={{ height: '300px', maxWidth: '100%' }}
         >
           <Bar data={data} options={options} />
         </div>
-      )}
-    </div>
   );
 };
 
-export default CodemixWordLossBarChart;
+export default BarChart;

@@ -48,15 +48,18 @@ export interface EpisodeEventsApiResponse {
 
 }
 
+export type LossTypeKeys = "CODE_MIX" | "QUESTION_NUMBER" | "QUESTION"
+
 
 export type LossType = {
-  type: string
+  type: LossTypeKeys
   totalAmountLost: number,
   count: number
 }
 
 export type CodemixWords = {
-  words: string
+  lossTypeData: LossType[],
+  words: string,
   totalAmountLost: number,
   count: number
 }
@@ -70,22 +73,11 @@ export type Stats = {
   totalParticipants: number;
   totalUsers: number;
   totalAmountAvailable: number;
-  codemixData: {
-    totalAmountLost: number;
-    words: string;
-  }[];
+  recentEpisodes: Episode[]
+  codemixData: CodemixWords[];
+  lossTypeData: LossType[];
 }
-export type PerformanceStats = {
-  totalEpisodes: number,
-  totalQuestions: number,
-  totalCorrectAnwers: number,
-  totalAmountAvailable: number,
-  totalAmountWon: number,
-  totalWaitingPaticipants: number,
-  recentEpisodes: Episode[],
-  lossTypeData: LossType[],
-  codemixData: CodemixWords[]
-}
+
 export type EventActionsProps = {
   event: EpisodeEvent;
   index: number;
@@ -94,26 +86,8 @@ export type EventActionsProps = {
   updateEvents: (updatedEvents: EpisodeEvent[]) => void;
 }
 
-
-export const formatType = (type: string) => {
-  return type
-    .replace(/_/g, ' ')
-    .toLowerCase()
-    .replace(/\b\w/g, char => char.toLowerCase());
-};
-
-
-export const formatCurrency = (value: number) => {
-  return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
-};
-
-
-export const formatDate = (dateString: string): string => {
-  const options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  };
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', options);
-};
+export type ChartData = {
+   name: string;
+  value: number,
+  color:string 
+}

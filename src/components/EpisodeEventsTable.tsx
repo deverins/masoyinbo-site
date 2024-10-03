@@ -4,7 +4,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { CiSaveUp1 } from 'react-icons/ci';
 import VideoPreview from './VideoPreview';
-import { formatCurrency } from '@/types';
+import { formatCurrency } from '@/utils/functions';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 

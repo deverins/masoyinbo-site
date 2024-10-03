@@ -1,6 +1,7 @@
 "use client";
 import { API_URL } from '@/constants/api';
-import { formatCurrency, Stats } from '@/types';
+import { Stats } from '@/types';
+import { formatCurrency } from '@/utils/functions';
 import { PlayIcon, UserGroupIcon } from '@heroicons/react/16/solid';
 import axios from 'axios';
 import Link from 'next/link';

@@ -6,7 +6,7 @@ const HeroSection = () => {
   return (
     <>
       <section
-        className="bg-background-light flex items-center mx-5 rounded-2xl mt-4 justify-center p-4"
+        className="bg-background-light flex items-center xl:mx-20 sm:mx-5 mx-5 rounded-2xl mt-4 justify-center p-4 "
       >
         <div className="flex items-center bg-background-light p-2 rounded-lg shadow-lg space-x-2">
           <div className="">

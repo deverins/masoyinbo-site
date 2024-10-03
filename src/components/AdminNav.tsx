@@ -11,8 +11,9 @@ import { GrUserAdmin } from "react-icons/gr";
 
 const AdminNav = () => {
   const { isLoggedIn, userRole, logout } = useAuth();
-  const [isAdmin, setIsAdmin] = useState(userRole === 'admin');
+  const [isAdmin, setIsAdmin] = useState(userRole === "admin");
   const [episodeId, setEpisodeId] = useState<string | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -20,7 +21,7 @@ const AdminNav = () => {
       const storedIsLoggedIn = localStorage.getItem("isLoggedIn") === "true";
       const storedUserRole = localStorage.getItem("userRole");
 
-      setIsAdmin(storedUserRole === 'admin' && storedIsLoggedIn);
+      setIsAdmin(storedUserRole === "admin" && storedIsLoggedIn);
     };
 
     const storedEpisodeId = localStorage.getItem("episodeIdToSelect");
@@ -31,13 +32,18 @@ const AdminNav = () => {
     return () => {
       window.removeEventListener("loginStatusChanged", handleLoginStatusChange);
     };
-  }, [])
+  }, []);
 
   const handleLogout = () => {
     logout();
-    router.push('/admin/login');
+    router.push("/admin/login");
   };
-  if (!isLoggedIn || userRole !== 'admin') {
+
+  const toggleMenu = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+
+  if (!isLoggedIn || userRole !== "admin") {
     return null;
   }
 
@@ -59,41 +65,42 @@ const AdminNav = () => {
         <div className="flex items-center gap-4 sm:gap-8">
           <ThemeToggle />
 
-          {/* Conditional rendering based on admin status */}
           {isAdmin && (
-            <div className="relative group">
-              <button className=" text-neutral-200 text-sm sm:text-base font-bold rounded-lg p-2 sm:p-3 hover:bg-[#1c204a] dark:hover:bg-primary-darkBlack ">
-                <FiMenu className="mr-2 text" size={24} />
+            <div className="relative">
+              <button
+                onClick={toggleMenu}
+                className="text-neutral-200 text-sm sm:text-base font-bold rounded-lg p-2 sm:p-3 hover:bg-[#1c204a] dark:hover:bg-primary-darkBlack"
+              >
+                <FiMenu size={24} />
               </button>
-              {/* Dropdown menu */}
-              <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 dark:bg-primary-lightBlack dark:backdrop-blur-lg dark:bg-opacity-5 dark:text-neutral-200">
-                <ul className="py-2">
-                  <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
-                    <GrUserAdmin className="mr-2" />
-                    <Link href="/admin/dashboard">Admin Dashboard</Link>
-                  </li>
-                  <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
-                    <FiPlusCircle className="mr-2" />
-                    <Link href="/create-episode">Create Episode</Link>
-                  </li>
-                  <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
-                    <FiEdit3 className="mr-2" />
-                    <Link href={`/add-episode-events/${episodeId}`}>Add Episode Event</Link>
-                  </li>
-                  <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
-                    <FiEdit className="mr-2" />
-                    <Link href={`/episode/${episodeId}`}>Edit Episode Event</Link>
-                  </li>
-                  <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
-                    <FiTrash2 className="mr-2" />
-                    <Link href={`/episode/${episodeId}`}>Delete Episode Event</Link>
-                  </li>
-                  <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
-                    <FiLogOut className="mr-2" />
-                    <button onClick={handleLogout}>Log Out</button>
-                  </li>
-                </ul>
-              </div>
+
+              {/* Dropdown menu, only shown when isMenuOpen is true */}
+              {isMenuOpen && (
+                <div className="absolute transform -translate-x-1/2 mt-2 w-[184px] bg-white text-black rounded-lg shadow-lg dark:bg-primary-lightBlack dark:backdrop-blur-lg dark:bg-opacity-5 dark:text-neutral-200">
+                  <ul className="py-2">
+                    <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
+                      <GrUserAdmin className="mr-2" />
+                      <Link href="/admin/dashboard">Admin Dashboard</Link>
+                    </li>
+                    <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
+                      <FiPlusCircle className="mr-2" />
+                      <Link href="/create-episode">Create Episode</Link>
+                    </li>
+                    <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
+                      <FiEdit className="mr-2" />
+                      <Link href={`/episode/${episodeId}`}>Edit Episode Event</Link>
+                    </li>
+                    <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
+                      <FiTrash2 className="mr-2" />
+                      <Link href={`/episode/${episodeId}`}>Delete Episode Event</Link>
+                    </li>
+                    <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
+                      <FiLogOut className="mr-2" />
+                      <button onClick={handleLogout}>Log Out</button>
+                    </li>
+                  </ul>
+                </div>
+              )}
             </div>
           )}
         </div>
