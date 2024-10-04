@@ -88,11 +88,11 @@ const AdminNav = () => {
                     </li>
                     <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
                       <FiEdit className="mr-2" />
-                      <Link href={`/episode/${episodeId}`}>Edit Episode Event</Link>
+                      <Link href={`/episodes/${episodeId}`}>Edit Episode Event</Link>
                     </li>
                     <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
                       <FiTrash2 className="mr-2" />
-                      <Link href={`/episode/${episodeId}`}>Delete Episode Event</Link>
+                      <Link href={`/episodes/${episodeId}`}>Delete Episode Event</Link>
                     </li>
                     <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
                       <FiLogOut className="mr-2" />

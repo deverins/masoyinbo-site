@@ -4,7 +4,6 @@ import React from 'react';
 interface VideoPreviewProps {
   videoLink: string;
   title: string;
-  episodeId: string;
 }
 
 const VideoPreview: React.FC<VideoPreviewProps> = ({ videoLink, title }) => {

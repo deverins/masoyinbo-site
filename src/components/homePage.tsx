@@ -2,13 +2,13 @@
 import React, { useEffect, useState } from 'react'
 import HeroSection from './HeroSection'
 import StatsCard from './StatsCard'
-import RecentEpisodes from './RecentEpisodes'
 import AboutSection from './AboutSection'
 import PerformanceStatsPieChart from './PerformanceStatsPieChart'
 import axios from 'axios'
 import { API_URL } from '@/constants/api'
 import Loading from './UI/Loading'
 import { Stats } from '@/types'
+import EpisodeCollection from './episodes/EpisodeCollection'
 
 const HomePage = () => {
   const [loading, setLoading] = useState(true);
@@ -18,8 +18,8 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data:{stats} } = await axios.get(`${API_URL}/v1/api/get-performance-stats`);
-        
+        const { data: { stats } } = await axios.get(`${API_URL}/v1/api/get-performance-stats`);
+
         setStats(stats as Stats)
 
         setLoading(false);
@@ -41,17 +41,21 @@ const HomePage = () => {
       {loading ?
         <div>
           <Loading />
-        </div>:
+        </div> :
         <>
-          {stats?
-          <div>
-            <StatsCard {...stats} />
-            <PerformanceStatsPieChart {...stats} />
-            <RecentEpisodes episodes={stats.recentEpisodes} />
-          </div> :
-          <div>
+          {stats ?
+            <div>
+              <StatsCard {...stats} />
+              <PerformanceStatsPieChart {...stats} />
+              {/* Recent episodes */}
+              <div className="mt-10 pb-5 mx-8">
+                <h2 className="text-2xl font-bold mb-8 dark:text-neutral-400 text-center">Recent Episodes</h2>
+                  <EpisodeCollection episodes={stats.recentEpisodes} />
+              </div>
+            </div> :
+            <div>
               Display error message now
-          </div>
+            </div>
 
           }
         </>

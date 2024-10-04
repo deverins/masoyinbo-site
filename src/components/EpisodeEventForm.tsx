@@ -1,7 +1,8 @@
+//src/components/EpisodeEventForm.tsx
+import React from 'react';
 import { useFormik } from 'formik';
 import { useState, useEffect } from 'react';
 import { episodeEventsFormValidator } from '@/validationSchema/episodeEventsFormValidator';
-import EpisodeEventsTable from './EpisodeEventsTable';
 interface EpisodeEventsFormProps {
   onEdit?: any;
   episodeId: string;
@@ -57,13 +58,6 @@ const EpisodeEventsForm: React.FC<EpisodeEventsFormProps> = ({ onEdit, episodeId
 
   return (
     <>
-      <EpisodeEventsTable
-        onEdit={(editedEvent: any) => {
-          formik.setValues(editedEvent);
-          setEditIndex(editedEvent.index);
-        }}
-        episodeId={episodeId}
-      />
       <main className="flex justify-center items-center py-10 px-4">
         <div className="w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl transition-all duration-300 shadow-lg p-6 rounded">
           <h1 className="text-2xl font-bold mb-6 dark:text-gray-400 text-center">Add Episode Event</h1>

@@ -1,12 +1,13 @@
 "use client"
+import React from 'react'
 import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { API_URL } from "@/constants/api";
 import { episodeSchema } from "@/validationSchema/episodeSchema";
 import toast from "react-hot-toast";
 import { useAuth } from "@/hooks/AuthContext";
+import { useRouter } from 'next/router';
 
 interface Participant {
   _id: string;
@@ -16,12 +17,13 @@ interface Participant {
 }
 
 const CreateEpisodeForm = () => {
-  const participantsURL = `${API_URL}/v1/api/get-pending-participants`;
-  const createEpisodeURL = `${API_URL}/v1/api/episodes`;
-
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [error, setError] = useState<string | null>(null);
   const navigate = useRouter();
+  const {query}= useRouter()
+
+  const participantsURL = `${API_URL}/v1/api/get-participants?status=${query.status}`;
+  const createEpisodeURL = `${API_URL}/v1/api/episodes`;
 
   useEffect(() => {
     const fetchPendingParticipants = async () => {

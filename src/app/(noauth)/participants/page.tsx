@@ -1,28 +1,21 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from '@/constants/api';
+import { Participant } from "@/types";
+import { useRouter } from "next/router";
 
-interface Participant {
-  _id: string;
-  fullName: string;
-  email: string;
-  gender: string;
-  socialMediaHandle: string;
-  state: string;
-  status: string;
-}
 
-const RequestPoolPage = () => {
-  const [requestPool, setRequestPool] = useState<Participant[]>([]);
+const ParticipationUsers = () => {
+  const [participants, setParticipants] = useState<Participant[]>([]);
+  const { query } = useRouter()
 
   useEffect(() => {
     const fetchRequestPool = async () => {
       try {
-        const { data } = await axios.get(`${API_URL}/v1/api/get-pending-participants`);
+        const { data } = await axios.get(`${API_URL}/v1/api/get-participants?status=${query.status}`);
         if (data.participants) {
-          setRequestPool(data.participants);
+          setParticipants(data.participants);
         } else {
           console.error("No participants found in the response");
         }
@@ -37,13 +30,13 @@ const RequestPoolPage = () => {
 
   return (
     <main className="p-4">
-      <h1 className="text-2xl font-bold text-center mb-8 mt-8 dark:text-neutral-200">Waiting Queue</h1>
+      <h1 className="text-2xl font-bold text-center mb-8 mt-8 dark:text-neutral-200">All Participant Users</h1>
 
       {/* Mobile and Tablet View (870px and below) */}
       <div className="block max-[870px]:block custom:hidden">
         <div className="flex flex-col gap-6">
-          {requestPool.length > 0 ? (
-            requestPool.map((participant) => (
+          {participants.length > 0 ? (
+            participants.map((participant) => (
               <div
                 key={participant._id}
                 className="flex flex-col p-4 bg-gray-100 rounded-lg shadow-md transition-all duration-500 hover:bg-gray-200 dark:bg-[rgba(255,255,255,0.1)] dark:text-neutral-200 dark:backdrop-blur-lg dark:bg-opacity-10"
@@ -56,7 +49,7 @@ const RequestPoolPage = () => {
                   </div>
                   <div className="text-right">
                     <h2 className="font-semibold">Status</h2>
-                    <p className="font-bold text-yellow-500">{participant.status}</p>
+                    <p className="font-bold text-success-light">{participant.status}</p>
                   </div>
                 </div>
 
@@ -82,7 +75,7 @@ const RequestPoolPage = () => {
               </div>
             ))
           ) : (
-            <p className="text-center text-secondary-dark">No waiting queue data available.</p>
+            <p className="text-center text-secondary-dark">No Participant users data available.</p>
           )}
         </div>
       </div>
@@ -90,8 +83,8 @@ const RequestPoolPage = () => {
       {/* Desktop View (Above 934.44px) */}
       <div className="hidden custom:block">
         <div className="flex flex-col gap-6">
-          {requestPool.length > 0 ? (
-            requestPool.map((participant) => (
+          {participants.length > 0 ? (
+            participants.map((participant) => (
               <div
                 key={participant._id}
                 className="flex flex-col md:flex-row lg:justify-around md:justify-between md:items-center p-4 bg-gray-100 border dark:bg-[rgba(255,255,255,0.1)] dark:text-neutral-200 dark:backdrop-blur-lg dark:bg-opacity-10 rounded-lg border-gray-300 shadow-md  hover:bg-gray-200"
@@ -127,12 +120,12 @@ const RequestPoolPage = () => {
                 {/* Status */}
                 <div>
                   <h2 className="font-semibold">Status</h2>
-                  <p className="font-bold text-yellow-500">{participant.status}</p>
+                  <p className="font-bold text-success-light">{participant.status}</p>
                 </div>
               </div>
             ))
           ) : (
-            <p className="text-center text-secondary-dark">No request pool data available.</p>
+            <p className="text-center text-secondary-dark">No Participant users data available.</p>
           )}
         </div>
       </div>
@@ -140,4 +133,4 @@ const RequestPoolPage = () => {
   );
 };
 
-export default RequestPoolPage;
+export default ParticipationUsers;

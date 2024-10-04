@@ -36,7 +36,7 @@ const StatsCard: React.FC<Stats> = (stats) => {
           </div>
           {/* Awaiting Request */}
           <div className="px-2 pt-4 h-auto bg-white dark:bg-primary-lightBlack p-4 dark:backdrop-blur-lg dark:bg-opacity-10 rounded-lg shadow-md max-w-full overflow-hidden transition duration-300 pb-2">
-            <Link href="/request-pool">
+            <Link href="/participants?status=pending">
               <h5 className="text-base md:text-lg font-semibold flex text-gray-800 dark:text-gray-200">
                 <UserGroupIcon className="size-6 mr-2 text-gray-400 leading-tight dark:text-gray-300" />
                 Awaiting Participation Request
@@ -52,7 +52,7 @@ const StatsCard: React.FC<Stats> = (stats) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
           {/* Total Episodes */}
           <div className="px-2 pt-4 h-auto bg-white dark:bg-primary-lightBlack p-4 dark:backdrop-blur-lg dark:bg-opacity-10 rounded-lg shadow-md max-w-full overflow-hidden transition duration-300 pb-2">
-            <Link href="all-episodes">
+            <Link href="/episodes">
               <h5 className="text-base md:text-lg leading-tight font-normal leading-1 flex text-gray-800 dark:text-gray-200">
                 <PlayIcon className="h-6 w-6 mr-2 text-gray-400 dark:text-gray-300" />
                 Total Episodes
