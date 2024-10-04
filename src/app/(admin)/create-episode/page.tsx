@@ -20,10 +20,10 @@ const CreateEpisodeForm = () => {
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [error, setError] = useState<string | null>(null);
   const navigate = useRouter();
-  const {query}= useRouter()
+  const { query } = useRouter()
 
-  const participantsURL = `${API_URL}/v1/api/get-participants?status=${query.status}`;
-  const createEpisodeURL = `${API_URL}/v1/api/episodes`;
+  const participantsURL = `${API_URL}/api/get-participants?status=${query.status}`;
+  const createEpisodeURL = `${API_URL}/api/episodes`;
 
   useEffect(() => {
     const fetchPendingParticipants = async () => {
@@ -69,7 +69,7 @@ const CreateEpisodeForm = () => {
         const episodeId = response.data.episode._id;
         localStorage.setItem("episodeId", episodeId);
         resetForm();
-        navigate.push(`/add-episode-events/${episodeId}`);
+        navigate.push(`/episodes/${episodeId}`);
       } catch (error: any) {
         toast.error(error?.response?.data?.message || "An unexpected error occurred");
       } finally {

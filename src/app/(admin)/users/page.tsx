@@ -10,7 +10,7 @@ const ParticipationUsers = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const { data } = await axios.get(`${API_URL}/v1/auth/users`);
+        const { data } = await axios.get(`${API_URL}/auth/users`);
         if (data.users) {
           setUsers(data.users);
         } else {

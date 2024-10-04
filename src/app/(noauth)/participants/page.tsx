@@ -13,7 +13,7 @@ const ParticipationUsers = () => {
   useEffect(() => {
     const fetchRequestPool = async () => {
       try {
-        const { data } = await axios.get(`${API_URL}/v1/api/get-participants?status=${query.status}`);
+        const { data } = await axios.get(`${API_URL}/api/get-participants?status=${query.status}`);
         if (data.participants) {
           setParticipants(data.participants);
         } else {

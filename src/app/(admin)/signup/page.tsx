@@ -11,7 +11,7 @@ import { AiOutlineLock, AiOutlineMail, AiOutlineUser } from "react-icons/ai";
 
 const SignUp = () => {
 
-  const URL = `${API_URL}/v1/auth/signup`;
+  const URL = `${API_URL}/auth/signup`;
   const [loading, setLoading] = useState(false);
   const navigate = useRouter()
   const onSubmit = async (values: any) => {

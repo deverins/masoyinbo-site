@@ -13,7 +13,7 @@ const AllEpisodes: React.FC = () => {
   useEffect(() => {
     const fetchEpisodes = async () => {
       try {
-        const { data } = await axios.get(`${API_URL}/v1/api/episodes`);
+        const { data } = await axios.get(`${API_URL}/api/episodes`);
         setEpisodes(data || []);
       } catch (err) {
         setError('Failed to fetch episodes');
@@ -34,7 +34,7 @@ const AllEpisodes: React.FC = () => {
   }
 
   return (
-    <div className="mt-14 pb-5 mx-8">
+    <div className="mt-14 pb-5 mx-2">
       <h2 className="text-2xl font-bold mb-9 dark:text-neutral-400 text-center">All Episodes</h2>
       <EpisodeCollection episodes={episodes} />
     </div>

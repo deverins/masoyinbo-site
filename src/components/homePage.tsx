@@ -18,7 +18,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data: { stats } } = await axios.get(`${API_URL}/v1/api/get-performance-stats`);
+        const { data: { stats } } = await axios.get(`${API_URL}/api/get-performance-stats`);
 
         setStats(stats as Stats)
 
@@ -48,9 +48,9 @@ const HomePage = () => {
               <StatsCard {...stats} />
               <PerformanceStatsPieChart {...stats} />
               {/* Recent episodes */}
-              <div className="mt-10 pb-5 mx-8">
-                <h2 className="text-2xl font-bold mb-8 dark:text-neutral-400 text-center">Recent Episodes</h2>
-                  <EpisodeCollection episodes={stats.recentEpisodes} />
+              <div className="mt-10 pb-5 mx-2 ">
+                <h2 className="text-2xl font-bold mb-9 dark:text-neutral-400 text-center">Recent Episodes</h2>
+                <EpisodeCollection episodes={stats.recentEpisodes} />
               </div>
             </div> :
             <div>

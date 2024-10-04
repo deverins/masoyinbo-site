@@ -15,7 +15,7 @@ interface Option {
 
 const ParticipationForm: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const URL = `${API_URL}/v1/auth/create-participant`;
+  const URL = `${API_URL}/auth/create-participant`;
   const navigate = useRouter();
   const [hydrated, setHydrated] = useState(false);
 

@@ -13,6 +13,14 @@ const config: Config = {
         'custom': '934.44px',
         '870px': '870px',
       },
+      spacing:{
+        '98p':'98%',
+      },
+      maxHeight:{
+        "85vh": "85vh",
+        "88vh": "88vh",
+        "97vh": "97vh",
+      },
       colors: {
         primary: {
           light: '#1C1F41',
@@ -177,8 +185,14 @@ const config: Config = {
     'full-leave',
     'bottom-leave',
     'top-leave',
-    'right-leave',
     'left-leave',
+    'right-leave',
+    'center',
+    'full',
+    'bottom',
+    'top',
+    'left',
+    'right',
   ],
   plugins: [],
 };

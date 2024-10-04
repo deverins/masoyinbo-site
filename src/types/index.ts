@@ -11,8 +11,7 @@ export interface Episode {
 }
 
 export interface EpisodeEvent {
-  id: any;
-  _id?: string;
+  _id: string;
   question: string;
   correctAnswer: string;
   response: string;
@@ -21,6 +20,15 @@ export interface EpisodeEvent {
   balance: number;
   isCorrect: boolean;
   participantFullName?: string;
+}
+
+export type EventActionSignal = {
+  id: string,
+  type: 'DELETE'|'EDIT'
+}
+export type ModalActionSignal = {
+  id: string,
+  type: 'DELETE'|'EDIT'
 }
 
 export interface Participant {

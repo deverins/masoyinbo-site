@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 import { AiOutlineLock, AiOutlineMail } from "react-icons/ai";
 
 const LogIn = () => {
-  const URL = `${API_URL}/v1/auth/login`;
+  const URL = `${API_URL}/auth/login`;
   const [loading, setLoading] = useState(false);
   const navigate = useRouter();
   const { login } = useAuth();

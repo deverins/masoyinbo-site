@@ -9,7 +9,7 @@
     box-sizing: border-box;
   }
   .loader {
-    border-top-color:#B30205;
+    border-top-color: #b30205;
     animation: spin 1s linear infinite;
   }
 
@@ -17,13 +17,91 @@
     @apply first-letter:capitalize;
   }
   input::placeholder,
-textarea::placeholder {
-  @apply text-gray-600; 
-}
+  textarea::placeholder {
+    @apply text-gray-600;
+  }
 
-select {
-  @apply text-gray-600; 
-}
+  select {
+    @apply text-gray-600;
+  }
+
+  .scroller {
+    cursor: inherited;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+      border-radius: 1px;
+      background-color: #fefefe;
+    }
+
+    &::-webkit-scrollbar {
+      border-radius: 1px;
+      width: 8px;
+      height: 6px;
+      background-color: #fefefe;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 1px;
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      background-color: #d9d9d9;
+    }
+  }
+
+  .center {
+    @apply absolute py-3 rounded-2xl max-w-max max-h-97vh animate-zoom-up-medium;
+  }
+
+  .center-leave {
+    @apply absolute py-3 rounded-2xl max-w-max max-h-97vh animate-zoom-off-fast;
+  }
+
+  .full {
+    @apply absolute left-1 bottom-1 right-1 top-1 py-3 animate-big-zoom-up-medium;
+  }
+
+  .full-leave {
+    @apply absolute left-1 bottom-1 right-1 top-1 py-3 animate-zoom-off-fast;
+  }
+
+  .bottom {
+    @apply absolute rounded-t-3xl py-3 box-border bottom-0 left-0 right-0 animate-from-bottom-medium;
+  }
+
+  .bottom-leave {
+    @apply absolute rounded-t-3xl py-3 box-border bottom-0 left-0 right-0 animate-to-bottom-fast;
+  }
+
+  .top {
+    @apply absolute rounded-b-3xl py-3 box-border top-0 left-0 right-0 animate-from-top-medium;
+  }
+
+  .top-leave {
+    @apply absolute rounded-b-3xl py-3 box-border top-0 left-0 right-0 animate-to-top-fast;
+  }
+
+  .right {
+    @apply absolute py-1 top-0 right-0 bottom-0 w-98p animate-from-right-medium;
+  }
+
+  .right-leave {
+    @apply absolute py-1 top-0 right-0 bottom-0 w-98p animate-to-right-medium;
+  }
+
+  .left {
+    @apply absolute py-1 top-0 left-0 bottom-0 w-98p animate-from-left-medium;
+  }
+
+  .left-leave {
+    @apply absolute py-1 top-0 left-0 bottom-0 w-98p animate-to-left-medium;
+  }
+
+  .event-form-input {
+    @apply ring-0 focus:ring-0 focus:outline-none rounded-lg
+      text-neutral-700 dark:text-neutral-200 dark:bg-inherit
+    border border-neutral-200 focus:border-slate-400 dark:border-slate-400
+  }
 }
 
 .no-scrollbar::-webkit-scrollbar {

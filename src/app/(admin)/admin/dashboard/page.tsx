@@ -17,7 +17,7 @@ const AdminDashboard: React.FC = () => {
     // Fetch stats from the API
     const fetchStats = async () => {
       try {
-        const { data } = await axios.get(`${API_URL}/v1/api/get-performance-stats`);
+        const { data } = await axios.get(`${API_URL}/api/get-performance-stats`);
         setStats(data.stats);
       } catch (err) {
         setError('Failed to fetch stats');
