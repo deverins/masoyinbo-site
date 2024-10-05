@@ -102,6 +102,20 @@
       text-neutral-700 dark:text-neutral-200 dark:bg-inherit
     border border-neutral-200 focus:border-slate-400 dark:border-slate-400 placeholder:dark:text-gray-400
   }
+  .dialogbox-hidden {
+    transition-property: max-height, opacity;
+    @apply hidden max-h-0 overflow-hidden transition-opacity ease-out opacity-0 absolute
+  }
+
+  .dialogbox-show {
+    transition-property: max-height, opacity;
+    @apply block transition-opacity ease-in opacity-100 absolute
+  }
+
+  .dialogbox {
+    transition-property: max-height, opacity;
+    @apply transition-opacity ease-in-out outline-none
+  }
 }
 
 .no-scrollbar::-webkit-scrollbar {

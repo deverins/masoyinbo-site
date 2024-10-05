@@ -147,7 +147,7 @@ const EpisodePage: React.FC = () => {
        
        <EventsTable events={episodeDetails.events} signal={signal} />
         
-      <Modal trigger={openModal} close={closeModal} side="center" 
+      <Modal trigger={openModal} close={closeModal} side="center" gum
         backgroundColorClass="bg-secondary-cream dark:bg-slate-900" 
       >
       <div className="w-[calc(100dvw-12px)] max-w-[600px] p-2">

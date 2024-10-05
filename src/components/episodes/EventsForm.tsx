@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { MouseEvent, useRef } from 'react';
 import { useFormik } from 'formik';
 import { useState } from 'react';
 import { episodeEventsFormValidator } from '@/validationSchema/episodeEventsFormValidator';
 import { EpisodeEvent } from '@/types';
 import axios from 'axios';
 import { API_URL } from '@/constants/api';
+import Dialogbox from '../DialogBox';
 interface EpisodeEventsFormProps {
   onSave: (episode: EpisodeEvent) => void;
   episodeId?: string;
@@ -14,13 +15,14 @@ interface EpisodeEventsFormProps {
 const EventsForm: React.FC<EpisodeEventsFormProps> = ({ onSave, episodeId, event }) => {
   const [error, setError] = useState<string | null>(null);
   const [submiting, setSubmiting] = useState(false);
+  const typeInputRef = useRef<HTMLInputElement>(null)
 
   const formik = useFormik({
     initialValues: {
       question: event?.question ?? '',
       correctAnswer: event?.correctAnswer ?? '',
       response: event?.response ?? '',
-      type: event?.type ?? '',
+      type: event?.type ?? 'Select Type',
       isCorrect: event?.isCorrect ?? '',
       amount: event?.amount ?? 0,
       balance: event?.balance ?? '',
@@ -41,11 +43,13 @@ const EventsForm: React.FC<EpisodeEventsFormProps> = ({ onSave, episodeId, event
       }
 
       if (!event) {
-        const episodeEvent = await createEvent(episodeId as string, payload as EpisodeEvent)
-        if (episodeEvent) {
-          onSave(episodeEvent)
-        }
-        resetForm()
+         console.log(payload);
+        
+        // const episodeEvent = await createEvent(episodeId as string, payload as EpisodeEvent)
+        // if (episodeEvent) {
+        //   onSave(episodeEvent)
+        // }
+        // resetForm()
         setSubmiting(false)
         return
       }
@@ -75,6 +79,13 @@ const EventsForm: React.FC<EpisodeEventsFormProps> = ({ onSave, episodeId, event
     } catch (error: any) {
       setError(error?.response?.data?.message as string)
     }
+  }
+
+  const setTypeValue=(event: MouseEvent<HTMLLIElement>)=>{
+    const value = event.currentTarget.dataset.value as string;
+    if(!typeInputRef.current) return
+    typeInputRef.current.value = value 
+    formik.values.type = value
   }
 
 
@@ -133,21 +144,41 @@ const EventsForm: React.FC<EpisodeEventsFormProps> = ({ onSave, episodeId, event
               )}
             </div>
             {/* Type */}
-            <div>
+            <div id='typeField' className='relative'>
+
               <label className="block text-base font-medium dark:text-gray-400 mb-2 mt-4">Type</label>
-              <select
+              <input ref={typeInputRef} type="text" readOnly className='w-full py-4 p-2 event-form-input'
                 name="type"
                 value={formik.values.type}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="w-full py-4 p-2 event-form-input bg-white border border-gray-300 "
-              >
+              />
                 {formik.values.type === '' && (
                   <option value="" disabled>Select Type</option>
-                )}    <option value="QUESTION_NUMBER" className="dark:bg-slate-900 dark:text-neutral-200 rounded-lg">Question Number</option>
-                <option value="QUESTION" className="dark:bg-slate-900 dark:text-neutral-200">Question</option>
-                <option value="CODE_MIX" className="dark:bg-slate-900 dark:text-neutral-200">Code Mix</option>
-              </select>
+                )} 
+                <Dialogbox triggerDomId='typeField' positions={{ySide:'bottom'}}  closeOnClick
+                  className='text-neutral-700 dark:text-neutral-200 dark:bg-slate-900
+                    border dark:border-slate-700 right-1/2 w-full shadow translate-x-1/2
+                  ' 
+                >
+                  <ul className='dark:text-neutral-200'>
+                    <li onClick={setTypeValue}  data-value="QUESTION_NUMBER" 
+                      className="p-2 dark:hover:bg-slate-700 cursor-pointer  rounded-lg"
+                    >
+                      Question Number
+                    </li>
+                    <li onClick={setTypeValue} data-value="QUESTION" 
+                      className="p-2 dark:hover:bg-slate-700 cursor-pointer rounded-lg"
+                    >
+                      Question
+                    </li>
+                    <li onClick={setTypeValue} data-value="CODE_MIX" 
+                      className="p-2 dark:hover:bg-slate-700 cursor-pointer rounded-lg"
+                    >
+                      Code Mix
+                    </li>
+                  </ul>
+                </Dialogbox> 
               {formik.errors.type && formik.touched.type && (
                 <div className="text-red-500">{formik.errors.type}</div>
               )}

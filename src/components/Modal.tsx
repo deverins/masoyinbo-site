@@ -56,7 +56,7 @@ const Modal = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      if (!gum && modalRef.current && !modalRef.current.contains(event.target as Node)) {
         close()
       }
     };
