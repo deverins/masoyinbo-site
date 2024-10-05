@@ -3,17 +3,19 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from '@/constants/api';
 import { Participant } from "@/types";
-import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 
 
 const ParticipationUsers = () => {
   const [participants, setParticipants] = useState<Participant[]>([]);
-  const { query } = useRouter()
+  const searchParams = useSearchParams()
+  const status = searchParams.get('status')
 
+  const participantsURL = `${API_URL}/api/get-participants?status=${status}`;
   useEffect(() => {
     const fetchRequestPool = async () => {
       try {
-        const { data } = await axios.get(`${API_URL}/api/get-participants?status=${query.status}`);
+        const { data } = await axios.get(participantsURL);
         if (data.participants) {
           setParticipants(data.participants);
         } else {
@@ -75,7 +77,7 @@ const ParticipationUsers = () => {
               </div>
             ))
           ) : (
-            <p className="text-center text-secondary-dark">No Participant users data available.</p>
+            <p className="text-center text-secondary-dark">No Participant(s) Found.</p>
           )}
         </div>
       </div>
@@ -125,7 +127,7 @@ const ParticipationUsers = () => {
               </div>
             ))
           ) : (
-            <p className="text-center text-secondary-dark">No Participant users data available.</p>
+            <p className="text-center text-secondary-dark">No Participant(s) Found.</p>
           )}
         </div>
       </div>

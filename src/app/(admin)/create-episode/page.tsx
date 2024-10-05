@@ -7,7 +7,7 @@ import { API_URL } from "@/constants/api";
 import { episodeSchema } from "@/validationSchema/episodeSchema";
 import toast from "react-hot-toast";
 import { useAuth } from "@/hooks/AuthContext";
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface Participant {
   _id: string;
@@ -20,9 +20,10 @@ const CreateEpisodeForm = () => {
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [error, setError] = useState<string | null>(null);
   const navigate = useRouter();
-  const { query } = useRouter()
+  const searchParams = useSearchParams()
+  const status = searchParams.get('status')
 
-  const participantsURL = `${API_URL}/api/get-participants?status=${query.status}`;
+  const participantsURL = `${API_URL}/api/get-participants?status=${status}`;
   const createEpisodeURL = `${API_URL}/api/episodes`;
 
   useEffect(() => {
