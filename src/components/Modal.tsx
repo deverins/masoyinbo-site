@@ -78,9 +78,7 @@ const Modal = ({
 
   if (!key) return null;
 
-  const getContent = () => {
-    console.log("SIED", side);
-    
+  const getContent = () => {    
     const style = { maxWidth: ['left', 'right'].includes(side) ? maxW : '100%' };
     return (
       <div

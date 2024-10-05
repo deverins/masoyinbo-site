@@ -1,12 +1,12 @@
 import React from 'react';
 import { useFormik } from 'formik';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { episodeEventsFormValidator } from '@/validationSchema/episodeEventsFormValidator';
 import { EpisodeEvent } from '@/types';
 import axios from 'axios';
 import { API_URL } from '@/constants/api';
 interface EpisodeEventsFormProps {
-  onSave: (episode: EpisodeEvent)=>void;
+  onSave: (episode: EpisodeEvent) => void;
   episodeId?: string;
   event?: EpisodeEvent
 }
@@ -17,17 +17,17 @@ const EventsForm: React.FC<EpisodeEventsFormProps> = ({ onSave, episodeId, event
 
   const formik = useFormik({
     initialValues: {
-      question: event?.question?? '',
-      correctAnswer: event?.correctAnswer?? '',
-      response: event?.response?? '',
-      type: event?.type?? '',
-      isCorrect: event?.isCorrect?? '',
-      amount: event?.amount?? 0,
-      balance: event?.balance?? '',
+      question: event?.question ?? '',
+      correctAnswer: event?.correctAnswer ?? '',
+      response: event?.response ?? '',
+      type: event?.type ?? '',
+      isCorrect: event?.isCorrect ?? '',
+      amount: event?.amount ?? 0,
+      balance: event?.balance ?? '',
     },
     validationSchema: episodeEventsFormValidator,
-    onSubmit: async(values, { resetForm }) => {
-      if(submiting) return
+    onSubmit: async (values, { resetForm }) => {
+      if (submiting) return
       setSubmiting(true)
       setError(null);
 
@@ -42,38 +42,38 @@ const EventsForm: React.FC<EpisodeEventsFormProps> = ({ onSave, episodeId, event
 
       if (!event) {
         const episodeEvent = await createEvent(episodeId as string, payload as EpisodeEvent)
-        if (episodeEvent){
+        if (episodeEvent) {
           onSave(episodeEvent)
         }
-         resetForm()
+        resetForm()
         setSubmiting(false)
         return
       }
 
       const episodeEvent = await updateEvent(event._id, payload as EpisodeEvent)
-      if (episodeEvent){
+      if (episodeEvent) {
         onSave(episodeEvent)
       }
       setSubmiting(false)
     }
   });
 
-  const createEvent=async(episodeId: string, payload: EpisodeEvent)=>{
+  const createEvent = async (episodeId: string, payload: EpisodeEvent) => {
     try {
-      const {data} = await axios.post(`${API_URL}/api/episode-events`, {episodeId, event:payload} )
+      const { data } = await axios.post(`${API_URL}/api/episode-events`, { episodeId, event: payload })
       const event = data.event as EpisodeEvent
       return event
     } catch (error: any) {
-        setError(error?.response?.data?.message as string)
+      setError(error?.response?.data?.message as string)
     }
   }
-  const updateEvent=async(id:string, payload: EpisodeEvent)=>{
+  const updateEvent = async (id: string, payload: EpisodeEvent) => {
     try {
-      const {data} = await axios.put(`${API_URL}/api/episode-events/${id}`, { event: payload } )
+      const { data } = await axios.put(`${API_URL}/api/episode-events/${id}`, { event: payload })
       const event = data.event as EpisodeEvent
       return event
     } catch (error: any) {
-        setError(error?.response?.data?.message as string)
+      setError(error?.response?.data?.message as string)
     }
   }
 
@@ -132,7 +132,6 @@ const EventsForm: React.FC<EpisodeEventsFormProps> = ({ onSave, episodeId, event
                 <div className="text-red-500">{formik.errors.response}</div>
               )}
             </div>
-
             {/* Type */}
             <div>
               <label className="block text-base font-medium dark:text-gray-400 mb-2 mt-4">Type</label>
@@ -141,14 +140,13 @@ const EventsForm: React.FC<EpisodeEventsFormProps> = ({ onSave, episodeId, event
                 value={formik.values.type}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="w-full py-4 p-2 event-form-input"
+                className="w-full py-4 p-2 event-form-input bg-white border border-gray-300 "
               >
                 {formik.values.type === '' && (
                   <option value="" disabled>Select Type</option>
-                )}
-                <option value="QUESTION_NUMBER">Question Number</option>
-                <option value="QUESTION">Question</option>
-                <option value="CODE_MIX">Code Mix</option>
+                )}    <option value="QUESTION_NUMBER" className="dark:bg-slate-900 dark:text-neutral-200 rounded-lg">Question Number</option>
+                <option value="QUESTION" className="dark:bg-slate-900 dark:text-neutral-200">Question</option>
+                <option value="CODE_MIX" className="dark:bg-slate-900 dark:text-neutral-200">Code Mix</option>
               </select>
               {formik.errors.type && formik.touched.type && (
                 <div className="text-red-500">{formik.errors.type}</div>
@@ -225,7 +223,7 @@ const EventsForm: React.FC<EpisodeEventsFormProps> = ({ onSave, episodeId, event
               className="mt-6 w-full py-4 text-lg dark:border dark:border-slate-400 font-bold bg-primary-light text-white p-2 rounded-md px-4"
             >
               {submiting && 'Processing...'}
-              {!submiting && (<span>{event? 'Update Event':'Add Event'} </span>)}
+              {!submiting && (<span>{event ? 'Update Event' : 'Add Event'} </span>)}
             </button>
 
           </form>
