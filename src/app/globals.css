@@ -100,7 +100,7 @@
   .event-form-input {
     @apply ring-0 focus:ring-0 focus:outline-none rounded-lg
       text-neutral-700 dark:text-neutral-200 dark:bg-inherit
-    border border-neutral-200 focus:border-slate-400 dark:border-slate-400
+    border border-neutral-200 focus:border-slate-400 dark:border-slate-400 placeholder:dark:text-gray-400
   }
 }
 

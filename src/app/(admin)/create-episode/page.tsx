@@ -98,7 +98,7 @@ const CreateEpisodeForm = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 placeholder="https://example.com"
-                className="mt-1 py-4 p-2 block w-full outline-none rounded-lg focus:ring focus:ring-primary-light"
+                className="mt-1 py-4 p-2 block w-full event-form-input"
               />
               {formik.errors.episodeLink && formik.touched.episodeLink ? (
                 <div className="text-red-500 text-base">{formik.errors.episodeLink}</div>
@@ -114,7 +114,7 @@ const CreateEpisodeForm = () => {
                 value={formik.values.participant_id}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="mt-1 py-4 block w-full p-2 outline-none rounded-lg focus:ring focus:ring-primary-light"
+                className="mt-1 py-4 block w-full p-2 event-form-input"
               >
                 <option value="">Select participant</option>
                 {participants
@@ -140,7 +140,7 @@ const CreateEpisodeForm = () => {
                 value={formik.values.availableAmountToWin}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="mt-1 py-4 p-2 block w-full outline-none rounded-lg focus:ring focus:ring-primary-light"
+                className="mt-1 py-4 p-2 block w-full event-form-input"
               />
               {formik.errors.availableAmountToWin && formik.touched.availableAmountToWin ? (
                 <div className="text-red-500 text-base">{formik.errors.availableAmountToWin}</div>
@@ -156,7 +156,7 @@ const CreateEpisodeForm = () => {
                 value={formik.values.amountWon}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="mt-1 py-4 p-2 block w-full outline-none  border-primary rounded-lg focus:ring focus:ring-primary-light"
+                className="mt-1 py-4 p-2 block w-full outline-none event-form-input"
               />
               {formik.errors.amountWon && formik.touched.amountWon ? (
                 <div className="text-red-500 text-base">{formik.errors.amountWon}</div>
@@ -171,7 +171,7 @@ const CreateEpisodeForm = () => {
                 value={formik.values.episodeDate}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="mt-1 py-4 p-2 block w-full outline-none rounded-lg focus:ring focus:ring-primary-light"
+                className="mt-1 py-4 p-2 block w-full event-form-input"
               />
               {formik.errors.episodeDate && formik.touched.episodeDate ? (
                 <div className="text-red-500 text-base">{formik.errors.episodeDate}</div>
@@ -186,7 +186,7 @@ const CreateEpisodeForm = () => {
                 value={formik.values.episodeNumber}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="mt-1 py-4 p-2 block w-full outline-none rounded-lg focus:ring focus:ring-primary-light"
+                className="mt-1 py-4 p-2 block w-full event-form-input"
               />
               {formik.errors.episodeDate && formik.touched.episodeNumber ? (
                 <div className="text-red-500 text-base">{formik.errors.episodeNumber}</div>

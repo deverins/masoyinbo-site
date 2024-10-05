@@ -178,7 +178,7 @@ const EpisodeEventsForm: React.FC<EpisodeEventsFormProps> = ({ onEdit, episodeId
                     checked={formik.values.isCorrect === 'true'}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className="mr-2"
+                    className="mr-2 p-2"
                   />
                   True
                 </label>
@@ -190,7 +190,7 @@ const EpisodeEventsForm: React.FC<EpisodeEventsFormProps> = ({ onEdit, episodeId
                     checked={formik.values.isCorrect === 'false'}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className="mr-2"
+                    className="mr-2 p-2"
                   />
                   False
                 </label>

@@ -64,7 +64,7 @@ const LogIn = () => {
                 <label htmlFor="email" className="block text-sm font-medium text-gray-500 dark:text-neutral-300">
                   Email Address
                 </label>
-                <div className="flex items-center border rounded-md px-3 py-2">
+                <div className="flex items-center border dark:border-slate-400 rounded-md px-3 py-2">
                   <AiOutlineMail className="mr-2 text-gray-500 dark:text-neutral-300" />
                   <input
                     type="email"
@@ -72,7 +72,7 @@ const LogIn = () => {
                     onChange={handleChange}
                     value={values.email}
                     placeholder="Email Address"
-                    className="p-2 py-3.5 flex-grow text-gray-500 font-medium placeholder-gray-500 bg-white outline-none border  focus:ring focus:ring-primary-light rounded-lg"
+                    className="p-2 py-3.5 flex-grow font-medium placeholder-gray-500 bg-white event-form-input"
                   />
                 </div>
                 <span className="text-red-500">{errors.email}</span>
@@ -82,7 +82,7 @@ const LogIn = () => {
                 <label htmlFor="password" className="block text-sm font-medium text-gray-500 dark:text-neutral-300">
                   Password
                 </label>
-                <div className="flex items-center border rounded-md px-3 py-2">
+                <div className="flex items-center border dark:border-slate-400 rounded-md px-3 py-2">
                   <AiOutlineLock className="mr-2 text-gray-500 dark:text-neutral-300" />
                   <input
                     type="password"
@@ -90,7 +90,7 @@ const LogIn = () => {
                     onChange={handleChange}
                     value={values.password}
                     placeholder="Password"
-                    className="p-2 py-3.5 flex-grow text-gray-500 font-medium placeholder-gray-500 bg-white outline-none border  focus:ring focus:ring-primary-light rounded-lg"
+                    className="p-2 py-3.5 flex-grow placeholder-gray-500 bg-white outline-none event-form-input"
                   />
                 </div>
                 <span className="text-red-500">{errors.password}</span>

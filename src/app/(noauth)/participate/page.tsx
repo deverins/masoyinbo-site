@@ -88,7 +88,7 @@ const ParticipationForm: React.FC = () => {
       <AboutSection />
 
       <section className="flex justify-center items-center py-10 px-4">
-        <div className="shadow-md rounded-lg dark:shadow-2xl p-8 w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl transition-all duration-300">
+        <div className="shadow-md -lg dark:shadow-2xl p-8 w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl transition-all duration-300">
           <form onSubmit={formik.handleSubmit}>
             {/* Email */}
             <div className="mb-4">
@@ -103,7 +103,7 @@ const ParticipationForm: React.FC = () => {
                 onChange={formik.handleChange}
                 placeholder='email'
                 value={formik.values.email}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border  py-4 w-full px-3 event-form-input "
               />
               {formik.errors.email && formik.touched.email && (
                 <div className="text-red-500 text-xs mt-1">
@@ -125,7 +125,7 @@ const ParticipationForm: React.FC = () => {
                 onChange={formik.handleChange}
                 placeholder='full name'
                 value={formik.values.fullName}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700  leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border  py-4 w-full px-3 event-form-input "
               />
               {formik.errors.fullName && formik.touched.fullName && (
                 <div className="text-red-500 text-xs mt-1">
@@ -144,7 +144,7 @@ const ParticipationForm: React.FC = () => {
                 name="gender"
                 onChange={formik.handleChange}
                 value={formik.values.gender}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border  py-4 w-full px-3 event-form-input "
               >
                 <option value="">Select Gender</option>
                 <option value="Male">Male</option>
@@ -169,7 +169,7 @@ const ParticipationForm: React.FC = () => {
                 onChange={formik.handleChange}
                 placeholder='mobile number'
                 value={formik.values.mobileNumber}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700  leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border  py-4 w-full px-3 event-form-input "
               />
               {formik.errors.mobileNumber && formik.touched.mobileNumber && (
                 <div className="text-red-500 text-xs mt-1">
@@ -191,7 +191,7 @@ const ParticipationForm: React.FC = () => {
                 onChange={formik.handleChange}
                 placeholder='place of residence'
                 value={formik.values.placeOfResidence}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700  leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border  py-4 w-full px-3 event-form-input "
               />
               {formik.errors.placeOfResidence && formik.touched.placeOfResidence && (
                 <div className="text-red-500 text-xs mt-1">
@@ -213,7 +213,7 @@ const ParticipationForm: React.FC = () => {
                 onChange={formik.handleChange}
                 placeholder='state of origin'
                 value={formik.values.state}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700  leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border  py-4 w-full px-3 event-form-input "
               />
               {formik.errors.state && formik.touched.state && (
                 <div className="text-red-500 text-xs mt-1">
@@ -234,7 +234,7 @@ const ParticipationForm: React.FC = () => {
                 onChange={formik.handleChange}
                 placeholder='social media platform link'
                 value={formik.values.platformLink}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700  leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border  py-4 w-full px-3 event-form-input "
               />
               {formik.errors.platformLink && formik.touched.platformLink && (
                 <div className="text-red-500 text-xs mt-1">
@@ -256,7 +256,7 @@ const ParticipationForm: React.FC = () => {
                 onChange={formik.handleChange}
                 placeholder='social media handle'
                 value={formik.values.socialMediaHandle}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700  leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border  py-4 w-full px-3 event-form-input "
               />
               {formik.errors.socialMediaHandle && formik.touched.socialMediaHandle && (
                 <div className="text-red-500 text-xs mt-1">
@@ -281,7 +281,7 @@ const ParticipationForm: React.FC = () => {
                       onChange={handleCheckboxChange}
                       placeholder='how did you find out'
                       checked={formik.values.source.includes(option.value)}
-                      className="mr-2"
+                      className="mr-2 event-form-input "
                     />
                     {option.label}
                   </label>
@@ -337,7 +337,7 @@ const ParticipationForm: React.FC = () => {
                 name="comment"
                 onChange={formik.handleChange}
                 value={formik.values.comment}
-                className="shadow appearance-none border rounded py-4 w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border  py-4 w-full px-3 event-form-input "
                 placeholder='Your answer'
               />
               {formik.errors.comment && formik.touched.comment && (
@@ -350,7 +350,7 @@ const ParticipationForm: React.FC = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-primary-light text-white font-bold px-4 rounded py-4 focus:outline-none focus:shadow-outline"
+                className="bg-primary-light text-white font-bold px-4  py-4 focus:outline-none focus:shadow-outline"
               >
                 {loading ? 'Submitting...' : 'Submit'}
               </button>
