@@ -60,6 +60,7 @@ export type LossTypeKeys = "CODE_MIX" | "QUESTION_NUMBER" | "QUESTION"
 
 
 export type LossType = {
+  words: any;
   type: LossTypeKeys
   totalAmountLost: number,
   count: number

@@ -1,23 +1,36 @@
 import React, { useState, useMemo } from 'react';
 import { FaChevronRight, FaChevronDown } from 'react-icons/fa';
-import PieChart from '@/components/PieChart';
 import { lossCategoryColors } from '@/constants/api';
-import BarChart from '@/components/BarChart';
 import { LossTypeKeys, Stats } from '@/types';
+import DoughnutChart from './Doughnut';
+import BarChart from './BarChart';
+import { CodemixWords } from '../types/index';
 
 const PerformanceStats: React.FC <Stats> = (stats) => {
 
   const [showStats, setShowStats] = useState(false);
-
-  const lossPieAmountData = useMemo(()=>{
+// "₦"
+  const lossPieAmountData = useMemo(()=>{    
       return stats.lossTypeData.map(data=> {
-        return {name: data.type, value: data.totalAmountLost, color:lossCategoryColors[data.type as LossTypeKeys]}
+        return {
+          name: data.type,
+          value: Math.abs(data.totalAmountLost),
+          color:lossCategoryColors[data.type as LossTypeKeys]
+        }
       })
   }, [stats])
 
   const lossPieCountData = useMemo(()=>{
     return stats.lossTypeData.map(data=> {
       return {name: data.type, value: data.count, color:lossCategoryColors[data.type as LossTypeKeys]}
+    })
+}, [stats])
+  const CodemixWordsData = useMemo(()=>{
+    return stats.lossTypeData.map(data=> {
+      return {
+        name: data.words,     
+        value: Math.abs(data.totalAmountLost),
+        color: lossCategoryColors[data.type as keyof typeof lossCategoryColors]}
     })
 }, [stats])
 
@@ -47,10 +60,9 @@ const PerformanceStats: React.FC <Stats> = (stats) => {
                 </h2>
                 <div className=" flex flex-col-reverse md:flex-row rounded-lg shadow-md p-4">
 
-                  {/* <BarChart barchatData={lossPieAmountData}  /> */}
-                  <PieChart
+                <BarChart data={lossPieAmountData} />
+                <DoughnutChart
                     data={lossPieAmountData}
-                    currencySymbol="₦"
                   />
                 </div>
               </div>
@@ -61,18 +73,20 @@ const PerformanceStats: React.FC <Stats> = (stats) => {
                   Frequency of Loss by Category
                 </h2>
                 <div className=" flex flex-col-reverse md:flex-row rounded-lg shadow-md p-4">
-                  {/* <BarChart barchatData={lossPieCountData} /> */}
-                  <PieChart
+                  <BarChart data={lossPieCountData} />
+                  <DoughnutChart
                     data={lossPieCountData}
                   />
                 </div>
               </div>
 
-              {/* <RechartBarChart /> */}
               {/* Another Card for Codemix Words */}
               <div className="w-full flex flex-col bg-white rounded-lg dark:bg-inherit dark:shadow-xl">
+              <h2 className="text-xl p-2 mb-2 font-semibold text-[#3CBA9F]">
+                  Loss Amount by Codemix words
+                </h2>
                 <div className="p-4 rounded-lg shadow-md">
-                  {/* <BarChart barchatData={[]} /> */}
+                  <BarChart data={CodemixWordsData} />
                 </div>
               </div>
             </div>
