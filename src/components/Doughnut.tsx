@@ -67,7 +67,7 @@ const DoughnutChart: React.FC<PieChartProps> = ({ data, titleClassName, title })
         chartInstanceRef.current = null;
       }
     };
-  }, [data]);
+  }, [data, id]);
 
   return (
     <>

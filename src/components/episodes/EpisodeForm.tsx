@@ -1,3 +1,4 @@
+//./src/components/episodes/EpisodeForm.tsx
 import React from 'react';
 import { useFormik } from 'formik';
 import { useState, useEffect } from 'react';
@@ -53,7 +54,7 @@ const EpisodeEventsForm: React.FC<EpisodeEventsFormProps> = ({ onEdit, episodeId
       formik.setValues({ question, correctAnswer, isCorrect, response, type, amount, balance });
       setEditIndex(index);
     }
-  }, [onEdit, editIndex]);
+  }, [onEdit, editIndex, formik]);
 
   return (
     <>

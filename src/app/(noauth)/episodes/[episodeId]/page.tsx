@@ -2,7 +2,7 @@
 import EpisodePage from '@/components/episodes/EpisodePage';
 import React from 'react';
 
-export const EpisodeComponent=()=>{
+const EpisodeComponent=()=>{
   return ( <EpisodePage /> );
 };
 

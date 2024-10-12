@@ -48,7 +48,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (!isLoggedIn || userRole !== 'admin') {
           router.push('/admin/login');
         }
-      }, [isLoggedIn, userRole, router]);
+      }, []);
 
       if (!isLoggedIn || userRole !== 'admin') {
         return null;

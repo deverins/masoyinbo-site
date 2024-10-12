@@ -1,3 +1,4 @@
+// ./src/app/(admin)/create-episode/page.tsx
 "use client"
 import React from 'react'
 import { useState, useEffect } from "react";
@@ -37,7 +38,7 @@ const CreateEpisodeForm = () => {
     };
 
     fetchPendingParticipants();
-  }, []);
+  }, [participantsURL]);
 
   const formik = useFormik({
     initialValues: {
@@ -209,8 +210,10 @@ const CreateEpisodeForm = () => {
   );
 };
 
-export default () => {
+const ProtectedCreateEpisodeForm = () => {
   const { withAdminAuth } = useAuth();
-  const ProtectedCreateEpisodeForm = withAdminAuth(CreateEpisodeForm);
-  return <ProtectedCreateEpisodeForm />;
+  const ProtectedForm = withAdminAuth(CreateEpisodeForm);
+  return <ProtectedForm />;
 };
+
+export default ProtectedCreateEpisodeForm;
