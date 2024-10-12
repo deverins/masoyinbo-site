@@ -10,7 +10,7 @@ import Loading from './UI/Loading'
 import { Stats } from '@/types'
 import EpisodeCollection from './episodes/EpisodeCollection'
 
-const HomePage = () => {
+const MainPage = () => {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<Stats>();
 
@@ -64,4 +64,4 @@ const HomePage = () => {
   )
 }
 
-export default HomePage
+export default MainPage
