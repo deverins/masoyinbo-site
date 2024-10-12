@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import HeroSection from './HeroSection'
+import HeroSection from './HeroSec'
 import StatsCard from './StatsCard'
 import AboutSection from './AboutSection'
 import PerformanceStatsPieChart from './PerformanceStatsPieChart'
