@@ -92,7 +92,7 @@ const StatsCard: React.FC<Stats> = (stats) => {
               Amount Lost to Codemix
             </h5>
             <p className="text-lg md:text-xl  font-semibold text-gray-500 dark:text-gray-100 mt-2">
-              {formatCurrency(stats.codemixData[0]?.totalAmountLost || 0)}
+              {formatCurrency(Math.abs(stats.codemixData[0]?.totalAmountLost || 0))}
             </p>
           </div>
         </div>

@@ -19,6 +19,7 @@ const HomePage = () => {
     const fetchData = async () => {
       try {
         const { data: { stats } } = await axios.get(`${API_URL}/api/get-performance-stats`);
+        console.log("stats", stats)
         setStats(stats as Stats)
 
         setLoading(false);
