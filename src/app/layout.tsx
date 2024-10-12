@@ -1,7 +1,6 @@
-// src/app/(default)/layout.tsx
 import React from 'react';
 import { Instrument_Sans } from 'next/font/google';
-import '../globals.css';
+import './globals.css';
 import { Toaster } from 'react-hot-toast';
 import { ThemeProvider } from '@/hooks/themeContext';
 import Main from '@/components/layouts/Main';
