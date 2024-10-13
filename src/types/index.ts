@@ -76,7 +76,7 @@ export type CodemixWords = {
 export type Stats = {
   totalEpisodes: number;
   totalAmountWon: number;
-  totalCorrectAnwers: number;
+  totalCorrectAnswers: number;
   totalQuestions: number;
   totalWaitingParticipants: number;
   totalParticipants: number;

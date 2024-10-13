@@ -81,7 +81,7 @@ const StatsCard: React.FC<Stats> = (stats) => {
               Total Correct Answers
             </h5>
             <p className="text-lg md:text-xl  font-semibold text-gray-500 dark:text-gray-100 mt-2">
-              {stats.totalCorrectAnwers}
+              {stats.totalCorrectAnswers}
             </p>
           </div>
 
