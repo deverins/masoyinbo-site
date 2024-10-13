@@ -20,11 +20,11 @@ const EpisodeCollection: React.FC<CollectionProp> = ({episodes}) => {
           <div key={episode._id} className="relative shadow-3xl pb-2 rounded-2xl">
             <VideoPreview
               videoLink={episode.episodeLink}
-              title={`Episode ${index + 1}`}
+              title={`Episode ${episode.episodeNumber}`}
             />
             <Link href={`/episodes/${episode._id}`} onClick={() => handleEpisodeClick(episode._id)}>
               <p className="block mt-2 dark:text-neutral-400 font-semibold text-lg text-center hover:underline">
-                {`View details for Episode ${index + 1}`}
+                {`View details for Episode ${episode.episodeNumber}`}
               </p>
             </Link>
           </div>

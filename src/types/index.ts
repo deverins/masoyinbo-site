@@ -78,7 +78,7 @@ export type Stats = {
   totalAmountWon: number;
   totalCorrectAnwers: number;
   totalQuestions: number;
-  totalWaitingPaticipants: number;
+  totalWaitingParticipants: number;
   totalParticipants: number;
   totalUsers: number;
   totalAmountAvailable: number;

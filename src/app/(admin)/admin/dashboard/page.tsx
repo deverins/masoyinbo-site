@@ -70,7 +70,7 @@ const AdminDashboard: React.FC = () => {
             </div>
             {/* Total Participation Users */}
             <div className="px-2 pt-4 h-auto bg-white dark:bg-[rgba(255,255,255,0.1)] dark:backdrop-blur-lg dark:bg-opacity-10 rounded-lg shadow-md transition duration-300 pb-2">
-              <Link href="/participants?status=pending">
+              <Link href="/participants?status=completed">
                 <h5 className="text-base md:text-lg font-semibold flex text-gray-800 dark:text-gray-200">
                   <UserGroupIcon className="size-6 mr-2 text-gray-400 leading-tight dark:text-gray-300" />
                   Total Participant Users
@@ -102,7 +102,7 @@ const AdminDashboard: React.FC = () => {
                   Awaiting Participation Request
                 </h5>
                 <p className="text-lg md:text-2xl font-semibold text-gray-500 dark:text-gray-100 mt-4">
-                  {stats.totalWaitingPaticipants}
+                  {stats.totalWaitingParticipants}
                 </p>
               </Link>
             </div>

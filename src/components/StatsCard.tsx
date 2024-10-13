@@ -42,7 +42,7 @@ const StatsCard: React.FC<Stats> = (stats) => {
                 Awaiting Participation Request
               </h5>
               <p className="text-lg md:text-2xl  font-semibold text-gray-500 dark:text-gray-100 mt-4">
-                {stats.totalWaitingPaticipants}
+                {stats.totalWaitingParticipants}
               </p>
             </Link>
           </div>
