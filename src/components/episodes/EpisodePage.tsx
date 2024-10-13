@@ -73,9 +73,6 @@ const EpisodePage: React.FC = () => {
       
           const updatedEvents = episodeDetails.events.filter((event) => event._id !== id);
           setEpisodeDetails({ ...episodeDetails, events: updatedEvents });
-      
-          console.log('Event deleted successfully');
-      
         }  catch (error: any) {
           setError(error?.response?.data?.message as string)
       }
