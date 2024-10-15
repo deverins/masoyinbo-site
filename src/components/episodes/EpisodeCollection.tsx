@@ -7,8 +7,9 @@ type CollectionProp = {
   episodes: Episode[]
 }
 
-
 const EpisodeCollection: React.FC<CollectionProp> = ({ episodes }) => {
+  // Sort episodes by episodeNumber in descending order (most recent first)
+  const sortedEpisodes = [...episodes].sort((a, b) => b.episodeNumber - a.episodeNumber);
 
   const handleEpisodeClick = (episodeId: string) => {
     localStorage.setItem('episodeIdToSelect', episodeId);
@@ -16,7 +17,7 @@ const EpisodeCollection: React.FC<CollectionProp> = ({ episodes }) => {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {episodes.map((episode) => (
+      {sortedEpisodes.map((episode) => (
         <div key={episode._id} className="relative shadow-3xl pb-2 rounded-2xl">
           <VideoPreview
             videoLink={episode.episodeLink}
