@@ -1,3 +1,4 @@
+
 export interface Episode {
   _id: string;
   episodeLink: string;
@@ -24,11 +25,11 @@ export interface EpisodeEvent {
 
 export type EventActionSignal = {
   id: string,
-  type: 'DELETE'|'EDIT'
+  type: 'DELETE' | 'EDIT'
 }
 export type ModalActionSignal = {
   id: string,
-  type: 'DELETE'|'EDIT'
+  type: 'DELETE' | 'EDIT'
 }
 
 export interface Participant {
@@ -66,15 +67,13 @@ export type LossType = {
   count: number
 }
 
-export type CodemixWords = {
+export type CodemixWordsTableProps  = {
   lossTypeData: LossType[],
-  words: string,
   totalAmountLost: number,
   count: number,
+  words: string,
+  color: string,
 }
-export type CodemixWordDataWithColor = CodemixWords & {
-  color: string;
-} 
 export type Stats = {
   totalEpisodes: number;
   totalAmountWon: number;
@@ -87,7 +86,7 @@ export type Stats = {
   totalAmountAvailable: number;
   totalWrongAnswers: number;
   recentEpisodes: Episode[]
-  codemixData: CodemixWords[];
+  codemixData: CodemixWordsTableProps [];
   lossTypeData: LossType[];
 }
 
@@ -100,8 +99,9 @@ export type EventActionsProps = {
 }
 
 export type ChartData = {
-  isMonetary: boolean;
-   name: string;
+  name: string;
   value: number,
-  color:string 
+  color: string,
+  label?: string,
+  legendLabel?: string
 }

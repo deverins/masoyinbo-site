@@ -12,6 +12,7 @@ const config: Config = {
       screens: {
         'custom': '934.44px',
         '870px': '870px',
+        'mobile': '640px',
       },
       spacing:{
         '98p':'98%',

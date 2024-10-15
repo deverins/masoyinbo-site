@@ -11,6 +11,7 @@ import {
 } from "chart.js";
 import { ChartData } from "@/types";
 import { generateColorVariation } from "@/utils/functions";
+import { useTheme } from "@/hooks/themeContext";
 
 interface BarChartProps {
   data: ChartData[];
@@ -20,7 +21,8 @@ interface BarChartProps {
 }
 
 const BarChart: React.FC<BarChartProps> = ({ data, titleClassName, legend, title }) => {
-  const chartInstanceRef = useRef<Chart | null>(null); // Ref to store chart instance
+  const { theme } = useTheme();
+  const chartInstanceRef = useRef<Chart | null>(null);
   const id = useId(); // Generate a unique ID
 
   useEffect(() => {
@@ -71,13 +73,24 @@ const BarChart: React.FC<BarChartProps> = ({ data, titleClassName, legend, title
           tooltip: {
             callbacks: {
               label: function (tooltipItem) {
-                const value = tooltipItem.raw as number;
                 const item = data[tooltipItem.dataIndex];
-                // Format the value with currency symbol if isMonetary is true
-                return item.isMonetary ? `₦ ${value.toLocaleString()}` : value.toLocaleString();
+                return item.label ? ' ' + item.label : ' ' + item.value + '';
               },
             },
           },
+        },
+        // Adjust styling based on the current theme
+        scales: {
+          x: {
+            ticks: {
+              color: theme === 'dark' ? 'rgba(229, 231, 235, 1)' : '#000',
+            }
+          },
+          y: {
+            ticks: {
+              color: theme === 'dark' ? 'rgba(229, 231, 235, 1)' : '#000',
+            }
+          }
         }
       }
     });
@@ -89,7 +102,7 @@ const BarChart: React.FC<BarChartProps> = ({ data, titleClassName, legend, title
         chartInstanceRef.current = null;
       }
     };
-  }, [data, id, legend, title]); // Add data, id, legend, and title as dependencies
+  }, [data, id, legend, title, theme]); // Add theme as a dependency
 
   return (
     <>

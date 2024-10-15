@@ -4,7 +4,6 @@ import {
   DoughnutController,
   ArcElement,
   Tooltip,
-  Legend,
   Title
 } from "chart.js";
 import { ChartData } from "@/types";
@@ -14,15 +13,16 @@ interface PieChartProps {
   data: ChartData[];
   title?: string;
   titleClassName?: string;
+  legendType: 'MANUAL' | 'DEFAULT'
 }
 
-const DoughnutChart: React.FC<PieChartProps> = ({ data, titleClassName, title }) => {
+const DoughnutChart: React.FC<PieChartProps> = ({ data, titleClassName, title, legendType = 'DEFAULT' }) => {
   const chartInstanceRef = useRef<Chart<"doughnut"> | null>(null);
   const id = useId()
 
   useEffect(() => {
     // Register the required components for Doughnut chart
-    Chart.register(DoughnutController, ArcElement, Tooltip, Legend, Title);
+    Chart.register(DoughnutController, ArcElement, Tooltip, Title);
 
     const canvas = document.getElementById(`chatjsdoughnut-${id}`) as HTMLCanvasElement;
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -54,18 +54,14 @@ const DoughnutChart: React.FC<PieChartProps> = ({ data, titleClassName, title })
         responsive: true,
         plugins: {
           legend: {
+            display: legendType == 'DEFAULT',
             position: 'right',
           },
           tooltip: {
             callbacks: {
               label: function (tooltipItem) {
-                const value = tooltipItem.raw as number;
                 const item = data[tooltipItem.dataIndex];
-                if (item.isMonetary) {
-                  return `₦ ${value.toLocaleString()}`;
-                } else {
-                  return value.toLocaleString();
-                }
+                return item.label ? ' ' + item.label : ' ' + item.value + ''
               }
             }
           }
@@ -84,13 +80,25 @@ const DoughnutChart: React.FC<PieChartProps> = ({ data, titleClassName, title })
 
   return (
     <>
-      {/* {title &&
+      {title &&
         <h1 className=" mx-auto mt-10 text-xl font-semibold capitalize "> {title}</h1>
-      } */}
-      <div className=" mx-auto my-auto">
-        <div className="w-full h-fit my-auto pb-2">
+      }
+      <div className=" mx-auto flex items-center flex-col sm:flex-row gap-10 my-auto">
+        <div className="w-48 h-48 mx-auto pb-2">
           <canvas id={`chatjsdoughnut-${id}`}></canvas>
         </div>
+        {legendType == 'MANUAL' &&
+          <div>
+            {data.map((data, index) => (
+              <div key={index} className="mb-1 flex-col justify-center items-end">
+                <span className="w-4 inline-block h-3 mr-2" style={{ backgroundColor: data.color }}></span>
+                <span className="text-sm text-[#000] dark:text-neutral-200">
+                  {data.legendLabel}
+                </span>
+              </div>
+            ))}
+          </div>
+        }
       </div>
     </>
   );

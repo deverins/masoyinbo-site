@@ -1,11 +1,10 @@
-import { CodemixWordDataWithColor, CodemixWords } from "@/types";
-
 export const formatType = (type: string) => {
   return type
     .replace(/_/g, ' ')
     .toLowerCase()
-    .replace(/\b\w/g, char => char.toLowerCase());
+    .replace(/\b\w/g, char => char.toUpperCase());
 };
+
 
 
 export const formatCurrency = (value: number) => {
@@ -51,25 +50,3 @@ export const generateColorVariation = (hexColors: string[]) => {
   });
 }
 export const hexColors = ['#FF5733', '#33FF57', '#3357FF', '#F39C12', '#8E44AD', '#27AE60', '#2980B9', '#8E44AD'];
-
-// Assign colors to words
-export const assignColorsToWords = (data: CodemixWords[]): CodemixWordDataWithColor[] => {
-  const colorMapping: { [key: string]: string } = {};
-  const colorCount = hexColors.length;
-  let colorIndex = 0;
-
-  return data.map(item => {
-    const word = item.words;
-
-    // If the word doesn't have a color assigned yet, assign a color
-    if (!colorMapping[word]) {
-      colorMapping[word] = hexColors[colorIndex];
-      colorIndex = (colorIndex + 1) % colorCount;
-    }
-
-    return {
-      ...item,
-      color: colorMapping[word],
-    };
-  });
-};
