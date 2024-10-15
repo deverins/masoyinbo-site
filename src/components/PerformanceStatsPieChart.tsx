@@ -101,7 +101,7 @@ const PerformanceStats: React.FC<Stats> = (stats) => {
               {/* Loss Amount by Category Card */}
               <div className="w-full max-w-full bg-white dark:bg-inherit dark:shadow-xl">
                 <h2 className="text-xl p-2 mb-2 font-semibold text-[#3CBA9F]">Loss Amount by Category</h2>
-                <div className="flex flex-col md:flex-row rounded-lg shadow-md p-4">
+                <div className="flex flex-col-reverse md:flex-row rounded-lg shadow-md p-4">
                   <BarChart data={lossPieAmountData} />
                   <DoughnutChart data={lossPieAmountData} legendType="MANUAL" />
                 </div>
@@ -110,13 +110,13 @@ const PerformanceStats: React.FC<Stats> = (stats) => {
               {/* Frequency of Loss by Category Card */}
               <div className="w-full max-w-full bg-white dark:bg-inherit dark:shadow-xl">
                 <h2 className="text-xl p-2 mb-2 font-semibold text-[#3CBA9F]">Frequency of Loss by Category</h2>
-                <div className="flex flex-col md:flex-row rounded-lg shadow-md p-4">
+                <div className="flex flex-col-reverse md:flex-row rounded-lg shadow-md p-4">
                   <BarChart data={lossPieCountData} />
                   <DoughnutChart data={lossPieCountData} legendType="MANUAL" />
                 </div>
               </div>
             </div>
-
+            {/* Loss Amount by Codemix Words table */}
             {/* Mobile and Tablet View */}
             <div className="block mobile:hidden mt-16">
               <div className='flex justify-center w-full'>
@@ -149,7 +149,6 @@ const PerformanceStats: React.FC<Stats> = (stats) => {
                 ))}
               </div>
             </div>
-
 
             {/* desktop View */}
             <div className="hidden mobile:block mt-16">

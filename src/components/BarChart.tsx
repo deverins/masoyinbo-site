@@ -111,7 +111,7 @@ const BarChart: React.FC<BarChartProps> = ({ data, titleClassName, legend, title
           {title}
         </h1>
       )}
-      <div className="max-w-full overflow-x-auto my-auto">
+      <div className="max-w-full my-auto">
         <canvas id={`chartjsbar-${id}`}></canvas>
       </div>
     </>

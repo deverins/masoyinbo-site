@@ -83,7 +83,7 @@ const DoughnutChart: React.FC<PieChartProps> = ({ data, titleClassName, title, l
       {title &&
         <h1 className=" mx-auto mt-10 text-xl font-semibold capitalize "> {title}</h1>
       }
-      <div className=" mx-auto flex items-center flex-col sm:flex-row gap-10 my-auto">
+      <div className=" mx-auto flex items-center flex-col sm:flex-row gap-8 my-auto">
         <div className="w-48 h-48 mx-auto pb-2">
           <canvas id={`chatjsdoughnut-${id}`}></canvas>
         </div>
