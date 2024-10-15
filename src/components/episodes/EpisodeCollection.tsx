@@ -16,7 +16,7 @@ const EpisodeCollection: React.FC<CollectionProp> = ({episodes}) => {
 
   return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {episodes.map((episode, index) => (
+        {episodes.map((episode) => (
           <div key={episode._id} className="relative shadow-3xl pb-2 rounded-2xl">
             <VideoPreview
               videoLink={episode.episodeLink}

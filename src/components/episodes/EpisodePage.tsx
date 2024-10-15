@@ -27,7 +27,7 @@ const EpisodePage: React.FC = () => {
   const [openModal, setOpenModal] = useState(false)
   const [selectedEvent, setSelectedEvent] = useState<EpisodeEvent>()
   const [error, setError] = useState<string | null>(null);
-  
+
   useEffect(() => {
     fetchEpisodeData(episodeId);
   }, [episodeId]);
@@ -45,50 +45,50 @@ const EpisodePage: React.FC = () => {
     }
   };
 
-  const signal=(signal: EventActionSignal)=>{
+  const signal = (signal: EventActionSignal) => {
     console.log(signal);
-    
-    const {id, type}= signal
-    if(type == 'DELETE'){
+
+    const { id, type } = signal
+    if (type == 'DELETE') {
       return handleDelete(id)
     }
     handleEdit(id)
   }
 
-  const handleEdit = (id : string) => {
-  if(!episodeDetails) return
-  const episodeEvent =episodeDetails.events.find(ev=>ev._id == id)
-  if(!episodeEvent) return
-  setSelectedEvent(episodeEvent)
-  setOpenModal(true)
+  const handleEdit = (id: string) => {
+    if (!episodeDetails) return
+    const episodeEvent = episodeDetails.events.find(ev => ev._id == id)
+    if (!episodeEvent) return
+    setSelectedEvent(episodeEvent)
+    setOpenModal(true)
 
   }
-  
+
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this event?')) {
-        if (!episodeDetails) return;
-      
-        try {
-          const {data} = await axios.delete(`${API_URL}/api/episode-events/${id}`)
-      
-          const updatedEvents = episodeDetails.events.filter((event) => event._id !== id);
-          setEpisodeDetails({ ...episodeDetails, events: updatedEvents });
-        }  catch (error: any) {
-          setError(error?.response?.data?.message as string)
+      if (!episodeDetails) return;
+
+      try {
+        const { data } = await axios.delete(`${API_URL}/api/episode-events/${id}`)
+
+        const updatedEvents = episodeDetails.events.filter((event) => event._id !== id);
+        setEpisodeDetails({ ...episodeDetails, events: updatedEvents });
+      } catch (error: any) {
+        setError(error?.response?.data?.message as string)
       }
     }
   };
-  
 
-  const closeModal = ()=>{
+
+  const closeModal = () => {
     setOpenModal(false)
-   setSelectedEvent(undefined)
+    setSelectedEvent(undefined)
   }
 
-  const onSave = (event: EpisodeEvent)=>{
+  const onSave = (event: EpisodeEvent) => {
     if (!episodeDetails) return
-    const index =episodeDetails.events.findIndex(ev=>ev._id == event._id)
-    if( index < 0 ){
+    const index = episodeDetails.events.findIndex(ev => ev._id == event._id)
+    if (index < 0) {
       episodeDetails.events.push(event)
     } else {
       episodeDetails.events[index] = event
@@ -96,7 +96,7 @@ const EpisodePage: React.FC = () => {
     setOpenModal(false)
   }
 
-  const addEvent =()=>{
+  const addEvent = () => {
     setSelectedEvent(undefined)
     setOpenModal(true)
   }
@@ -112,7 +112,10 @@ const EpisodePage: React.FC = () => {
     {episodeDetails ?
       <>
         <div className="flex flex-col items-center py-2">
-          <VideoPreview videoLink={episodeDetails.episode.episodeLink} title="" />
+          <div className="mx-auto w-full max-w-screen-sm sm:mx-20">
+            <VideoPreview videoLink={episodeDetails.episode.episodeLink} title="" />
+          </div>
+
           {/*Episode Details */}
           <div className="mt-4 w-full max-w-[560px] mb-10">
             <div className="dark:text-neutral-300 font-semibold">
@@ -141,20 +144,20 @@ const EpisodePage: React.FC = () => {
             </button>
           </div>
         )}
-       
-       <EventsTable events={episodeDetails.events} signal={signal} />
-        
-      <Modal trigger={openModal} close={closeModal} side="center" gum
-        backgroundColorClass="bg-secondary-cream dark:bg-slate-900" 
-      >
-      <div className="w-[calc(100dvw-12px)] max-w-[600px] p-2">
-          <EventsForm onSave={onSave} event={selectedEvent} episodeId={episodeId} /> 
-      </div>
-      </Modal>
+
+        <EventsTable events={episodeDetails.events} signal={signal} />
+
+        <Modal trigger={openModal} close={closeModal} side="center" gum
+          backgroundColorClass="bg-secondary-cream dark:bg-slate-900"
+        >
+          <div className="w-[calc(100dvw-12px)] max-w-[600px] p-2">
+            <EventsForm onSave={onSave} event={selectedEvent} episodeId={episodeId} />
+          </div>
+        </Modal>
       </>
       :
-      <div>
-
+      <div className="text-red-500 text-center mt-4">
+        {error ? error : 'No episode details available.'}
       </div>
     }
   </>)
