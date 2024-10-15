@@ -5,7 +5,6 @@ import { LossTypeKeys, Stats } from '@/types';
 import DoughnutChart from './Doughnut';
 import BarChart from './BarChart';
 import { formatCurrency, formatType } from '@/utils/functions';
-// import { assignColorsToWords } from '@/utils/functions';
 
 const PerformanceStats: React.FC<Stats> = (stats) => {
   const [showStats, setShowStats] = useState(false);
@@ -67,7 +66,7 @@ const PerformanceStats: React.FC<Stats> = (stats) => {
   const handleToggle = () => setShowStats(!showStats);
 
   return (
-    <section className="py-4 mt-16">
+    <section className="py-4 mt-16 overflow-x-hidden">
       <div className="mx-4 px-4">
         <div className="flex justify-center">
           <button
