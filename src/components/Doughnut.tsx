@@ -46,7 +46,7 @@ const DoughnutChart: React.FC<PieChartProps> = ({ data, titleClassName, title })
             data: data.map(d => d.value),
             borderColor: dynamicColors.map(color => color.borderColor),
             backgroundColor: dynamicColors.map(color => color.backgroundColor),
-            borderWidth: 2
+            borderWidth: 2,
           }
         ]
       },
@@ -56,6 +56,19 @@ const DoughnutChart: React.FC<PieChartProps> = ({ data, titleClassName, title })
           legend: {
             position: 'right',
           },
+          tooltip: {
+            callbacks: {
+              label: function (tooltipItem) {
+                const value = tooltipItem.raw as number;
+                const item = data[tooltipItem.dataIndex];
+                if (item.isMonetary) {
+                  return `₦ ${value.toLocaleString()}`;
+                } else {
+                  return value.toLocaleString();
+                }
+              }
+            }
+          }
         }
       }
     });

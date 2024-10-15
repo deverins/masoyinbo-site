@@ -67,7 +67,17 @@ const BarChart: React.FC<BarChartProps> = ({ data, titleClassName, legend, title
           },
           legend: {
             display: !!legend, // Show legend only if legend prop is provided
-          }
+          },
+          tooltip: {
+            callbacks: {
+              label: function (tooltipItem) {
+                const value = tooltipItem.raw as number;
+                const item = data[tooltipItem.dataIndex];
+                // Format the value with currency symbol if isMonetary is true
+                return item.isMonetary ? `₦ ${value.toLocaleString()}` : value.toLocaleString();
+              },
+            },
+          },
         }
       }
     });

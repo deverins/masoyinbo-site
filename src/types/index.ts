@@ -70,18 +70,22 @@ export type CodemixWords = {
   lossTypeData: LossType[],
   words: string,
   totalAmountLost: number,
-  count: number
+  count: number,
 }
-
+export type CodemixWordDataWithColor = CodemixWords & {
+  color: string;
+} 
 export type Stats = {
   totalEpisodes: number;
   totalAmountWon: number;
+  totalAmountLost: number;
   totalCorrectAnswers: number;
   totalQuestions: number;
   totalWaitingParticipants: number;
   totalParticipants: number;
   totalUsers: number;
   totalAmountAvailable: number;
+  totalWrongAnswers: number;
   recentEpisodes: Episode[]
   codemixData: CodemixWords[];
   lossTypeData: LossType[];
@@ -96,6 +100,7 @@ export type EventActionsProps = {
 }
 
 export type ChartData = {
+  isMonetary: boolean;
    name: string;
   value: number,
   color:string 
