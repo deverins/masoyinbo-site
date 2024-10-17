@@ -7,10 +7,10 @@ import PerformanceStatsPieChart from './PerformanceStatsPieChart'
 import Loading from './UI/Loading'
 import { Stats } from '@/types'
 import EpisodeCollection from './episodes/EpisodeCollection'
-import Custom500 from '@/app/(homepage)/500/page'
 import LogoSection from './LogoSection'
 import Link from 'next/link'
 import { FaChevronRight } from 'react-icons/fa'
+import Custom500 from '@/app/(homepage)/error-page/page'
 
 type SSRProps = {
   stats: Stats

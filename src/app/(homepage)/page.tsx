@@ -2,8 +2,8 @@ import MainPage from '@/components/MainPage';
 import { API_URL } from '@/constants/api';
 import axios from 'axios';
 import React, { Suspense } from 'react';
-import Custom500 from './500/page';
 import Loading from '@/components/UI/Loading';
+import Custom500 from './error-page/page';
 
 const page = async () => {
   try {
