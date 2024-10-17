@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ThemeProvider>
             <Main>
               <AuthNav />
-              <div className='w-full px-2 max-w-7xl mx-auto'>
+              <div>
                 {children}
               </div>
               <Toaster

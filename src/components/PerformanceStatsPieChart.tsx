@@ -124,7 +124,8 @@ const PerformanceStats: React.FC<Stats> = (stats) => {
                 </h2>
               </div>
               <div className="p-4 rounded-lg justify-center">
-                {stats.codemixData.map((item, index) => (
+                {stats.codemixData.toSorted((a, b) => a.totalAmountLost - b.totalAmountLost)
+                  .map((item, index) => (
                   <div
                     key={index}
                     className="flex flex-col p-4 rounded-lg shadow-md border-b border-gray-300 transition-all duration-500"
@@ -166,7 +167,8 @@ const PerformanceStats: React.FC<Stats> = (stats) => {
                   </div>
 
                   {/* Data Rows */}
-                  {stats.codemixData.map((item, index) => (
+                  {stats.codemixData.toSorted((a, b) => a.totalAmountLost - b.totalAmountLost).
+                    map((item, index) => (
                     <div key={index} className="grid grid-cols-4 gap-14 py-4 mb-2 dark:text-neutral-300 rounded-lg shadow-md border-b border-gray-300">
                       <div className="col-span-1 w-[100px] text-center">{item.count}</div>
                       <div className="col-span-1 w-[150px] text-center flex items-center justify-center">

@@ -7,7 +7,7 @@ const StatsCard: React.FC<Stats> = (stats) => {
 
 
   return (
-    <div className="mt-20 px-4 lg:px-20 md:px-10">
+    <div className="mt-16 px-4 lg:px-20 md:px-10">
       {/* Top row with 3 large cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Winable Amount */}

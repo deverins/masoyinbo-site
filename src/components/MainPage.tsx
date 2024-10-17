@@ -4,61 +4,53 @@ import HeroSection from './HeroSec'
 import StatsCard from './StatsCard'
 import AboutSection from './AboutSection'
 import PerformanceStatsPieChart from './PerformanceStatsPieChart'
-import axios from 'axios'
-import { API_URL } from '@/constants/api'
 import Loading from './UI/Loading'
 import { Stats } from '@/types'
 import EpisodeCollection from './episodes/EpisodeCollection'
+import Custom500 from '@/app/(homepage)/500/page'
+import LogoSection from './LogoSection'
+import Link from 'next/link'
+import { FaChevronRight } from 'react-icons/fa'
 
-const MainPage = () => {
-  const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState<Stats>();
-
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data: { stats } } = await axios.get(`${API_URL}/api/get-performance-stats`);
-        setStats(stats as Stats)
-
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching performance stats:', error);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-
+type SSRProps = {
+  stats: Stats
+}
+const MainPage = ({ stats }: SSRProps) => {
+  const [loading, setLoading] = useState(false);
   return (
     <>
       <HeroSection />
-      <AboutSection />
-
-      {loading ?
-        <div>
-          <Loading />
-        </div> :
-        <>
-          {stats ?
-            <div>
-              <StatsCard {...stats} />
-              <PerformanceStatsPieChart {...stats} />
-              {/* Recent episodes */}
-              <div className="mt-10 pb-5 mx-2 ">
-                <h2 className="text-2xl font-bold mb-9 dark:text-neutral-400 text-center">Recent Episodes</h2>
-                <EpisodeCollection episodes={stats.recentEpisodes} />
+      <div className='w-full px-2 max-w-7xl mx-auto'>
+        <AboutSection />
+        <LogoSection />
+        {loading ?
+          <div>
+            <Loading />
+          </div> :
+          <>
+            {stats ?
+              <div>
+                <StatsCard {...stats} />
+                <PerformanceStatsPieChart {...stats} />
+                {/* Recent episodes */}
+                <div className="mt-10 pb-5 mx-2 ">
+                  <h2 className="text-2xl font-bold mb-9 dark:text-neutral-400 text-center">Recent Episodes</h2>
+                  <div className='text-sm  hover:underline md:text-lg font-semibold dark:text-neutral-200 flex justify-end mb-2'>
+                    <Link href={'/episodes'} className='flex'>
+                      View more<span className='flex items-center'><FaChevronRight size={16} /> </span>
+                    </Link>
+                  </div>
+                  <EpisodeCollection episodes={stats.recentEpisodes} />
+                </div>
+              </div> :
+              <div>
+                <Custom500 />
               </div>
-            </div> :
-            <div>
-              Display error message now
-            </div>
 
-          }
-        </>
-      }
+            }
+          </>
+        }
+      </div>
     </>
   )
 }

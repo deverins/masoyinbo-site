@@ -10,6 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       screens: {
+        'bit':'320px',
         'custom': '934.44px',
         '870px': '870px',
         'mobile': '640px',

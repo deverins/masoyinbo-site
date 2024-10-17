@@ -4,6 +4,8 @@ import { Episode } from '@/types';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import EpisodeCollection from './EpisodeCollection';
+import Loading from '../UI/Loading';
+import Custom500 from '@/app/(homepage)/500/page';
 
 const AllEpisodes: React.FC = () => {
   const [episodes, setEpisodes] = useState<Episode[]>([]);
@@ -26,11 +28,11 @@ const AllEpisodes: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <div className="loader mt-20 mx-auto ease-linear rounded-full border-4 border-t-4 h-12 w-12" />;
+    return <Loading />;
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <Custom500 />;
   }
 
   return (

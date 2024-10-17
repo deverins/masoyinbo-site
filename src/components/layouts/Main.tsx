@@ -13,7 +13,7 @@ const Main: React.FC<MainProps> = ({ children }) => {
   
   return <main 
     className={`${theme== 'dark' && 'dark'} `}>
-      <section className='min-h-[100dvh] w-full bg-slate-100 dark:bg-slate-900'>
+      <section className='min-h-[100dvh] w-full bg-slate-200 dark:bg-slate-900'>
         {children}
       </section>
   </main>
