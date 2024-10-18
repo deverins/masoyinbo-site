@@ -195,7 +195,6 @@ const PerformanceStats: React.FC<Stats> = (stats) => {
                 </div>
               )}
             </div>
-
           </div>
         )}
       </div>
