@@ -36,15 +36,13 @@ const StatsCard: React.FC<Stats> = (stats) => {
         </div>
         {/* Awaiting Request */}
         <div className="px-2 pt-4 h-auto bg-white dark:bg-primary-lightBlack p-4 dark:backdrop-blur-lg dark:bg-opacity-10 rounded-lg shadow-md max-w-full overflow-hidden transition duration-300 pb-2">
-          <Link href="/participants?status=pending">
-            <h5 className="text-base md:text-lg font-semibold flex text-gray-800 dark:text-gray-200">
-              <UserGroupIcon className="size-6 mr-2 text-gray-400 leading-tight dark:text-gray-300" />
-              Awaiting Participation Request
-            </h5>
-            <p className="text-lg md:text-2xl  font-semibold text-gray-500 dark:text-gray-100 mt-4">
-              {stats.totalWaitingParticipants}
-            </p>
-          </Link>
+          <h5 className="text-base md:text-lg font-semibold flex text-gray-800 dark:text-gray-200">
+            <UserGroupIcon className="size-6 mr-2 text-gray-400 leading-tight dark:text-gray-300" />
+            Awaiting Participation Request
+          </h5>
+          <p className="text-lg md:text-2xl  font-semibold text-gray-500 dark:text-gray-100 mt-4">
+            {stats.totalWaitingParticipants}
+          </p>
         </div>
       </div>
 
