@@ -8,6 +8,7 @@ import { formatCurrency, formatType } from '@/utils/functions';
 
 const PerformanceStats: React.FC<Stats> = (stats) => {
   const [showStats, setShowStats] = useState(false);
+  const [showCodemixWords, setshowCodemixWords] = useState(false);
 
   const lossPieAmountData = useMemo(() => {
     return stats.lossTypeData.map(data => ({
@@ -64,6 +65,7 @@ const PerformanceStats: React.FC<Stats> = (stats) => {
   }, [stats]);
 
   const handleToggle = () => setShowStats(!showStats);
+  const handleToggleCodemixWords = () => setshowCodemixWords(!showCodemixWords);
 
   return (
     <section className="py-4 mt-16 overflow-x-hidden">
@@ -118,68 +120,80 @@ const PerformanceStats: React.FC<Stats> = (stats) => {
             {/* Loss Amount by Codemix Words table */}
             {/* Mobile and Tablet View */}
             <div className="block mobile:hidden mt-16">
-              <div className='flex justify-center w-full'>
-                <h2 className="text-sm p-2 mb-2 font-semibold text-[#3CBA9F]">
-                  Loss Amount by Codemix Words
-                </h2>
+              <div className="flex justify-center">
+                <button
+                  onClick={handleToggleCodemixWords}
+                  className="shadow-md transition duration-300 pb-2 rounded flex items-center justify-center text-sm p-2 mb-2 font-semibold text-[#3CBA9F]"
+                >
+                  {showCodemixWords ? 'Loss Amount by Codemix Words' : 'View Loss Amount by Codemix Words'}
+                  {showCodemixWords ? <FaChevronUp className="ml-2" /> : <FaChevronDown className="ml-2" />}
+                </button>
               </div>
-              <div className="p-4 rounded-lg justify-center">
-                {stats.codemixData.toSorted((a, b) => a.totalAmountLost - b.totalAmountLost)
-                  .map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex flex-col p-4 rounded-lg shadow-md border-b border-gray-300 transition-all duration-500"
-                    >
-                      {/* Small screen columns */}
-                      <div className="grid gap-4">
-                        <div>
-                          <h2 className="font-bold text-lg dark:text-neutral-200">Count</h2>
-                          <p className="dark:text-neutral-300">{item.count}</p>
-                        </div>
-                        <div>
-                          <h2 className="font-bold text-lg dark:text-neutral-200">Word</h2>
-                          <span className="dark:text-neutral-300">{item.words}</span>
-                        </div>
-                        <div>
-                          <h2 className="font-bold text-lg dark:text-neutral-200">Total Amount Lost</h2>
-                          <p className="dark:text-neutral-300">{formatCurrency(Math.abs(item.totalAmountLost))}</p>
+              {showCodemixWords && (
+                <div className="p-4 rounded-lg justify-center">
+                  {stats.codemixData.toSorted((a, b) => a.totalAmountLost - b.totalAmountLost)
+                    .map((item, index) => (
+                      <div
+                        key={index}
+                        className="flex flex-col p-4 rounded-lg shadow-md border-b border-gray-300 transition-all duration-500"
+                      >
+                        {/* Small screen columns */}
+                        <div className="grid gap-4">
+                          <div>
+                            <h2 className="font-bold text-lg dark:text-neutral-200">Count</h2>
+                            <p className="dark:text-neutral-300">{item.count}</p>
+                          </div>
+                          <div>
+                            <h2 className="font-bold text-lg dark:text-neutral-200">Word</h2>
+                            <span className="dark:text-neutral-300">{item.words}</span>
+                          </div>
+                          <div>
+                            <h2 className="font-bold text-lg dark:text-neutral-200">Total Amount Lost</h2>
+                            <p className="dark:text-neutral-300">{formatCurrency(Math.abs(item.totalAmountLost))}</p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-              </div>
+                    ))}
+                </div>
+              )}
             </div>
 
             {/* desktop View */}
             <div className="hidden mobile:block mt-16">
-              <div className='flex justify-center w-full'>
-                <h2 className="text-lg p-2 mb-2 font-semibold text-[#3CBA9F]">
-                  Loss Amount by Codemix Words
-                </h2>
+              <div className="flex justify-center">
+                <button
+                  onClick={handleToggleCodemixWords}
+                  className="shadow-md transition duration-300 pb-2 rounded flex items-center justify-center text-lg p-2 mb-2 font-semibold text-[#3CBA9F]"
+                >
+                  {showCodemixWords ? 'Loss Amount by Codemix Words' : 'View Loss Amount by Codemix Words'}
+                  {showCodemixWords ? <FaChevronUp className="ml-2" /> : <FaChevronDown className="ml-2" />}
+                </button>
               </div>
-              <div className="flex justify-center w-full">
-                <div className=" rounded-lg flex flex-col justify-between ">
-                  {/* Header Row */}
-                  <div className="grid grid-cols-4 gap-14 bg-gray-300 p-2 font-bold dark:bg-[rgba(255,255,255,0.1)] dark:bg-opacity-10 rounded-lg shadow-md max-w-full transition duration-300 dark:text-neutral-200">
-                    <div className="col-span-1 w-[100px] text-center">Count</div>
-                    <div className="col-span-1 w-[150px] text-center">Words</div>
-                    <div className="col-span-1 w-[150px] text-center">Total Amount Lost</div>
-                  </div>
+              {showCodemixWords && (
+                <div className="flex justify-center w-full">
+                  <div className=" rounded-lg flex flex-col justify-between ">
+                    {/* Header Row */}
+                    <div className="grid grid-cols-4 gap-14 bg-gray-300 p-2 font-bold dark:bg-[rgba(255,255,255,0.1)] dark:bg-opacity-10 rounded-lg shadow-md max-w-full transition duration-300 dark:text-neutral-200">
+                      <div className="col-span-1 w-[100px] text-center">Count</div>
+                      <div className="col-span-1 w-[150px] text-center">Words</div>
+                      <div className="col-span-1 w-[150px] text-center">Total Amount Lost</div>
+                    </div>
 
-                  {/* Data Rows */}
-                  {stats.codemixData.toSorted((a, b) => a.totalAmountLost - b.totalAmountLost).
-                    map((item, index) => (
-                      <div key={index} className="grid grid-cols-4 gap-14 py-4 mb-2 dark:text-neutral-300 rounded-lg shadow-md border-b border-gray-300">
-                        <div className="col-span-1 w-[100px] text-center">{item.count}</div>
-                        <div className="col-span-1 w-[150px] text-center flex items-center justify-center">
-                          <span className="inline-block flex-none size-2 items-center" style={{ backgroundColor: item.color }} />
-                          <span className="cap1stL">{item.words}</span>
+                    {/* Data Rows */}
+                    {stats.codemixData.toSorted((a, b) => a.totalAmountLost - b.totalAmountLost).
+                      map((item, index) => (
+                        <div key={index} className="grid grid-cols-4 gap-14 py-4 mb-2 dark:text-neutral-300 rounded-lg shadow-md border-b border-gray-300">
+                          <div className="col-span-1 w-[100px] text-center">{item.count}</div>
+                          <div className="col-span-1 w-[150px] text-center flex items-center justify-center">
+                            <span className="inline-block flex-none size-2 items-center" style={{ backgroundColor: item.color }} />
+                            <span className="cap1stL">{item.words}</span>
+                          </div>
+                          <div className="col-span-1 w-[150px] text-center">{formatCurrency(Math.abs(item.totalAmountLost))}</div>
                         </div>
-                        <div className="col-span-1 w-[150px] text-center">{formatCurrency(Math.abs(item.totalAmountLost))}</div>
-                      </div>
-                    ))}
+                      ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
           </div>
