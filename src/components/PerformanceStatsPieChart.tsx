@@ -100,7 +100,7 @@ const PerformanceStats: React.FC<Stats> = (stats) => {
               {/* Loss Amount by Category Card */}
               <div className="w-full max-w-full bg-white dark:bg-inherit dark:shadow-xl">
                 <h2 className="text-xl p-2 mb-2 font-semibold text-[#3CBA9F]">Loss Amount by Category</h2>
-                <div className="flex flex-col-reverse md:flex-row rounded-lg shadow-md p-4">
+                <div className="flex flex-col-reverse md:flex-row xl:flex-col-reverse rounded-lg shadow-md p-4">
                   <BarChart data={lossPieAmountData} />
                   <DoughnutChart data={lossPieAmountData} legendType="MANUAL" />
                 </div>
@@ -109,7 +109,7 @@ const PerformanceStats: React.FC<Stats> = (stats) => {
               {/* Frequency of Loss by Category Card */}
               <div className="w-full max-w-full bg-white dark:bg-inherit dark:shadow-xl">
                 <h2 className="text-xl p-2 mb-2 font-semibold text-[#3CBA9F]">Frequency of Loss by Category</h2>
-                <div className="flex flex-col-reverse md:flex-row rounded-lg shadow-md p-4">
+                <div className="flex flex-col-reverse xl:flex-col-reverse md:flex-row rounded-lg shadow-md p-4">
                   <BarChart data={lossPieCountData} />
                   <DoughnutChart data={lossPieCountData} legendType="MANUAL" />
                 </div>
@@ -126,27 +126,27 @@ const PerformanceStats: React.FC<Stats> = (stats) => {
               <div className="p-4 rounded-lg justify-center">
                 {stats.codemixData.toSorted((a, b) => a.totalAmountLost - b.totalAmountLost)
                   .map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex flex-col p-4 rounded-lg shadow-md border-b border-gray-300 transition-all duration-500"
-                  >
-                    {/* Small screen columns */}
-                    <div className="grid gap-4">
-                      <div>
-                        <h2 className="font-bold text-lg dark:text-neutral-200">Count</h2>
-                        <p className="dark:text-neutral-300">{item.count}</p>
-                      </div>
-                      <div>
-                        <h2 className="font-bold text-lg dark:text-neutral-200">Word</h2>
-                        <span className="dark:text-neutral-300">{item.words}</span>
-                      </div>
-                      <div>
-                        <h2 className="font-bold text-lg dark:text-neutral-200">Total Amount Lost</h2>
-                        <p className="dark:text-neutral-300">{formatCurrency(Math.abs(item.totalAmountLost))}</p>
+                    <div
+                      key={index}
+                      className="flex flex-col p-4 rounded-lg shadow-md border-b border-gray-300 transition-all duration-500"
+                    >
+                      {/* Small screen columns */}
+                      <div className="grid gap-4">
+                        <div>
+                          <h2 className="font-bold text-lg dark:text-neutral-200">Count</h2>
+                          <p className="dark:text-neutral-300">{item.count}</p>
+                        </div>
+                        <div>
+                          <h2 className="font-bold text-lg dark:text-neutral-200">Word</h2>
+                          <span className="dark:text-neutral-300">{item.words}</span>
+                        </div>
+                        <div>
+                          <h2 className="font-bold text-lg dark:text-neutral-200">Total Amount Lost</h2>
+                          <p className="dark:text-neutral-300">{formatCurrency(Math.abs(item.totalAmountLost))}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </div>
 
@@ -169,15 +169,15 @@ const PerformanceStats: React.FC<Stats> = (stats) => {
                   {/* Data Rows */}
                   {stats.codemixData.toSorted((a, b) => a.totalAmountLost - b.totalAmountLost).
                     map((item, index) => (
-                    <div key={index} className="grid grid-cols-4 gap-14 py-4 mb-2 dark:text-neutral-300 rounded-lg shadow-md border-b border-gray-300">
-                      <div className="col-span-1 w-[100px] text-center">{item.count}</div>
-                      <div className="col-span-1 w-[150px] text-center flex items-center justify-center">
-                        <span className="inline-block flex-none size-2 items-center" style={{ backgroundColor: item.color }} />
-                        <span className="cap1stL">{item.words}</span>
+                      <div key={index} className="grid grid-cols-4 gap-14 py-4 mb-2 dark:text-neutral-300 rounded-lg shadow-md border-b border-gray-300">
+                        <div className="col-span-1 w-[100px] text-center">{item.count}</div>
+                        <div className="col-span-1 w-[150px] text-center flex items-center justify-center">
+                          <span className="inline-block flex-none size-2 items-center" style={{ backgroundColor: item.color }} />
+                          <span className="cap1stL">{item.words}</span>
+                        </div>
+                        <div className="col-span-1 w-[150px] text-center">{formatCurrency(Math.abs(item.totalAmountLost))}</div>
                       </div>
-                      <div className="col-span-1 w-[150px] text-center">{formatCurrency(Math.abs(item.totalAmountLost))}</div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
             </div>
