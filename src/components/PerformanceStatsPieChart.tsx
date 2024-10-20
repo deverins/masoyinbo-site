@@ -55,6 +55,9 @@ const PerformanceStats: React.FC<Stats> = (stats) => {
   }, [stats]);
 
   const groupByAmountWon = useMemo(() => {
+    if (!stats.amountWonStats) {
+      return []; 
+    }
     return stats.amountWonStats.flatMap((data, index: number) => ([
       {
         name:`₦${data.amountWon.toLocaleString()}`,
