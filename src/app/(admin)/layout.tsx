@@ -1,4 +1,3 @@
-// src/app/(default)/layout.tsx
 import React from 'react';
 import { Instrument_Sans } from 'next/font/google';
 import '../globals.css';
@@ -11,11 +10,6 @@ import AuthNav from '@/components/UI/AuthNavigation';
 const instrumentSans = Instrument_Sans({
   subsets: ['latin'],
 });
-
-export const metadata = {
-  title: 'Másòyìnbó',
-  description: '',
-};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

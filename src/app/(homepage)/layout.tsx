@@ -13,7 +13,7 @@ const instrumentSans = Instrument_Sans({
 
 export const metadata = {
   title: 'Másòyìnbó',
-  description: '',
+  description: 'This is masoyinbo home page',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -41,3 +41,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+

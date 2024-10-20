@@ -1,14 +1,13 @@
-"use client";
-import React, { Suspense } from 'react'
-import ParticipationUsers from '@/components/Participants'
-import Loading from '@/components/UI/Loading'
+import React from 'react';
+import ParticipationUsersPage from './Participants';
 
-const page = () => {
-  return (
-    <Suspense fallback={<Loading />}>
-    <ParticipationUsers />
-  </Suspense>
-  )
-}
+export const metadata = {
+  title: 'Participants',
+  description: 'This is the participant page.',
+};
 
-export default page
+const Page = () => {
+  return <ParticipationUsersPage />;
+};
+
+export default Page;

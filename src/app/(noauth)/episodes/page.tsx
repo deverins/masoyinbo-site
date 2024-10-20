@@ -1,8 +1,13 @@
-import AllEpisodes from "@/components/episodes/Index";
+import React from 'react';
+import Episodes from './Episodes';
 
+export const metadata = {
+  title: 'Episodes',
+  description: 'This is the episode page.',
+};
 
-const Episodes: React.FC=()=>{
-  return ( <AllEpisodes />)
-}
+const Page = () => {
+  return <Episodes />;
+};
 
-export default Episodes;
+export default Page;

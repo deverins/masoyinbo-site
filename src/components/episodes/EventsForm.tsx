@@ -43,8 +43,6 @@ const EventsForm: React.FC<EpisodeEventsFormProps> = ({ onSave, episodeId, event
       }
 
       if (!event) {
-         console.log(payload);
-        
         const episodeEvent = await createEvent(episodeId as string, payload as EpisodeEvent)
         if (episodeEvent) {
           onSave(episodeEvent)

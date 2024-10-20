@@ -5,7 +5,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import EpisodeCollection from './EpisodeCollection';
 import Loading from '../UI/Loading';
-import Custom500 from '@/app/(homepage)/error-page/page';
+import Custom500 from '@/app/(homepage)/error-page/Error';
 
 const AllEpisodes: React.FC = () => {
   const [episodes, setEpisodes] = useState<Episode[]>([]);

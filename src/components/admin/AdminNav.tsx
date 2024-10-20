@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import ThemeToggle from "../UI/ThemeToggle";
 import logo from "/public/logo.png";
-import { FiEdit, FiTrash2, FiLogOut, FiPlusCircle, FiEdit3, FiMenu } from "react-icons/fi";
+import { FiLogOut, FiPlusCircle, FiMenu } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/AuthContext";
 import { GrUserAdmin } from "react-icons/gr";
