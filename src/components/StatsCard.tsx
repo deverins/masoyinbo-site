@@ -1,10 +1,18 @@
+import { useMemo } from 'react';
+import Link from 'next/link';
+
+import { CheckCircleIcon, PlayIcon, QuestionMarkCircleIcon, UserGroupIcon } from '@heroicons/react/16/solid';
+
 import { Stats } from '@/types';
 import { formatCurrency } from '@/utils/functions';
-import { CheckCircleIcon, PlayIcon, QuestionMarkCircleIcon, UserGroupIcon } from '@heroicons/react/16/solid';
-import Link from 'next/link';
 
 const StatsCard: React.FC<Stats> = (stats) => {
 
+  const codeMixAmount = useMemo(()=>{
+    const codemixData = stats.lossTypeData.find(data=>data.type == 'CODE_MIX')
+    if(!codemixData) return 0;
+    return Math.abs(codemixData.totalAmountLost)
+  }, [stats])
 
   return (
     <div className="mt-16 px-4 lg:px-20 md:px-10">
@@ -89,8 +97,8 @@ const StatsCard: React.FC<Stats> = (stats) => {
             <CheckCircleIcon className="h-6 w-6 mr-2 text-gray-400 dark:text-gray-300" />
             Amount Lost to Codemix
           </h5>
-          <p className="text-lg md:text-xl  font-semibold text-gray-500 dark:text-gray-100 mt-2">
-            {formatCurrency(Math.abs(stats.codemixData[0]?.totalAmountLost || 0))}
+          <p className="text-lg md:text-xl tracking-wide font-semibold text-gray-500 dark:text-gray-100 mt-2">
+            {formatCurrency(codeMixAmount)}
           </p>
         </div>
       </div>

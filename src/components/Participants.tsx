@@ -3,10 +3,12 @@ import axios from "axios";
 import { API_URL } from '@/constants/api';
 import { Participant } from "@/types";
 import { useSearchParams } from "next/navigation";
+import Loading from "./UI/Loading";
 
 const ParticipationUsers = () => {
   const [data, setData] = useState<Participant[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const searchParams = useSearchParams();
   const status = searchParams.get('status');
 
@@ -21,69 +23,61 @@ const ParticipationUsers = () => {
         } else {
           setError("No participants found.");
         }
-      } catch (error) {
-        setError("Error fetching participants.");
-        console.error("Error fetching request pool", error);
+      } catch (err) {
+        setError('Failed to fetch stats');
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchRequestPool();
   }, [status]);
 
+  if (loading) return <div><Loading /></div>;
 
   return (
     <main className="p-4">
-      <h1 className="text-2xl font-bold text-center mb-8 mt-8 dark:text-neutral-200">All  {status} Participant(s)</h1>
+      <h1 className="text-2xl font-bold text-center mb-8 mt-8 dark:text-neutral-200">
+        All Participant(s)
+      </h1>
 
       {/* Mobile and Tablet View (870px and below) */}
       <div className="block max-[870px]:block custom:hidden">
-        <div className="flex flex-col gap-6">
+        <div className="grid gap-6">
           {data.length ? (
             data.map((participant) => (
               <div
                 key={participant._id}
-                className="flex flex-col p-4 bg-gray-100 rounded-lg shadow-md transition-all duration-500 hover:bg-gray-200 dark:bg-[rgba(255,255,255,0.1)] dark:text-neutral-200 dark:backdrop-blur-lg dark:bg-opacity-10"
+                className="grid gap-4 p-4 bg-gray-100 rounded-lg shadow-md transition-all duration-500 hover:bg-gray-200 dark:bg-[rgba(255,255,255,0.1)] dark:text-neutral-200 dark:backdrop-blur-lg dark:bg-opacity-10"
               >
-                {/* Name and Status in one row for mobile */}
-                <div className="flex justify-between items-center w-full">
+                {/* Grid layout for mobile */}
+                <div className="grid grid-cols-2 gap-4">
                   <div>
                     <h2 className="font-semibold">Name</h2>
-                    <p>{participant.fullName}</p>
+                    <p className="break-words">{participant.fullName}</p>
                   </div>
-                  {/* Status */}
-                  <div className="text-right">
-                    <h2 className="font-semibold">Status</h2>
-                    <p
-                      className={`font-bold ${participant.status === 'COMPLETED'
-                          ? 'text-green-500'
-                          : participant.status === 'PENDING'
-                            ? 'text-red-500'
-                            : 'text-gray-500'
-                        }`}
-                    >
-                      {participant.status}
-                    </p>
+                  <div>
+                    <h2 className="font-semibold">MobileNum</h2>
+                    <p className="break-words">{participant.mobileNumber}</p>
                   </div>
-
                 </div>
 
-                {/* Other details below for mobile */}
-                <div className="flex flex-col gap-4 bg-gray-100 border border-gray-300 shadow-md  hover:bg-gray-200 dark:bg-[rgba(255,255,255,0.1)] dark:text-neutral-200 dark:backdrop-blur-lg dark:bg-opacity-10 p-3 rounded-lg w-full mt-4 pl-10">
-                  <div className="flex gap-1">
-                    <h2 className="font-semibold">Email:</h2>
-                    <p>{participant.email}</p>
+                <div className="grid grid-cols-2 gap-4 bg-gray-100 border border-gray-300 shadow-md hover:bg-gray-200 dark:bg-primary-light dark:text-neutral-200 dark:bg-opacity-10 p-3 rounded-lg mt-4">
+                  <div>
+                    <h2 className="font-semibold">Email</h2>
+                    <p className="break-words">{participant.email}</p>
                   </div>
-                  <div className="flex gap-1">
-                    <h2 className="font-semibold">Gender:</h2>
-                    <p>{participant.gender}</p>
+                  <div>
+                    <h2 className="font-semibold">Gender</h2>
+                    <p className="break-words">{participant.gender}</p>
                   </div>
-                  <div className="flex gap-1">
-                    <h2 className="font-semibold">State:</h2>
-                    <p>{participant.state}</p>
+                  <div>
+                    <h2 className="font-semibold">State</h2>
+                    <p className="break-words">{participant.state}</p>
                   </div>
-                  <div className="flex gap-1">
-                    <h2 className="font-semibold">Social Media Handle:</h2>
-                    <p>{participant.socialMediaHandle}</p>
+                  <div>
+                    <h2 className="font-semibold">Social Media Handle</h2>
+                    <p className="break-words">{participant.socialMediaHandle}</p>
                   </div>
                 </div>
               </div>
@@ -94,58 +88,44 @@ const ParticipationUsers = () => {
         </div>
       </div>
 
-      {/* Desktop View (Above 934.44px) */}
+      {/* Desktop View (Above 870px) */}
       <div className="hidden custom:block">
-        <div className="flex flex-col gap-6">
+        <div className="grid gap-6">
+          {/* Header Row */}
+          <div className="grid grid-cols-9 gap-8 bg-gray-300 p-4 font-bold dark:bg-[rgba(255,255,255,0.1)] dark:bg-opacity-10 rounded-lg shadow-md max-w-full transition duration-300 dark:text-neutral-200">
+            <div className="col-span-2 text-center">Name</div>
+            <div className="col-span-2 text-center">Email</div>
+            <div className="text-center">Gender</div>
+            <div className="text-center">State</div>
+            <div className="col-span-2 text-center">Social Media</div>
+            <div className="text-center">Mobile Number</div>
+          </div>
+
+          {/* Participant Data Rows */}
           {data.length ? (
             data.map((participant) => (
               <div
                 key={participant._id}
-                className="flex flex-col md:flex-row lg:justify-around md:justify-between md:items-center p-4 bg-gray-100 border dark:bg-[rgba(255,255,255,0.1)] dark:text-neutral-200 dark:backdrop-blur-lg dark:bg-opacity-10 rounded-lg border-gray-300 shadow-md  hover:bg-gray-200"
+                className="grid grid-cols-9 gap-8 p-4 bg-gray-100 border dark:bg-[rgba(255,255,255,0.1)] dark:text-neutral-200 dark:backdrop-blur-lg dark:bg-opacity-10 rounded-lg border-gray-300 shadow-md hover:bg-gray-200"
               >
-                {/* Name and Email */}
-                <div className="flex flex-col md:flex-row gap-20">
-                  <div>
-                    <h2 className="font-semibold">Name</h2>
-                    <p>{participant.fullName}</p>
-                  </div>
-                  <div>
-                    <h2 className="font-semibold">Email</h2>
-                    <p>{participant.email}</p>
-                  </div>
+                <div className="col-span-2">
+                  <p className="break-words">{participant.fullName}</p>
                 </div>
-
-                {/* Gender, State, Social Media Handle */}
-                <div className="flex flex-col md:flex-row gap-8">
-                  <div>
-                    <h2 className="font-semibold">Gender</h2>
-                    <p>{participant.gender}</p>
-                  </div>
-                  <div>
-                    <h2 className="font-semibold">State</h2>
-                    <p>{participant.state}</p>
-                  </div>
-                  <div>
-                    <h2 className="font-semibold">Social Media Handle</h2>
-                    <p>{participant.socialMediaHandle}</p>
-                  </div>
+                <div className="col-span-2">
+                  <p className="break-words">{participant.email}</p>
                 </div>
-
-                {/* Status */}
-                <div>
-                  <h2 className="font-semibold">Status</h2>
-                  <p
-                    className={`font-bold ${participant.status === 'COMPLETED'
-                        ? 'text-green-500'
-                        : participant.status === 'PENDING'
-                          ? 'text-red-500'
-                          : 'text-gray-500'
-                      }`}
-                  >
-                    {participant.status}
-                  </p>
+                <div className="text-center">
+                  <p className="break-words">{participant.gender}</p>
                 </div>
-
+                <div className="text-center">
+                  <p className="break-words">{participant.state}</p>
+                </div>
+                <div className="col-span-2">
+                  <p className="break-words text-center">{participant.socialMediaHandle}</p>
+                </div>
+                <div className="text-center">
+                  <p className="break-words">{participant.mobileNumber}</p>
+                </div>
               </div>
             ))
           ) : (

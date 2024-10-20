@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import ThemeToggle from "./UI/ThemeToggle";
+import ThemeToggle from "../UI/ThemeToggle";
 import logo from "/public/logo.png";
 import { FiEdit, FiTrash2, FiLogOut, FiPlusCircle, FiEdit3, FiMenu } from "react-icons/fi";
 import { useRouter } from "next/navigation";
@@ -76,7 +76,7 @@ const AdminNav = () => {
 
               {/* Dropdown menu, only shown when isMenuOpen is true */}
               {isMenuOpen && (
-                <div className="absolute transform -translate-x-1/2 mt-2 w-[184px] bg-white text-black rounded-lg shadow-lg dark:bg-primary-lightBlack dark:backdrop-blur-lg dark:bg-opacity-5 dark:text-neutral-200">
+                <div className="absolute transform -translate-x-1/2 mt-2 w-[184px] bg-white text-black rounded-lg shadow-lg dark:shadow-xl dark:bg-primary-lightBlack dark:backdrop-blur-lg dark:bg-opacity-4 dark:bg-slate-900 dark:text-neutral-200">
                   <ul className="py-2">
                     <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
                       <GrUserAdmin className="mr-2" />
@@ -85,14 +85,6 @@ const AdminNav = () => {
                     <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
                       <FiPlusCircle className="mr-2" />
                       <Link href="/create-episode">Create Episode</Link>
-                    </li>
-                    <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
-                      <FiEdit className="mr-2" />
-                      <Link href={`/episodes/${episodeId}`}>Edit Episode Event</Link>
-                    </li>
-                    <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
-                      <FiTrash2 className="mr-2" />
-                      <Link href={`/episodes/${episodeId}`}>Delete Episode Event</Link>
                     </li>
                     <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
                       <FiLogOut className="mr-2" />

@@ -4,11 +4,12 @@ import axios from 'axios';
 import React, { Suspense } from 'react';
 import Loading from '@/components/UI/Loading';
 import Custom500 from './error-page/page';
+import { Stats } from '../../types/index';
 
 const page = async () => {
   try {
-    const response = await axios.get(`${API_URL}/api/get-performance-stats`);
-    const stats = response?.data?.stats || []; 
+    const {data} = await axios.get(`${API_URL}/api/get-performance-stats`);
+    const stats = (data?.stats || {}) as Stats; 
 
     return (
       <Suspense fallback={<Loading />}>

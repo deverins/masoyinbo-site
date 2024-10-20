@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import { useAuth } from '@/hooks/AuthContext'; 
-import AdminNav from '@/components/AdminNav';
+import AdminNav from '@/components/admin/AdminNav';
 import Navbar from '@/components/Navbar';
 
 const AuthNav: React.FC = () => {

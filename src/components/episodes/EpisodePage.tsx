@@ -9,9 +9,10 @@ import { Episode, EpisodeEvent, EventActionSignal } from "@/types";
 import axios from "axios";
 import { API_URL } from "@/constants/api";
 import { formatCurrency, formatDate } from "@/utils/functions";
-import { PlusIcon } from "@heroicons/react/16/solid";
+import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/16/solid";
 import EventsForm from "./EventsForm";
 import Modal from "../Modal";
+import { MdCreate } from "react-icons/md";
 
 type EpisodeResponse = {
   events: EpisodeEvent[],
@@ -134,6 +135,18 @@ const EpisodePage: React.FC = () => {
               Episode Date: {formatDate(episodeDetails.episode.episodeDate ?? '')}
             </div>
           </div>
+        </div>
+        <div className="mt-4 w-full max-w-[560px] ml-20">
+        <div className="flex gap-2 mx-4 justify-center mt-4">
+        <button className="bg-blue-500 text-white hover:bg-blue-600 p-2 rounded flex items-center justify-center">
+          <PencilIcon className="h-5 w-5" />
+            Edit Episode
+        </button>
+        <button className="bg-red-500 text-white rounded hover:bg-red-600 p-2 flex items-center justify-center">
+          <TrashIcon className="h-5 w-5" />
+            Delete Epiosde
+        </button>
+      </div>
         </div>
         <h3 className="text-center font-bold text-xl dark:text-neutral-200">Episode Events</h3>
         {isAdmin && (

@@ -33,6 +33,7 @@ export type ModalActionSignal = {
 }
 
 export interface Participant {
+  mobileNumber: string;
   _id: string;
   fullName: string;
   email: string;
@@ -74,6 +75,10 @@ export type CodemixWordsTableProps  = {
   words: string,
   color: string,
 }
+export type groupByAmountProps  = {
+  count: number,
+  amountWon:number;
+}
 export type Stats = {
   totalEpisodes: number;
   totalAmountWon: number;
@@ -87,6 +92,7 @@ export type Stats = {
   totalWrongAnswers: number;
   recentEpisodes: Episode[]
   codemixData: CodemixWordsTableProps [];
+  amountWonStats: groupByAmountProps[]
   lossTypeData: LossType[];
 }
 

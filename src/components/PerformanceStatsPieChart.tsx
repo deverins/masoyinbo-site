@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
-import { lossCategoryColors } from '@/constants/api';
+import { groupByAmountColors, lossCategoryColors } from '@/constants/api';
 import { LossTypeKeys, Stats } from '@/types';
 import DoughnutChart from './Doughnut';
 import BarChart from './BarChart';
@@ -9,7 +9,6 @@ import { formatCurrency, formatType } from '@/utils/functions';
 const PerformanceStats: React.FC<Stats> = (stats) => {
   const [showStats, setShowStats] = useState(false);
   const [showCodemixWords, setshowCodemixWords] = useState(false);
-
   const lossPieAmountData = useMemo(() => {
     return stats.lossTypeData.map(data => ({
       name: data.type,
@@ -55,6 +54,17 @@ const PerformanceStats: React.FC<Stats> = (stats) => {
     }
   }, [stats]);
 
+  const groupByAmountWon = useMemo(() => {
+    return stats.amountWonStats.flatMap((data, index: number) => ([
+      {
+        name:`₦${data.amountWon.toLocaleString()}`,
+        value: data.count, 
+        color: groupByAmountColors[index % groupByAmountColors.length],
+        legendLabel: `₦${data.amountWon.toLocaleString()} (${data.count})`
+      },
+    ]));
+  }, [stats]);
+  
   const lossPieCountData = useMemo(() => {
     return stats.lossTypeData.map(data => ({
       name: data.type,
@@ -63,7 +73,7 @@ const PerformanceStats: React.FC<Stats> = (stats) => {
       legendLabel: `${formatType(data.type)} (${data.count})`,
     }));
   }, [stats]);
-
+  
   const handleToggle = () => setShowStats(!showStats);
   const handleToggleCodemixWords = () => setshowCodemixWords(!showCodemixWords);
 
@@ -114,6 +124,15 @@ const PerformanceStats: React.FC<Stats> = (stats) => {
                 <div className="flex flex-col-reverse xl:flex-col-reverse md:flex-row rounded-lg shadow-md p-4">
                   <BarChart data={lossPieCountData} />
                   <DoughnutChart data={lossPieCountData} legendType="MANUAL" />
+                </div>
+              </div>
+              
+              {/* Frequency by Amount Won */}
+              <div className="w-full max-w-full bg-white dark:bg-inherit dark:shadow-xl">
+                <h2 className="text-xl p-2 mb-2 font-semibold text-[#3CBA9F]"> Number of Winners by Amount</h2>
+                <div className="flex flex-col-reverse md:flex-row xl:flex-col-reverse rounded-lg shadow-md p-4">
+                  <BarChart data={groupByAmountWon} />
+                  <DoughnutChart data={groupByAmountWon} legendType="MANUAL" />
                 </div>
               </div>
             </div>
