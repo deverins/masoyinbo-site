@@ -13,6 +13,7 @@ import { formatCurrency, formatDate } from "@/utils/functions";
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/16/solid";
 import EventsForm from "./EventsForm";
 import Modal from "../Modal";
+import NotFound from "../NotFound";
 
 type EpisodeResponse = {
   events: EpisodeEvent[],
@@ -172,7 +173,7 @@ const EpisodePage: React.FC = () => {
       </>
       :
       <div className="text-red-500 text-center mt-4">
-        {error ? error : 'No episode details available.'}
+        {error ? error : <div><NotFound /></div>}
       </div>
     }
   </>)

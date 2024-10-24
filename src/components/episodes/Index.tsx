@@ -7,6 +7,7 @@ import EpisodeCollection from './EpisodeCollection';
 import Loading from '../UI/Loading';
 import Custom500 from '@/app/(homepage)/error-page/Error';
 
+
 const AllEpisodes: React.FC = () => {
   const [episodes, setEpisodes] = useState<Episode[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
