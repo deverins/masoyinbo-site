@@ -32,9 +32,9 @@ const AllEpisodes: React.FC = () => {
     return <Loading />;
   }
 
-  if (error) {
-    return <Custom500 />;
-  }
+  // if (error) {
+  //   return <Custom500 />;
+  // }
 
   return (
     <div className="mt-14 pb-5 mx-2">
