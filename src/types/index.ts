@@ -1,5 +1,5 @@
 export interface Episode {
-  _id?: string | undefined;
+  _id?: string;
   createdBy?: string;
   createdAt?: Date;
   episodeLink: string;
