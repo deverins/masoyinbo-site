@@ -9,7 +9,7 @@ import { API_URL } from "@/constants/api";
 import { episodeSchema } from "@/validationSchema/episodeSchema";
 import { useAuth } from "@/hooks/AuthContext";
 import Dialogbox from '@/components/DialogBox';
-import {  EpisodeFormProps, EpisodeSec, Participant } from "@/types";
+import { EpisodeFormProps, EpisodeSec, Participant } from "@/types";
 
 export interface Participants {
   _id: string;
@@ -40,6 +40,20 @@ export const CreateEpisodeForm: React.FC<EpisodeFormProps> = ({ onSaveEpisode, e
     fetchPendingParticipants();
   }, [participantsURL]);
 
+  const updateEpisode = async (id: string, payload: Partial<EpisodeSec>) => {
+    try {
+      const { data } = await axios.put(`${API_URL}/api/episode/${id}`, payload);
+      return true; // return true to indicate success
+    } catch (error: any) {
+      if (error.response?.status === 500) {
+        toast.error(`Episode number ${payload.episodeNumber} already exists. Please choose a different episode number.`);
+      } else {
+        setError(error?.response?.data?.message || "Failed to update episode");
+      }
+      return false; // return false to indicate an error occurred
+    }
+  };
+
   const formik = useFormik({
     initialValues: {
       episodeLink: editEpisode?.episodeLink ?? "",
@@ -63,8 +77,10 @@ export const CreateEpisodeForm: React.FC<EpisodeFormProps> = ({ onSaveEpisode, e
       try {
         if (editEpisode && episodeId) {
           // Update existing episode
-          await updateEpisode(episodeId, { ...values, createdBy: userId });
-          toast.success("Episode updated successfully");
+          const isSuccess = await updateEpisode(episodeId, { ...values, createdBy: userId });
+          if (isSuccess) {
+            toast.success("Episode updated successfully");
+          }
         } else {
           // Create new episode
           const response = await axios.post(createEpisodeURL, { ...values, createdBy: userId });
@@ -74,23 +90,18 @@ export const CreateEpisodeForm: React.FC<EpisodeFormProps> = ({ onSaveEpisode, e
           toast.success("Episode created successfully");
         }
         resetForm();
-        onSaveEpisode({ ...values, createdBy: userId, availableAmountToWin: values.availableAmountToWin ?? 0, episodeNumber: values.episodeNumber ?? 0, });
+        onSaveEpisode({
+          ...values,
+          createdBy: userId,
+          availableAmountToWin: values.availableAmountToWin ?? 0,
+          episodeNumber: values.episodeNumber ?? 0,
+        });
       } catch (error: any) {
-        toast.error(error?.response?.data?.message || "An unexpected error occurred");
       } finally {
         setSubmitting(false);
       }
     },
   });
-
-  const updateEpisode = async (id: string, payload: Partial<EpisodeSec>) => {
-    try {
-      const { data } = await axios.put(`${API_URL}/api/episode/${id}`, payload);
-      return data.data;
-    } catch (error: any) {
-      setError(error?.response?.data?.message || "Failed to update episode");
-    }
-  };
 
 
   const handleParticipantSelect = (participant: Participant) => {
@@ -249,7 +260,7 @@ export const CreateEpisodeForm: React.FC<EpisodeFormProps> = ({ onSaveEpisode, e
 
 const ProtectedCreateEpisodeForm = () => {
   const { withAdminAuth } = useAuth();
-  const onSaveEpisode = (episode: EpisodeSec) => {};
+  const onSaveEpisode = (episode: EpisodeSec) => { };
   const episodeId = undefined;
   const editEpisode = undefined;
   const ProtectedForm = withAdminAuth(() => (
