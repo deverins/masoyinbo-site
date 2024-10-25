@@ -9,7 +9,7 @@ import { API_URL } from "@/constants/api";
 import { episodeSchema } from "@/validationSchema/episodeSchema";
 import { useAuth } from "@/hooks/AuthContext";
 import Dialogbox from '@/components/DialogBox';
-import { Episode, EpisodeFormProps, Participant } from "@/types";
+import {  EpisodeFormProps, EpisodeSec, Participant } from "@/types";
 
 export interface Participants {
   _id: string;
@@ -83,7 +83,7 @@ export const CreateEpisodeForm: React.FC<EpisodeFormProps> = ({ onSaveEpisode, e
     },
   });
 
-  const updateEpisode = async (id: string, payload: Partial<Episode>) => {
+  const updateEpisode = async (id: string, payload: Partial<EpisodeSec>) => {
     try {
       const { data } = await axios.put(`${API_URL}/api/episode/${id}`, payload);
       return data.data;
@@ -249,7 +249,7 @@ export const CreateEpisodeForm: React.FC<EpisodeFormProps> = ({ onSaveEpisode, e
 
 const ProtectedCreateEpisodeForm = () => {
   const { withAdminAuth } = useAuth();
-  const onSaveEpisode = (episode: Episode) => {};
+  const onSaveEpisode = (episode: EpisodeSec) => {};
   const episodeId = undefined;
   const editEpisode = undefined;
   const ProtectedForm = withAdminAuth(() => (

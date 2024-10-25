@@ -1,4 +1,4 @@
-export interface Episode {
+export interface EpisodeSec {
   _id?: string;
   createdBy?: string;
   createdAt?: Date;
@@ -10,7 +10,17 @@ export interface Episode {
   participantFullName?: string;
   episodeNumber: number;
 }
-
+export interface Episode {
+  _id: string;
+  episodeLink: string;
+  episodeDate: string;
+  amountWon: number;
+  availableAmountToWin: number;
+  participant_id: string;
+  createdBy: string;
+  createdAt: string;
+  episodeNumber: number
+}
 export interface EpisodeEvent {
   _id: string;
   question: string;
@@ -66,10 +76,10 @@ export type EpisodeResponse = {
 }
 
 export interface EpisodeFormProps {
-  onSaveEpisode: (episode: Episode) => void;
+  onSaveEpisode: (episode: EpisodeSec) => void;
   episodeId?: string;
-  editEpisode?: Episode;
-  episode?: Episode;
+  editEpisode?: EpisodeSec;
+  episode?: EpisodeSec;
 }
 
 export interface EpisodeEventsFormProps {
