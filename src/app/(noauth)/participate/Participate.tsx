@@ -68,7 +68,7 @@ const ParticipationForm: React.FC = () => {
       try {
         setLoading(true);
         await axios.post(URL, restValues);
-        navigate.push('/request-pool')
+        navigate.push('/')
         toast.success("User registered successfully.");
         resetForm();
       } catch (error) {

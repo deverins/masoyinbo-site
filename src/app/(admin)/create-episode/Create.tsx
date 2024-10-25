@@ -1,36 +1,31 @@
-"use client"
-import React from 'react'
-import { useState, useEffect } from "react";
+"use client";
+import React, { useEffect, useState } from "react";
+import { useRouter } from 'next/navigation';
 import { useFormik } from "formik";
 import axios from "axios";
+import toast from "react-hot-toast";
+
 import { API_URL } from "@/constants/api";
 import { episodeSchema } from "@/validationSchema/episodeSchema";
-import toast from "react-hot-toast";
 import { useAuth } from "@/hooks/AuthContext";
-import { useRouter, useSearchParams } from 'next/navigation';
+import Dialogbox from '@/components/DialogBox';
+import { Episode, EpisodeFormProps, Participant } from "@/types";
 
-interface Participant {
-  _id: string;
-  fullName: string;
-  status: string;
-  hasEpisode: boolean;
-}
-
-const CreateEpisodeForm = () => {
-  const [participants, setParticipants] = useState<Participant[]>([]);
+export const CreateEpisodeForm: React.FC<EpisodeFormProps> = ({ onSaveEpisode, episodeId, editEpisode }) => {
+  const [data, setData] = useState<Participant[]>([]);
+  const [selectedParticipant, setSelectedParticipant] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const navigate = useRouter();
-  const searchParams = useSearchParams()
-  const status = searchParams.get('status')
 
-  const participantsURL = `${API_URL}/api/get-participants?status=${status}`;
+  const participantsURL = `${API_URL}/api/get-participants?status=PENDING`;
   const createEpisodeURL = `${API_URL}/api/episodes`;
 
   useEffect(() => {
     const fetchPendingParticipants = async () => {
       try {
-        const participantData = await axios.get(participantsURL);
-        setParticipants(participantData.data.participants);
+        const { data } = await axios.get(participantsURL);
+        setData(data.data);
       } catch (error) {
         toast.error("Failed to load participants");
       }
@@ -41,17 +36,15 @@ const CreateEpisodeForm = () => {
 
   const formik = useFormik({
     initialValues: {
-      episodeLink: "",
-      participant_id: "",
-      amountWon: 0,
-      availableAmountToWin: "",
-      episodeDate: "",
-      episodeNumber: ""
+      episodeLink: editEpisode?.episodeLink ?? "",
+      participant_id: editEpisode?.participant_id ?? "",
+      amountWon: editEpisode?.amountWon ?? 0,
+      availableAmountToWin: editEpisode?.availableAmountToWin,
+      episodeDate: editEpisode?.episodeDate ?? "",
+      episodeNumber: editEpisode?.episodeNumber,
     },
     validationSchema: episodeSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
-      setError(null);
-
       const storedUser = localStorage.getItem("user");
       const userId = storedUser ? JSON.parse(storedUser)._id : null;
       if (!userId) {
@@ -62,15 +55,20 @@ const CreateEpisodeForm = () => {
       }
 
       try {
-        const response = await axios.post(createEpisodeURL, {
-          ...values,
-          createdBy: userId,
-        });
-
-        const episodeId = response.data.episode._id;
-        localStorage.setItem("episodeId", episodeId);
+        if (editEpisode && episodeId) {
+          // Update existing episode
+          await updateEpisode(episodeId, { ...values, createdBy: userId });
+          toast.success("Episode updated successfully");
+        } else {
+          // Create new episode
+          const response = await axios.post(createEpisodeURL, { ...values, createdBy: userId });
+          const newEpisodeId = response.data.episode._id;
+          localStorage.setItem("episodeId", newEpisodeId);
+          navigate.push(`/episodes/${newEpisodeId}`);
+          toast.success("Episode created successfully");
+        }
         resetForm();
-        navigate.push(`/episodes/${episodeId}`);
+        onSaveEpisode({ ...values, createdBy: userId, availableAmountToWin: values.availableAmountToWin ?? 0, episodeNumber: values.episodeNumber ?? 0, });
       } catch (error: any) {
         toast.error(error?.response?.data?.message || "An unexpected error occurred");
       } finally {
@@ -78,15 +76,35 @@ const CreateEpisodeForm = () => {
       }
     },
   });
+
+  const updateEpisode = async (id: string, payload: Partial<Episode>) => {
+    try {
+      const { data } = await axios.put(`${API_URL}/api/episode/${id}`, payload);
+      return data.data;
+    } catch (error: any) {
+      setError(error?.response?.data?.message || "Failed to update episode");
+    }
+  };
+
+
+  const handleParticipantSelect = (participant: Participant) => {
+    setSelectedParticipant(participant.fullName);
+    formik.setFieldValue('participant_id', participant._id);
+    setDialogOpen(false);
+  };
+
   return (
     <>
       <main className="flex justify-center items-center py-10 px-4">
-        <div className=" w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl transition-all duration-300 shadow p-6 rounded">
-          <h1 className="text-2xl font-bold mb-6 dark:text-gray-400 text-center">Create New Episode</h1>
+        <div className="w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl transition-all duration-300 shadow p-6 rounded">
+          <h1 className="text-2xl font-bold mb-6 dark:text-gray-400 text-center">
+            {editEpisode ? "Update Episode" : "Create New Episode"}
+          </h1>
 
           {error && <div className="text-red-500">{error}</div>}
 
           <form onSubmit={formik.handleSubmit} className="space-y-4">
+            {/* Episode Link Input */}
             <div>
               <label htmlFor="episodeLink" className="block text-base font-medium dark:text-gray-400">
                 Episode Link
@@ -105,30 +123,43 @@ const CreateEpisodeForm = () => {
               ) : null}
             </div>
 
-            <div>
-              <label htmlFor="participant_id" className="block text-base font-medium dark:text-gray-400">
-                Participant
-              </label>
-              {/* <select
-                name="participant_id"
-                value={formik.values.participant_id}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                className="mt-1 py-4 block w-full p-2 event-form-input"
-              >
-                <option value="">Select participant</option>
-                {participants
-                  .filter((participant) => !participant.hasEpisode)
-                  .map((participant) => (
-                    <option key={participant._id} value={participant._id}>
-                      {participant.fullName}
-                    </option>
-                  ))}
-              </select> */}
-              {formik.errors.participant_id && formik.touched.participant_id ? (
+            {/* Participant Selection */}
+            <div id='participant_id' className='relative'>
+              <label className="block text-base font-medium dark:text-gray-400 mb-2 mt-4">Participant</label>
+              <input
+                value={selectedParticipant}
+                type="text"
+                readOnly
+                className='w-full py-4 p-2 event-form-input'
+                placeholder="Select Participant"
+                onClick={() => { setDialogOpen(true); }}
+              />
+              {dialogOpen && (
+                <Dialogbox triggerDomId="participant_id" positions={{ ySide: 'bottom' }} closeOnClick
+                  className='text-neutral-700 dark:text-neutral-200 dark:bg-slate-900
+                    border dark:border-slate-700 right-1/2 w-full shadow translate-x-1/2'
+                >
+                  <ul className="dark:text-neutral-200 w-full bg-white rounded-lg shadow-lg dark:bg-slate-900">
+                    {data.filter(participant => !participant.hasEpisode).map(participant => (
+                      <li key={participant._id}>
+                        <button
+                          type="button"
+                          onClick={() => handleParticipantSelect(participant)}
+                          className="w-full text-left p-2 hover:bg-gray-200 rounded-lg dark:hover:bg-gray-700"
+                        >
+                          {participant.fullName}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </Dialogbox>
+              )}
+              {formik.errors.participant_id && formik.touched.participant_id && (
                 <div className="text-red-500 text-base">{formik.errors.participant_id}</div>
-              ) : null}
+              )}
             </div>
+
+            {/* Remaining form inputs */}
 
             <div>
               <label htmlFor="availableAmountToWin" className="block text-base font-medium dark:text-gray-400">
@@ -193,13 +224,14 @@ const CreateEpisodeForm = () => {
               ) : null}
             </div>
 
+
             <div>
               <button
                 type="submit"
                 className="w-full py-4 text-lg font-bold bg-primary-light text-white p-2 rounded-md"
                 disabled={formik.isSubmitting}
               >
-                {formik.isSubmitting ? "Creating..." : "Create Episode"}
+                {formik.isSubmitting ? (editEpisode ? "Updating..." : "Creating...") : (editEpisode ? "Update Episode" : "Create Episode")}
               </button>
             </div>
           </form>
@@ -211,7 +243,13 @@ const CreateEpisodeForm = () => {
 
 const ProtectedCreateEpisodeForm = () => {
   const { withAdminAuth } = useAuth();
-  const ProtectedForm = withAdminAuth(CreateEpisodeForm);
+  const onSaveEpisode = (episode: Episode) => {};
+  const episodeId = undefined;
+  const editEpisode = undefined;
+  const ProtectedForm = withAdminAuth(() => (
+    <CreateEpisodeForm onSaveEpisode={onSaveEpisode} episodeId={episodeId} editEpisode={editEpisode} />
+  ));
+
   return <ProtectedForm />;
 };
 

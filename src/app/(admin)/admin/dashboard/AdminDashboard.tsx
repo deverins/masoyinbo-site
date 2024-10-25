@@ -3,21 +3,20 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import axios from 'axios';
-import { ClipboardDocumentCheckIcon, PlayIcon,  UserGroupIcon } from '@heroicons/react/16/solid';
+import { ClipboardDocumentCheckIcon, PlayIcon, UserGroupIcon } from '@heroicons/react/16/solid';
 import { MdVerifiedUser } from 'react-icons/md';
 
 import { API_URL } from '@/constants/api';
 import { Stats } from '@/types';
 import Loading from '@/components/UI/Loading';
 import { FiPlusCircle } from 'react-icons/fi';
-import Head from 'next/head';
 
 const AdminDashboard: React.FC = () => {
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [userDetails, setUserDetails] = useState<any>(null);
-  
+
   useEffect(() => {
     // Fetch stats from the API
     const fetchStats = async () => {
@@ -46,19 +45,15 @@ const AdminDashboard: React.FC = () => {
   if (loading) return <div><Loading /></div>;
   return (
     <>
-    <Head>
-        <title>Dashbaord</title>
-        <meta name="description" content="This is the home page of my website." />
-      </Head>
       <div className='pt-16 px-4 lg:px-18 md:px-10'>
         <div className="flex gap-2 mx-4 justify-end pt-4">
-                  <button className="bg-teal-400 text-white dark:bg-teal-600 hover:bg-teal-600 p-2 rounded flex items-center justify-center">
-                    <FiPlusCircle className="h-5 w-5 mr-1" /> 
-                    <Link href={''}>
-                      Create Episode
-                    </Link>
-                  </button>
-                </div>
+          <button className="bg-teal-400 text-white dark:bg-teal-600 hover:bg-teal-600 p-2 rounded flex items-center justify-center">
+            <FiPlusCircle className="h-5 w-5 mr-1" />
+            <Link href={'/create-episode'}>
+              Create Episode
+            </Link>
+          </button>
+        </div>
         <div className="flex items-center justify-center mt-4">
           <div>
             {userDetails && (

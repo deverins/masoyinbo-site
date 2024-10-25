@@ -1,14 +1,20 @@
-
 export interface Episode {
-  _id: string;
+  _id?: string;
+  createdBy?: string;
+  createdAt?: Date;
   episodeLink: string;
-  episodeDate: string;
+  participant_id: string;
   amountWon: number;
   availableAmountToWin: number;
-  participant_id: string;
-  createdBy: string;
-  createdAt: string;
-  episodeNumber: number
+  episodeDate: string;
+  episodeNumber: number;
+}
+
+export interface Participant {
+  _id: string;
+  fullName: string;
+  status: string;
+  hasEpisode: boolean;
 }
 
 export interface EpisodeEvent {
@@ -57,7 +63,25 @@ export interface EpisodeEventsApiResponse {
   episode: Episode
 
 }
+export type EpisodeResponse = {
+  events: EpisodeEvent[],
+  participantFullName: string,
+  episode: Episode,
+  editEpisode?: Episode;
+}
 
+export interface EpisodeFormProps {
+  onSaveEpisode: (episode: Episode) => void;
+  episodeId?: string;
+  editEpisode?: Episode;
+  episode?: Episode;
+}
+
+export interface EpisodeEventsFormProps {
+  onSave: (episode: EpisodeEvent) => void;
+  episodeId?: string;
+  event?: EpisodeEvent
+}
 export type LossTypeKeys = "CODE_MIX" | "QUESTION_NUMBER" | "QUESTION"
 
 

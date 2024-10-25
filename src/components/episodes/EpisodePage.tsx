@@ -2,38 +2,40 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
+import axios from "axios";
+import toast from "react-hot-toast";
+import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/16/solid";
+
 import VideoPreview from "./VideoPreview";
 import EventsTable from "./EventsTable";
 import Loading from "../UI/Loading";
-
-import { Episode, EpisodeEvent, EventActionSignal } from "@/types";
-import axios from "axios";
+import { Episode, EpisodeEvent, EpisodeResponse, EventActionSignal } from "@/types";
 import { API_URL } from "@/constants/api";
 import { formatCurrency, formatDate } from "@/utils/functions";
-import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/16/solid";
 import EventsForm from "./EventsForm";
 import Modal from "../Modal";
+import { CreateEpisodeForm } from "@/app/(admin)/create-episode/Create";
 
-type EpisodeResponse = {
-  events: EpisodeEvent[],
-  participantFullName: string,
-  episode: Episode
-}
 
 const EpisodePage: React.FC = () => {
   const { episodeId }: { episodeId: string } = useParams()
   const [episodeDetails, setEpisodeDetails] = useState<EpisodeResponse>()
+  const [selectedEpisode, setSelectedEpisode] = useState<Episode>();
   const [loading, setLoading] = useState(true)
 
-  const [openModal, setOpenModal] = useState(false)
+  const [openEditModal, setOpenEditModal] = useState(false)
+  const [openEpisodeEditModal, setOpenEpisodeEditModal] = useState(false)
   const [selectedEvent, setSelectedEvent] = useState<EpisodeEvent>()
   const [error, setError] = useState<string | null>(null);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openDeleteEventModal, setOpenDeleteEventModal] = useState(false);
+  const [eventToDelete, setEventToDelete] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchEpisodeData(episodeId);
+    fetchEpisodeEventData(episodeId);
   }, [episodeId]);
 
-  const fetchEpisodeData = async (episodeId: string) => {
+  const fetchEpisodeEventData = async (episodeId: string) => {
     try {
       const endpoint = `${API_URL}/api/episodes/${episodeId}`;
       const { data } = await axios.get(endpoint);
@@ -46,46 +48,18 @@ const EpisodePage: React.FC = () => {
     }
   };
 
-  const signal = (signal: EventActionSignal) => {
-    console.log(signal);
-
-    const { id, type } = signal
-    if (type == 'DELETE') {
-      return handleDelete(id)
-    }
-    handleEdit(id)
-  }
-
   const handleEdit = (id: string) => {
-    if (!episodeDetails) return
-    const episodeEvent = episodeDetails.events.find(ev => ev._id == id)
-    if (!episodeEvent) return
-    setSelectedEvent(episodeEvent)
-    setOpenModal(true)
-
-  }
-
-  const handleDelete = async (id: string) => {
-    if (window.confirm('Are you sure you want to delete this event?')) {
-      if (!episodeDetails) return;
-
-      try {
-        const { data } = await axios.delete(`${API_URL}/api/episode-events/${id}`)
-
-        const updatedEvents = episodeDetails.events.filter((event) => event._id !== id);
-        setEpisodeDetails({ ...episodeDetails, events: updatedEvents });
-      } catch (error: any) {
-        setError(error?.response?.data?.message as string)
-      }
-    }
+    if (!episodeDetails) return;
+    const episodeEvent = episodeDetails.events.find(ev => ev._id === id);
+    if (!episodeEvent) return;
+    setSelectedEvent(episodeEvent);
+    setOpenEditModal(true);
   };
-
-
-  const closeModal = () => {
-    setOpenModal(false)
+  const closeEditModal = () => {
+    setOpenEditModal(false)
     setSelectedEvent(undefined)
   }
-
+  
   const onSave = (event: EpisodeEvent) => {
     if (!episodeDetails) return
     const index = episodeDetails.events.findIndex(ev => ev._id == event._id)
@@ -94,14 +68,82 @@ const EpisodePage: React.FC = () => {
     } else {
       episodeDetails.events[index] = event
     }
-    setOpenModal(false)
+    setOpenEditModal(false)
   }
+
+  const handleEditEpisode = (id: string) => {
+    if (!episodeDetails) return;
+    const episode = episodeDetails.episode;
+    if (!episode) return;
+    setSelectedEpisode(episode);
+    setOpenEpisodeEditModal(true);
+  };
+  const closeEditEpisodeModal = () => {
+    setOpenEpisodeEditModal(false);
+    setSelectedEpisode(undefined);
+  };
+
+  const onSaveEpisode = async (episode: Episode) => {
+    if (!episodeDetails) return;
+    try {
+      await axios.put(`${API_URL}/api/episode/${episodeId}`, episode);
+      setEpisodeDetails({
+        ...episodeDetails,
+        episode: { ...episodeDetails.episode, ...episode },
+      });
+    } catch (error) {
+      console.error("Failed to update episode:", error);
+      setError("Could not update episode.");
+    } finally {
+      setOpenEpisodeEditModal(false);
+    }
+  };
 
   const addEvent = () => {
     setSelectedEvent(undefined)
-    setOpenModal(true)
+    setOpenEditModal(true)
   }
 
+  const signal = (signal: EventActionSignal) => {
+    const { id, type } = signal
+    if (type == 'DELETE') {
+      // return handleDelete(id)
+      setEventToDelete(id);
+      setOpenDeleteEventModal(true);
+      return;
+    }
+    handleEdit(id)
+  }
+
+  const handleDelete = async (id: string) => {
+    if (!episodeDetails) return;
+
+    try {
+      await axios.delete(`${API_URL}/api/episode-events/${id}`)
+      const updatedEvents = episodeDetails.events.filter((event) => event._id !== id);
+      setEpisodeDetails({ ...episodeDetails, events: updatedEvents });
+    } catch (error: any) {
+      setError(error?.response?.data?.message as string)
+    }
+    setOpenDeleteEventModal(false);
+    setEventToDelete(null);
+  };
+  // Close modal function
+  const closeDeleteModal = () => {
+    setEventToDelete(null);
+    setOpenDeleteEventModal(false);
+  };
+
+  const handleDeleteEpisode = async () => {
+    if (!episodeDetails) return;
+    try {
+      await axios.delete(`${API_URL}/api/episode/${episodeId}`);
+      toast.success('Episode deleted successfully!');
+    } catch (error: any) {
+      setError(error?.response?.data?.message as string)
+    }
+    setOpenDeleteModal(false);
+  };
 
   if (loading) {
     return <Loading />
@@ -117,12 +159,12 @@ const EpisodePage: React.FC = () => {
             <VideoPreview videoLink={episodeDetails.episode.episodeLink} title="" />
           </div>
 
-          {/*Episode Details */}
+          {/* Episode Details */}
           <div className="mt-4 w-full max-w-[560px] mb-10">
             <div className="dark:text-neutral-300 font-semibold">
               Episode number: {episodeDetails.episode.episodeNumber}
             </div>
-            <div className="dark:text-neutral-300 font-semibol">
+            <div className="dark:text-neutral-300 font-semibold">
               Participant Name: {episodeDetails.participantFullName}
             </div>
             <div className="dark:text-neutral-300 font-semibold">
@@ -138,16 +180,22 @@ const EpisodePage: React.FC = () => {
         </div>
         {isAdmin && (
           <div className="mt-4 w-full">
-          <div className="flex gap-2 mx-4 justify-end mt-4">
-          <button className="bg-blue-500 text-white hover:bg-blue-600 p-2 rounded flex items-center justify-center">
-            <PencilIcon className="h-5 w-5" />
-              Edit Episode
-          </button>
-          <button className="bg-red-500 text-white rounded hover:bg-red-600 p-2 flex items-center justify-center">
-            <TrashIcon className="h-5 w-5" />
-              Delete Epiosde
-          </button>
-        </div>
+            <div className="flex gap-2 mx-4 justify-end mt-4">
+              <button
+                onClick={() => {
+                  const episodeId = episodeDetails.episode?._id; if (episodeId) { handleEditEpisode(episodeId); }
+                }}
+                className="bg-blue-500 text-white hover:bg-blue-600 p-2 rounded flex items-center justify-center">
+                <PencilIcon className="h-5 w-5" />
+                Edit Episode
+              </button>
+              <button
+                onClick={() => setOpenDeleteModal(true)}
+                className="bg-red-500 text-white rounded hover:bg-red-600 p-2 flex items-center justify-center">
+                <TrashIcon className="h-5 w-5" />
+                Delete Episode
+              </button>
+            </div>
           </div>
         )}
         <h3 className="text-center font-bold text-xl dark:text-neutral-200">Episode Events</h3>
@@ -155,18 +203,62 @@ const EpisodePage: React.FC = () => {
           <div className='flex justify-end pt-4'>
             <button onClick={addEvent}
               className="bg-primary-light flex text-neutral-200 p-2 rounded-lg mb-2">
-              <PlusIcon className="h-5 w-5 mr-2" /> Add  Event
+              <PlusIcon className="h-5 w-5 mr-2" /> Add Event
             </button>
           </div>
         )}
 
         <EventsTable events={episodeDetails.events} signal={signal} />
 
-        <Modal trigger={openModal} close={closeModal} side="center" gum
-          backgroundColorClass="bg-secondary-cream dark:bg-slate-900"
-        >
+        {/* Episode Event Modal */}
+        <Modal trigger={openEpisodeEditModal} close={closeEditEpisodeModal} side="center" gum
+          backgroundColorClass="bg-secondary-cream dark:bg-slate-900">
+          <div className="w-[calc(100dvw-12px)] max-w-[600px] p-2">
+            <CreateEpisodeForm onSaveEpisode={onSaveEpisode} episodeId={episodeId} editEpisode={selectedEpisode} />
+
+          </div>
+        </Modal>
+
+        {/* Edit Event Modal */}
+        <Modal trigger={openEditModal} close={closeEditModal} side="center" gum
+          backgroundColorClass="bg-secondary-cream dark:bg-slate-900">
           <div className="w-[calc(100dvw-12px)] max-w-[600px] p-2">
             <EventsForm onSave={onSave} event={selectedEvent} episodeId={episodeId} />
+          </div>
+        </Modal>
+
+        {/* Delete Event Confirmation Modal */}
+        <Modal
+          trigger={openDeleteEventModal}
+          close={() => setOpenDeleteEventModal(false)}
+          side="center"
+          gum
+          backgroundColorClass="bg-secondary-cream dark:bg-slate-900 rounded">
+          <div className="p-4 w-[calc(100dvw-12px)] max-w-[600px]">
+            <h2 className="text-lg font-bold dark:text-neutral-200">Confirm Delete</h2>
+            <p className="dark:text-neutral-200">Are you sure you want to delete this event? This action cannot be undone.</p>
+            <div className="mt-4 flex justify-end">
+              <button onClick={closeDeleteModal} className="mr-2 bg-gray-300 hover:bg-gray-400 p-2 rounded">Cancel</button>
+              <button
+                onClick={() => {
+                  if (eventToDelete) handleDelete(eventToDelete);
+                  setOpenDeleteEventModal(false);
+                }}
+                className="bg-red-500 hover:bg-red-600 text-white p-2 rounded">Delete</button>
+            </div>
+          </div>
+        </Modal>
+
+        {/* Delete Confirmation Modal */}
+        <Modal trigger={openDeleteModal} close={() => setOpenDeleteModal(false)} side="center" gum
+          backgroundColorClass="bg-secondary-cream dark:bg-slate-900 rounded">
+          <div className="p-4 w-[calc(100dvw-12px)] max-w-[600px]">
+            <h2 className="text-lg font-bold dark:text-neutral-200">Confirm Delete</h2>
+            <p className=" dark:text-neutral-200">Are you sure you want to delete this episode? This action cannot be undone.</p>
+            <div className="mt-4 flex justify-end">
+              <button onClick={() => setOpenDeleteModal(false)} className="mr-2 bg-gray-300 hover:bg-gray-400 p-2 rounded">Cancel</button>
+              <button onClick={handleDeleteEpisode} className="bg-red-500 hover:bg-red-600 text-white p-2 rounded">Delete</button>
+            </div>
           </div>
         </Modal>
       </>

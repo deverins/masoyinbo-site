@@ -107,7 +107,7 @@ const EventsTable: React.FC<EpisodeEvents> = ({ events, signal }) => {
                 <span className={`inline-block flex-none size-2 items-center ml-2 ${event.isCorrect ? 'bg-green-500' : 'bg-red-500'} rounded-full`} />
                 <span className="ml-2 cap1stL">{formatType(event.type)}</span>
               </div>
-              <div className="col-span-1 w-[150px] max-h-36 overflow-x-auto overflow-y-auto no-scrollbar cap1stL">
+              <div className="col-span-1 w-[150px] max-h-36 overflow-y-auto no-scrollbar cap1stL">
                 {event.question}
               </div>
               <div className="col-span-1 cap1stL w-[120px] text-center">{event.response}</div>

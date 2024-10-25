@@ -2,15 +2,10 @@ import React, { MouseEvent, useRef } from 'react';
 import { useFormik } from 'formik';
 import { useState } from 'react';
 import { episodeEventsFormValidator } from '@/validationSchema/episodeEventsFormValidator';
-import { EpisodeEvent } from '@/types';
+import { EpisodeEvent, EpisodeEventsFormProps } from '@/types';
 import axios from 'axios';
 import { API_URL } from '@/constants/api';
 import Dialogbox from '../DialogBox';
-interface EpisodeEventsFormProps {
-  onSave: (episode: EpisodeEvent) => void;
-  episodeId?: string;
-  event?: EpisodeEvent
-}
 
 const EventsForm: React.FC<EpisodeEventsFormProps> = ({ onSave, episodeId, event }) => {
   const [error, setError] = useState<string | null>(null);
