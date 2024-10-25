@@ -3,9 +3,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from '@/constants/api';
 import { Users } from "@/types";
+import Loading from "@/components/UI/Loading";
 
 const ParticipationUsers = () => {
   const [users, setUsers] = useState<Users[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -18,11 +20,14 @@ const ParticipationUsers = () => {
         }
       } catch (error) {
         console.error("Error fetching users", error);
+      }finally {
+        setLoading(false);
       }
     };
 
     fetchUsers();
   }, []);
+  if (loading) return <Loading />;
 
   return (
     <main className="p-4">

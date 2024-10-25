@@ -1,5 +1,5 @@
 export interface Episode {
-  _id?: string;
+  _id?: string | undefined;
   createdBy?: string;
   createdAt?: Date;
   episodeLink: string;
@@ -7,14 +7,8 @@ export interface Episode {
   amountWon: number;
   availableAmountToWin: number;
   episodeDate: string;
+  participantFullName?: string;
   episodeNumber: number;
-}
-
-export interface Participant {
-  _id: string;
-  fullName: string;
-  status: string;
-  hasEpisode: boolean;
 }
 
 export interface EpisodeEvent {
@@ -39,6 +33,7 @@ export type ModalActionSignal = {
 }
 
 export interface Participant {
+  hasEpisode: boolean;
   mobileNumber: string;
   _id: string;
   fullName: string;

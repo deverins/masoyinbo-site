@@ -11,6 +11,12 @@ import { useAuth } from "@/hooks/AuthContext";
 import Dialogbox from '@/components/DialogBox';
 import { Episode, EpisodeFormProps, Participant } from "@/types";
 
+export interface Participants {
+  _id: string;
+  fullName: string;
+  status: string;
+  hasEpisode: boolean;
+}
 export const CreateEpisodeForm: React.FC<EpisodeFormProps> = ({ onSaveEpisode, episodeId, editEpisode }) => {
   const [data, setData] = useState<Participant[]>([]);
   const [selectedParticipant, setSelectedParticipant] = useState('');
