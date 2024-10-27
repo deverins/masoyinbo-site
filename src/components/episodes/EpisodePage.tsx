@@ -199,7 +199,7 @@ const EpisodePage: React.FC = () => {
             </div>
           </div>
         )}
-        <h3 className="text-center font-bold text-xl dark:text-neutral-200">Episode Events</h3>
+        <h3 className="text-center font-bold text-xl dark:text-neutral-200 mt-6">Episode Events</h3>
         {isAdmin && (
           <div className='flex justify-end pt-4'>
             <button onClick={addEvent}
