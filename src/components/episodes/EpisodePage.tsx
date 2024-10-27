@@ -1,7 +1,6 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-
 import axios from "axios";
 import toast from "react-hot-toast";
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/16/solid";
@@ -9,148 +8,147 @@ import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/16/solid";
 import VideoPreview from "./VideoPreview";
 import EventsTable from "./EventsTable";
 import Loading from "../UI/Loading";
-import { Episode, EpisodeEvent, EpisodeResponse, EpisodeSec, EventActionSignal } from "@/types";
+import { Episode, EpisodeEvent, EpisodeResponse, EventActionSignal } from "@/types";
 import { API_URL } from "@/constants/api";
 import { formatCurrency } from "@/utils/functions";
 import EventsForm from "./EventsForm";
 import Modal from "../Modal";
 import { CreateEpisodeForm } from "@/app/(admin)/create-episode/Create";
 
-
 const EpisodePage: React.FC = () => {
   const { episodeId }: { episodeId: string } = useParams()
-  const [episodeDetails, setEpisodeDetails] = useState<EpisodeResponse>()
+  const [episodeDetails, setEpisodeDetails] = useState<EpisodeResponse>();
   const [selectedEpisode, setSelectedEpisode] = useState<Episode>();
-  const [loading, setLoading] = useState(true)
-  const [openEditModal, setOpenEditModal] = useState(false)
-  const [openEpisodeEditModal, setOpenEpisodeEditModal] = useState(false)
-  const [selectedEvent, setSelectedEvent] = useState<EpisodeEvent>()
+  const [loading, setLoading] = useState(true);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [openEpisodeEditModal, setOpenEpisodeEditModal] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<EpisodeEvent>();
   const [error, setError] = useState<string | null>(null);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openDeleteEventModal, setOpenDeleteEventModal] = useState(false);
   const [eventToDelete, setEventToDelete] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     fetchEpisodeEventData(episodeId);
   }, [episodeId]);
 
+  useEffect(() => {
+    setIsAdmin(localStorage.getItem("userRole") === "admin");
+  }, []);
+
   const fetchEpisodeEventData = async (episodeId: string) => {
     try {
-      const endpoint = `${API_URL}/api/episodes/${episodeId}`;
-      const { data } = await axios.get(endpoint);
-      const response = data as EpisodeResponse
-      setEpisodeDetails(response)
+      const { data } = await axios.get(`${API_URL}/api/episodes/${episodeId}`);
+      setEpisodeDetails(data as EpisodeResponse);
     } catch (error) {
-      console.error('Failed to fetch episode data:', error);
+      console.error("Failed to fetch episode data:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
   const handleEdit = (id: string) => {
-    if (!episodeDetails) return;
-    const episodeEvent = episodeDetails.events.find(ev => ev._id === id);
-    if (!episodeEvent) return;
-    setSelectedEvent(episodeEvent);
-    setOpenEditModal(true);
-  };
-  const closeEditModal = () => {
-    setOpenEditModal(false)
-    setSelectedEvent(undefined)
-  }
-  
-  const onSave = (event: EpisodeEvent) => {
-    if (!episodeDetails) return
-    const index = episodeDetails.events.findIndex(ev => ev._id == event._id)
-    if (index < 0) {
-      episodeDetails.events.push(event)
-    } else {
-      episodeDetails.events[index] = event
+    const episodeEvent = episodeDetails?.events.find((ev) => ev._id === id);
+    if (episodeEvent) {
+      setSelectedEvent(episodeEvent);
+      setOpenEditModal(true);
     }
-    setOpenEditModal(false)
-  }
-
-  const handleEditEpisode = (id: string) => {
-    if (!episodeDetails) return;
-    const episode = episodeDetails.episode;
-    if (!episode) return;
-    setSelectedEpisode(episode);
-    setOpenEpisodeEditModal(true);
   };
+
+  const closeEditModal = () => {
+    setOpenEditModal(false);
+    setSelectedEvent(undefined);
+  };
+
+  const onSave = (event: EpisodeEvent) => {
+    if (episodeDetails) {
+      const index = episodeDetails.events.findIndex((ev) => ev._id === event._id);
+      if (index < 0) {
+        episodeDetails.events.push(event);
+      } else {
+        episodeDetails.events[index] = event;
+      }
+      setOpenEditModal(false);
+    }
+  };
+
+  const handleEditEpisode = () => {
+    if (episodeDetails?.episode) {
+      setSelectedEpisode(episodeDetails.episode);
+      setOpenEpisodeEditModal(true);
+    }
+  };
+
   const closeEditEpisodeModal = () => {
     setOpenEpisodeEditModal(false);
     setSelectedEpisode(undefined);
   };
 
   const onSaveEpisode = async (episode: Episode) => {
-    if (!episodeDetails) return;
-    try {
-      await axios.put(`${API_URL}/api/episode/${episodeId}`, episode);
-      setEpisodeDetails({
-        ...episodeDetails,
-        episode: { ...episodeDetails.episode, ...episode },
-      });
-    } catch (error) {
-      console.error("Failed to update episode:", error);
-      setError("Could not update episode.");
-    } finally {
-      setOpenEpisodeEditModal(false);
+    if (episodeDetails) {
+      try {
+        await axios.put(`${API_URL}/api/episode/${episodeId}`, episode);
+        setEpisodeDetails({
+          ...episodeDetails,
+          episode: { ...episodeDetails.episode, ...episode },
+        });
+        setOpenEpisodeEditModal(false);
+      } catch (error) {
+        console.error("Failed to update episode:", error);
+        setError("Could not update episode.");
+      }
     }
   };
 
   const addEvent = () => {
-    setSelectedEvent(undefined)
-    setOpenEditModal(true)
-  }
+    setSelectedEvent(undefined);
+    setOpenEditModal(true);
+  };
 
   const signal = (signal: EventActionSignal) => {
-    const { id, type } = signal
-    if (type == 'DELETE') {
-      // return handleDelete(id)
+    const { id, type } = signal;
+    if (type === "DELETE") {
       setEventToDelete(id);
       setOpenDeleteEventModal(true);
-      return;
+    } else {
+      handleEdit(id);
     }
-    handleEdit(id)
-  }
+  };
 
   const handleDelete = async (id: string) => {
-    if (!episodeDetails) return;
-
-    try {
-      await axios.delete(`${API_URL}/api/episode-events/${id}`)
-      const updatedEvents = episodeDetails.events.filter((event) => event._id !== id);
-      setEpisodeDetails({ ...episodeDetails, events: updatedEvents });
-    } catch (error: any) {
-      setError(error?.response?.data?.message as string)
+    if (episodeDetails) {
+      try {
+        await axios.delete(`${API_URL}/api/episode-events/${id}`);
+        setEpisodeDetails({
+          ...episodeDetails,
+          events: episodeDetails.events.filter((event) => event._id !== id),
+        });
+      } catch (error: any) {
+        setError(error?.response?.data?.message as string);
+      }
+      closeDeleteModal();
     }
-    setOpenDeleteEventModal(false);
-    setEventToDelete(null);
   };
-  // Close modal function
+
   const closeDeleteModal = () => {
     setEventToDelete(null);
     setOpenDeleteEventModal(false);
   };
 
   const handleDeleteEpisode = async () => {
-    if (!episodeDetails) return;
     try {
       await axios.delete(`${API_URL}/api/episode/${episodeId}`);
-      router.push(`/episodes`)
-      toast.success('Episode deleted successfully!');
+      router.push("/episodes");
+      toast.success("Episode deleted successfully!");
     } catch (error: any) {
-      setError(error?.response?.data?.message as string)
+      setError(error?.response?.data?.message as string);
     }
     setOpenDeleteModal(false);
   };
 
-  if (loading) {
-    return <Loading />
-  }
-
-  const isAdmin = localStorage.userRole === 'admin'
+  if (loading) return <Loading />;
 
   return (<>
     {episodeDetails ?
@@ -182,10 +180,7 @@ const EpisodePage: React.FC = () => {
         {isAdmin && (
           <div className="mt-4 w-full">
             <div className="flex gap-2 mx-4 justify-end mt-4">
-              <button
-                onClick={() => {
-                  const episodeId = episodeDetails.episode?._id; if (episodeId) { handleEditEpisode(episodeId); }
-                }}
+              <button onClick={handleEditEpisode}
                 className="bg-blue-500 text-white hover:bg-blue-600 p-2 rounded flex items-center justify-center">
                 <PencilIcon className="h-5 w-5" />
                 Edit Episode
@@ -215,12 +210,12 @@ const EpisodePage: React.FC = () => {
         <Modal trigger={openEpisodeEditModal} close={closeEditEpisodeModal} side="center" gum
           backgroundColorClass="bg-secondary-cream dark:bg-slate-900">
           <div className="w-[calc(100dvw-12px)] max-w-[600px] p-2">
-          <CreateEpisodeForm onSaveEpisode={onSaveEpisode} episodeId={episodeId} editEpisode={selectedEpisode} />
+            <CreateEpisodeForm onSaveEpisode={onSaveEpisode} episodeId={episodeId} editEpisode={selectedEpisode} />
 
           </div>
         </Modal>
 
-      {/* Edit Event Modal */}
+        {/* Edit Event Modal */}
         <Modal trigger={openEditModal} close={closeEditModal} side="center" gum
           backgroundColorClass="bg-secondary-cream dark:bg-slate-900">
           <div className="w-[calc(100dvw-12px)] max-w-[600px] p-2">
