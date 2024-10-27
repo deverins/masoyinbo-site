@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import ThemeToggle from "../UI/ThemeToggle";
 import logo from "/public/logo.png";
@@ -15,6 +15,7 @@ const AdminNav = () => {
   const [episodeId, setEpisodeId] = useState<string | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handleLoginStatusChange = () => {
@@ -29,8 +30,25 @@ const AdminNav = () => {
 
     window.addEventListener("loginStatusChanged", handleLoginStatusChange);
 
+    // Close dropdown on Escape key press
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsMenuOpen(false);
+    };
+
+    // Close dropdown on outside click
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+    document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
       window.removeEventListener("loginStatusChanged", handleLoginStatusChange);
+      window.removeEventListener("keydown", handleEscape);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -48,9 +66,9 @@ const AdminNav = () => {
   }
 
   return (
-    <nav className="bg-primary-light text-white sticky w-full top-0 z-10 p-3">
+    <nav className="bg-primary-light text-white sticky w-full top-0 z-10 py-3">
       <div className="flex justify-between items-center mx-4 sm:mx-8">
-        <div className="flex items-center">
+        <div className="flex items-center ml-3">
           <Link href="/">
             <Image
               src={logo}
@@ -58,6 +76,7 @@ const AdminNav = () => {
               width={200}
               height={200}
               className="object-contain w-24 sm:w-32 md:w-40 lg:w-52"
+              priority 
             />
           </Link>
         </div>
@@ -66,7 +85,7 @@ const AdminNav = () => {
           <ThemeToggle />
 
           {isAdmin && (
-            <div className="relative">
+            <div className="relative" ref={menuRef}>
               <button
                 onClick={toggleMenu}
                 className="text-neutral-200 text-sm sm:text-base font-bold rounded-lg p-2 sm:p-3 hover:bg-[#1c204a] dark:hover:bg-primary-darkBlack"
@@ -76,7 +95,10 @@ const AdminNav = () => {
 
               {/* Dropdown menu, only shown when isMenuOpen is true */}
               {isMenuOpen && (
-                <div className="absolute transform -translate-x-1/2 mt-2 w-[184px] bg-white text-black rounded-lg shadow-lg dark:shadow-xl dark:bg-primary-lightBlack dark:backdrop-blur-lg dark:bg-opacity-4 dark:bg-slate-900 dark:text-neutral-200">
+                <div
+                  className="absolute right-0 mt-2 w-48 sm:w-56 bg-slate-100 text-black rounded-lg shadow-lg dark:bg-primary-lightBlack dark:bg-opacity-4 dark:bg-slate-900 dark:text-neutral-200 -mx-4 sm:-mx-8 md:w-64 lg:w-73 xl:w-80 -px-3"
+                >
+
                   <ul className="py-2">
                     <li className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-primary-light">
                       <GrUserAdmin className="mr-2" />

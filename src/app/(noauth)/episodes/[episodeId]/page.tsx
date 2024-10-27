@@ -1,6 +1,6 @@
-import EpisodePage from '@/components/episodes/EpisodePage';
 import { getEpisodeById } from '@/constants/episode';
 import React from 'react';
+import EpisodeComponent from './EpisodeId';
 export async function generateMetadata({ params }: { params: { episodeId: string } }) {
   const { episodeId } = params;
 
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: { episodeId: string
 }
 
 const Page = () => {
-  return <EpisodePage />;
+  return <EpisodeComponent />;
 };
 
 export default Page;

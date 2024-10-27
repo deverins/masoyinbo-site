@@ -9,7 +9,7 @@ import { API_URL } from "@/constants/api";
 import { episodeSchema } from "@/validationSchema/episodeSchema";
 import { useAuth } from "@/hooks/AuthContext";
 import Dialogbox from '@/components/DialogBox';
-import { EpisodeFormProps, EpisodeSec, Participant } from "@/types";
+import { Episode, EpisodeFormProps, EpisodeSec, Participant } from "@/types";
 
 export interface Participants {
   _id: string;
@@ -95,6 +95,8 @@ export const CreateEpisodeForm: React.FC<EpisodeFormProps> = ({ onSaveEpisode, e
           createdBy: userId,
           availableAmountToWin: values.availableAmountToWin ?? 0,
           episodeNumber: values.episodeNumber ?? 0,
+          _id: "",
+          createdAt: ""
         });
       } catch (error: any) {
       } finally {
@@ -260,7 +262,7 @@ export const CreateEpisodeForm: React.FC<EpisodeFormProps> = ({ onSaveEpisode, e
 
 const ProtectedCreateEpisodeForm = () => {
   const { withAdminAuth } = useAuth();
-  const onSaveEpisode = (episode: EpisodeSec) => { };
+  const onSaveEpisode = (episode: Episode) => { };
   const episodeId = undefined;
   const editEpisode = undefined;
   const ProtectedForm = withAdminAuth(() => (

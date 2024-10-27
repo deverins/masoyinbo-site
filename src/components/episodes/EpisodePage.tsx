@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -9,9 +9,9 @@ import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/16/solid";
 import VideoPreview from "./VideoPreview";
 import EventsTable from "./EventsTable";
 import Loading from "../UI/Loading";
-import { Episode, EpisodeEvent, EpisodeResponse, EventActionSignal } from "@/types";
+import { Episode, EpisodeEvent, EpisodeResponse, EpisodeSec, EventActionSignal } from "@/types";
 import { API_URL } from "@/constants/api";
-import { formatCurrency, formatDate } from "@/utils/functions";
+import { formatCurrency } from "@/utils/functions";
 import EventsForm from "./EventsForm";
 import Modal from "../Modal";
 import { CreateEpisodeForm } from "@/app/(admin)/create-episode/Create";
@@ -22,7 +22,6 @@ const EpisodePage: React.FC = () => {
   const [episodeDetails, setEpisodeDetails] = useState<EpisodeResponse>()
   const [selectedEpisode, setSelectedEpisode] = useState<Episode>();
   const [loading, setLoading] = useState(true)
-
   const [openEditModal, setOpenEditModal] = useState(false)
   const [openEpisodeEditModal, setOpenEpisodeEditModal] = useState(false)
   const [selectedEvent, setSelectedEvent] = useState<EpisodeEvent>()
@@ -30,6 +29,7 @@ const EpisodePage: React.FC = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openDeleteEventModal, setOpenDeleteEventModal] = useState(false);
   const [eventToDelete, setEventToDelete] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     fetchEpisodeEventData(episodeId);
@@ -138,6 +138,7 @@ const EpisodePage: React.FC = () => {
     if (!episodeDetails) return;
     try {
       await axios.delete(`${API_URL}/api/episode/${episodeId}`);
+      router.push(`/episodes`)
       toast.success('Episode deleted successfully!');
     } catch (error: any) {
       setError(error?.response?.data?.message as string)
@@ -174,7 +175,7 @@ const EpisodePage: React.FC = () => {
               Amount won: {formatCurrency(episodeDetails.episode.amountWon)}
             </div>
             <div className="dark:text-neutral-300 font-semibold">
-              Episode Date: {formatDate(episodeDetails.episode.episodeDate ?? '')}
+              Episode Date: {(episodeDetails.episode.episodeDate ?? '')}
             </div>
           </div>
         </div>
@@ -214,12 +215,12 @@ const EpisodePage: React.FC = () => {
         <Modal trigger={openEpisodeEditModal} close={closeEditEpisodeModal} side="center" gum
           backgroundColorClass="bg-secondary-cream dark:bg-slate-900">
           <div className="w-[calc(100dvw-12px)] max-w-[600px] p-2">
-            <CreateEpisodeForm onSaveEpisode={onSaveEpisode} episodeId={episodeId} editEpisode={selectedEpisode} />
+          <CreateEpisodeForm onSaveEpisode={onSaveEpisode} episodeId={episodeId} editEpisode={selectedEpisode} />
 
           </div>
         </Modal>
 
-        {/* Edit Event Modal */}
+      {/* Edit Event Modal */}
         <Modal trigger={openEditModal} close={closeEditModal} side="center" gum
           backgroundColorClass="bg-secondary-cream dark:bg-slate-900">
           <div className="w-[calc(100dvw-12px)] max-w-[600px] p-2">

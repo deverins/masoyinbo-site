@@ -76,12 +76,11 @@ export type EpisodeResponse = {
 }
 
 export interface EpisodeFormProps {
-  onSaveEpisode: (episode: EpisodeSec) => void;
+  onSaveEpisode: (episode: Episode) => void;
   episodeId?: string;
-  editEpisode?: EpisodeSec;
-  episode?: EpisodeSec;
+  editEpisode?: Episode;
+  episode?: Episode;
 }
-
 export interface EpisodeEventsFormProps {
   onSave: (episode: EpisodeEvent) => void;
   episodeId?: string;

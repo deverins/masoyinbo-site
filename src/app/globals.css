@@ -126,3 +126,8 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+.flag-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain; 
+}

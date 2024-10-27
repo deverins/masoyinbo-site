@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, { MouseEvent, useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { participationSchema } from '@/validationSchema/participateSchema';
@@ -7,6 +7,7 @@ import { API_URL } from '@/constants/api';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import AboutSection from '@/components/AboutSection';
+import Dialogbox from '@/components/DialogBox';
 
 interface Option {
   value: string;
@@ -18,6 +19,7 @@ const ParticipationForm: React.FC = () => {
   const URL = `${API_URL}/auth/create-participant`;
   const navigate = useRouter();
   const [hydrated, setHydrated] = useState(false);
+  const typeInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     setHydrated(true);
@@ -80,6 +82,12 @@ const ParticipationForm: React.FC = () => {
     },
 
   });
+  const setGenderValue = (event: MouseEvent<HTMLLIElement>) => {
+    const value = event.currentTarget.dataset.value as string;
+    if (!typeInputRef.current) return
+    typeInputRef.current.value = value
+    formik.values.gender = value
+  }
   if (!hydrated) {
     return null;
   }
@@ -135,22 +143,49 @@ const ParticipationForm: React.FC = () => {
             </div>
 
             {/* Gender */}
-            <div className="mb-4">
-              <label className="block text-gray-700 dark:text-gray-400  text-base font-bold mb-2">Gender
-                <span className=' text-secondary-dark ml-3'>*</span>
-
-              </label>
-              <select
+            <div id='genderField' className='relative'>
+              <label className="block text-base font-medium dark:text-gray-400 mb-2 mt-4">Gender</label>
+              <input
+                ref={typeInputRef}
+                type="text"
+                readOnly
+                placeholder="Select Gender"
+                className="w-full py-4 p-2 event-form-input"
                 name="gender"
-                onChange={formik.handleChange}
                 value={formik.values.gender}
-                className="shadow appearance-none border  py-4 w-full px-3 event-form-input "
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              <Dialogbox
+                triggerDomId="genderField"
+                positions={{ ySide: 'bottom' }}
+                closeOnClick
+                className="text-neutral-700 dark:text-neutral-200 dark:bg-slate-900 border dark:border-slate-700 right-1/2 w-full shadow translate-x-1/2"
               >
-                <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
+                <ul className="dark:text-neutral-200">
+                  <li
+                    onClick={setGenderValue}
+                    data-value="Male"
+                    className="p-2 dark:hover:bg-slate-700 hover:bg-gray-200 cursor-pointer rounded-lg"
+                  >
+                    Male
+                  </li>
+                  <li
+                    onClick={setGenderValue}
+                    data-value="Female"
+                    className="p-2 dark:hover:bg-slate-700 hover:bg-gray-200 cursor-pointer rounded-lg"
+                  >
+                    Female
+                  </li>
+                  <li
+                    onClick={setGenderValue}
+                    data-value="Other"
+                    className="p-2 dark:hover:bg-slate-700 hover:bg-gray-200 cursor-pointer rounded-lg"
+                  >
+                    Other
+                  </li>
+                </ul>
+              </Dialogbox>
               {formik.errors.gender && formik.touched.gender && (
                 <div className="text-red-500 text-xs mt-1">
                   {formik.errors.gender}
@@ -160,7 +195,7 @@ const ParticipationForm: React.FC = () => {
 
             {/* Mobile Number */}
             <div className="mb-4">
-              <label className="block text-gray-700 dark:text-gray-400  text-base font-bold mb-2">
+              <label className="block text-gray-700 dark:text-gray-400 mt-4 mb-2 text-base font-bold mb-2">
                 Mobile Number (Include Dialling/Area Code)
               </label>
               <input
@@ -246,7 +281,7 @@ const ParticipationForm: React.FC = () => {
             {/* Social Media Handle */}
             <div className="mb-4">
               <label className="block text-gray-700 dark:text-gray-400  text-base font-bold mb-2">
-                Social Media Handle
+                Social Media
                 <span className=' text-secondary-dark ml-3'>*</span>
 
               </label>
