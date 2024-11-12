@@ -13,6 +13,7 @@ const EpisodeCollection: React.FC<CollectionProp> = ({ episodes }) => {
 
   const handleEpisodeClick = (episodeId: string) => {
     localStorage.setItem('episodeIdToSelect', episodeId);
+    console.log(`Episode clicked: ${episodeId}`);
   };
 
   return (
@@ -23,8 +24,11 @@ const EpisodeCollection: React.FC<CollectionProp> = ({ episodes }) => {
             videoLink={episode.episodeLink}
             title={`Episode ${episode.episodeNumber}`}
           />
-          <Link href={`/episodes/${episode._id}`} onClick={() => handleEpisodeClick(episode._id)}>
-            <p className="block mt-2 dark:text-neutral-400 font-semibold text-lg text-center hover:underline">
+          <Link href={`/episodes/${episode._id}`} passHref>
+            <p
+              onClick={() => handleEpisodeClick(episode._id)}
+              className="block mt-2 dark:text-neutral-400 font-semibold text-lg text-center hover:underline"
+            >
               {`View details for Episode ${episode.episodeNumber}`}
             </p>
           </Link>

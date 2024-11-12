@@ -36,7 +36,7 @@ const MainPage = ({ stats }: SSRProps) => {
                 <div className="mt-10 pb-5 mx-2 ">
                   <h2 className="text-2xl font-bold mb-9 dark:text-neutral-400 text-center">Recent Episodes</h2>
                   <div className='text-sm  hover:underline md:text-lg font-semibold dark:text-neutral-200 flex justify-end mb-2'>
-                    <Link href={'/episodes'} className='flex'>
+                    <Link href={'/episodes'} className='flex' passHref>
                       View more<span className='flex items-center'><FaChevronRight size={16} /> </span>
                     </Link>
                   </div>
