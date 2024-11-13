@@ -77,7 +77,7 @@ const AllEpisodes: React.FC = () => {
 
 
   if (error) return <Custom500 />;
-  if (loading && episodes.length === 0) return <Loading />;
+  if (loading && episodes.length === 0) return <div className='min-h-screen flex justify-center'><Loading /></div>;
 
   return (
     <div className="mt-14 pb-5 mx-2">

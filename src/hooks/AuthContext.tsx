@@ -1,10 +1,10 @@
-// src/hooks/AuthContext.tsx
-"use client"
+"use client";
+import Loading from '@/components/UI/Loading';
 import { useRouter } from 'next/navigation';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface AuthContextType {
-  isLoggedIn: boolean;
+  isLoggedIn: boolean | null;
   userRole: string | null;
   login: (user: any) => void;
   logout: () => void;
@@ -14,7 +14,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
   const router = useRouter();
 
@@ -44,16 +44,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const withAdminAuth = (WrappedComponent: React.FC) => {
     const AdminProtectedRoute: React.FC = (props) => {
-      useEffect(() => {
-        if (!isLoggedIn || userRole !== 'admin') {
-          router.push('/admin/login');
-        }
-      }, []);
+      const { isLoggedIn, userRole } = useAuth();
+      const [loading, setLoading] = useState(true);
+      const router = useRouter();
 
-      if (!isLoggedIn || userRole !== 'admin') {
-        return null;
+      useEffect(() => {
+        if (isLoggedIn === null || userRole === null) {
+          setLoading(false);
+          // setLoading(true);
+        } else {
+          setLoading(false);
+
+          if (!isLoggedIn || userRole !== 'admin') {
+            router.push('/admin/login');
+          }
+        }
+      }, [isLoggedIn, userRole, router]);
+
+      // While loading, display the loading spinner
+      if (loading) {
+        return (
+          <div className="min-h-screen flex justify-center">
+            <Loading />
+          </div>
+        );
       }
 
+      // Only render the protected component if the user is logged in and is an admin
       return <WrappedComponent {...props} />;
     };
 

@@ -13,7 +13,6 @@ const EpisodeCollection: React.FC<CollectionProp> = ({ episodes }) => {
 
   const handleEpisodeClick = (episodeId: string) => {
     localStorage.setItem('episodeIdToSelect', episodeId);
-    console.log(`Episode clicked: ${episodeId}`);
   };
 
   return (

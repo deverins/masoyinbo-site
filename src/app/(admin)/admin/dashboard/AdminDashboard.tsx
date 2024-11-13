@@ -42,7 +42,7 @@ const AdminDashboard: React.FC = () => {
   if (error) {
     console.error(error);
   }
-  if (loading) return <div><Loading /></div>;
+  if (loading) return <div className='min-h-screen flex justify-center'><Loading /></div>;
   return (
     <>
       <div className='pt-16 px-4 lg:px-18 md:px-10'>

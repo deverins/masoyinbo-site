@@ -27,10 +27,10 @@ const ParticipationUsers = () => {
 
     fetchUsers();
   }, []);
-  if (loading) return <Loading />;
+  if (loading) return <div className='min-h-screen flex justify-center'><Loading /></div>;
 
   return (
-    <main className="p-4">
+    <main className="p-4 h-screen">
       <h1 className="text-2xl font-bold text-center mb-8 mt-8 dark:text-neutral-200">All Users</h1>
 
       {/* Mobile and Tablet View (870px and below) */}

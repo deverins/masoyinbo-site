@@ -1,4 +1,5 @@
 "use client";
+import Loading from '@/components/UI/Loading';
 import { API_URL } from '@/constants/api';
 import { useAuth } from "@/hooks/AuthContext";
 import { userLoginSchema } from "@/validationSchema/loginSchema";
@@ -52,11 +53,10 @@ const LogIn = () => {
   });
 
   if (!isMounted) {
-    return <div className="loader mx-auto mt-56 items-center ease-linear rounded-full border-4 border-t-4 h-12 w-12 animate-spin" />;
+    if (loading) return <div className='h-screen flex justify-center'><Loading /></div>;
   }
   return (
-    <div>
-      <section>
+      <section className='min-h-screen mt-20'>
         <main className="flex justify-center items-center py-10 px-4">
           <div className=" w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl transition-all duration-300 shadow-lg p-6 rounded">
             <form onSubmit={handleSubmit}>
@@ -132,7 +132,6 @@ const LogIn = () => {
           </div>
         </main>
       </section>
-    </div>
   );
 };
 

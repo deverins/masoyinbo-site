@@ -148,7 +148,7 @@ const EpisodePage: React.FC = () => {
     setOpenDeleteModal(false);
   };
 
-  if (loading) return <Loading />;
+  if (loading) return <div className='min-h-screen flex justify-center'><Loading /></div>;
 
   return (<>
     {episodeDetails ?

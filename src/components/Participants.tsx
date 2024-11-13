@@ -33,8 +33,8 @@ const ParticipationUsers = () => {
     fetchRequestPool();
   }, [status]);
 
-  if (loading) return <div><Loading /></div>;
-
+  if (loading) return <div className='min-h-screen flex justify-center'><Loading /></div>;
+  
   return (
     <main className="p-4">
       <h1 className="text-2xl font-bold text-center mb-8 mt-8 dark:text-neutral-200">

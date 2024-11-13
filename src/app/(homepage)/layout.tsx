@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/hooks/themeContext';
 import Main from '@/components/layouts/Main';
 import { AuthProvider } from '@/hooks/AuthContext';
 import AuthNav from '@/components/UI/AuthNavigation';
+import Footer from '@/components/Footer';
 
 const instrumentSans = Instrument_Sans({
   subsets: ['latin'],
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <div>
                 {children}
               </div>
+              <Footer />
               <Toaster
                 position="bottom-center"
                 toastOptions={{

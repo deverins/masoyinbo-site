@@ -43,7 +43,7 @@ const ParticipantResult = () => {
     setSelectedParticipant(null);
   };
 
-  if (loading) return <Loading />;
+  if (loading) return <div className='h-screen flex justify-center'><Loading /></div>;
   if (error) return <div>{error}</div>;
 
   return (

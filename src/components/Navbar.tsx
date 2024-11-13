@@ -1,7 +1,8 @@
 "use client";
-import Image from 'next/image';
 import React, { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
+
 import ThemeToggle from './UI/ThemeToggle';
 import logo from '/public/logo.png';
 import { useAuth } from '@/hooks/AuthContext';
