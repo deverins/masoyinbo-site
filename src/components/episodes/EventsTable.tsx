@@ -7,21 +7,21 @@ import { PencilIcon, TrashIcon } from "@heroicons/react/16/solid";
 
 type EpisodeEvents = {
   events: EpisodeEvent[],
-  signal: (signal:EventActionSignal)=>void
+  signal: (signal: EventActionSignal) => void
 }
 
 const EventsTable: React.FC<EpisodeEvents> = ({ events, signal }) => {
 
-    const handleEdit = (event: MouseEvent<HTMLButtonElement>) => {
-      const id = event.currentTarget.dataset.id as string
-      signal({ id, type: 'EDIT' });
-    };
-    
-  
-    const handleDelete = (event:MouseEvent<HTMLButtonElement>) => {
-      const id = event.currentTarget.dataset.id as string
-      signal({id, type: 'DELETE'})
-    }
+  const handleEdit = (event: MouseEvent<HTMLButtonElement>) => {
+    const id = event.currentTarget.dataset.id as string
+    signal({ id, type: 'EDIT' });
+  };
+
+
+  const handleDelete = (event: MouseEvent<HTMLButtonElement>) => {
+    const id = event.currentTarget.dataset.id as string
+    signal({ id, type: 'DELETE' })
+  }
 
   const isAdmin = localStorage.userRole === 'admin'
 
@@ -54,7 +54,7 @@ const EventsTable: React.FC<EpisodeEvents> = ({ events, signal }) => {
                   <h2 className="font-bold text-lg dark:text-neutral-200">Response</h2>
                   <p className="dark:text-neutral-300">{event.response}</p>
                 </div>
-                
+
                 {event.type !== 'CODE_MIX' && (
                   <div>
                     <h2 className="font-bold text-lg dark:text-neutral-200">Correct Answer</h2>
@@ -77,7 +77,7 @@ const EventsTable: React.FC<EpisodeEvents> = ({ events, signal }) => {
                   <button onClick={handleEdit} data-id={event._id} className="bg-blue-500 text-white hover:bg-blue-600 p-1 rounded">
                     <PencilIcon className="h-5 w-5" />
                   </button>
-                  <button onClick={handleDelete}  data-id={event._id} className="bg-red-500 text-white hover:bg-red-600 p-1 rounded">
+                  <button onClick={handleDelete} data-id={event._id} className="bg-red-500 text-white hover:bg-red-600 p-1 rounded">
                     <TrashIcon className="h-5 w-5" />
                   </button>
                 </div>
@@ -105,14 +105,14 @@ const EventsTable: React.FC<EpisodeEvents> = ({ events, signal }) => {
             <div key={index} className="grid grid-cols-6 gap-4 py-4 mb-2 dark:text-neutral-300">
               <div className="col-span-1 w-[100px] text-center flex items-center justify-center">
                 <span className={`inline-block flex-none size-2 items-center ml-2 ${event.isCorrect ? 'bg-green-500' : 'bg-red-500'} rounded-full`} />
-                <span className="ml-2 cap1stL">{formatType(event.type)}</span>
+                <span className="ml-2 cap1stL break-words">{formatType(event.type)}</span>
               </div>
-              <div className="col-span-1 w-[150px] max-h-36 overflow-y-auto no-scrollbar cap1stL">
+              <div className="col-span-1 w-[150px] max-h-36 overflow-y-auto no-scrollbar cap1stL break-words">
                 {event.question}
               </div>
-              <div className="col-span-1 cap1stL w-[120px] text-center">{event.response}</div>
-              <div className="col-span-1 cap1stL w-[150px] text-center">{event.correctAnswer}</div>
-              <div className="col-span-1 cap1stL w-[100px] text-center">{formatCurrency(event.amount)}</div>
+              <div className="col-span-1 cap1stL w-[120px] text-center break-words">{event.response}</div>
+              <div className="col-span-1 cap1stL w-[150px] text-center break-words">{event.correctAnswer}</div>
+              <div className="col-span-1 cap1stL w-[100px] text-center break-words">{formatCurrency(event.amount)}</div>
               <div className="col-span-1 w-[100px] text-center">
                 {formatCurrency(event.balance)}
                 {/* Edit and Delete Buttons under the balance */}
