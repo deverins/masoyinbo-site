@@ -96,7 +96,7 @@ const ParticipationForm: React.FC = () => {
       <AboutSection />
 
       <section className="flex justify-center items-center py-10 px-4">
-        <div className="shadow-md -lg dark:shadow-2xl p-8 w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl transition-all duration-300">
+        <div className="shadow-md-lg dark:shadow-2xl p-8 w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl transition-all duration-300">
           <form onSubmit={formik.handleSubmit}>
             {/* Email */}
             <div className="mb-4">

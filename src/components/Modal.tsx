@@ -14,7 +14,7 @@ type ModalProps = {
   close: ()=>void
   children: React.ReactNode,
 }
-
+ 
 const Modal = ({
   trigger,
   side = 'center',

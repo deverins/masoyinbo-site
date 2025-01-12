@@ -5,6 +5,7 @@ import logo from "/public/logo.png";
 import Image from "next/image";
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -23,7 +24,7 @@ const Footer = () => {
             className="object-contain w-24 sm:w-32 md:w-40 lg:w-52"
             priority
           />
-          <p className="text-neutral-200">©2024 másòyìnbó</p>
+          <p className="text-neutral-200">©{currentYear} másòyìnbó</p>
           <button
             className="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center"
             onClick={scrollToTop}
