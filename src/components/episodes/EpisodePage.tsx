@@ -207,7 +207,7 @@ const EpisodePage: React.FC = () => {
         <EventsTable events={episodeDetails.events} signal={signal} />
 
         {/* Episode Event Modal */}
-        <Modal trigger={openEpisodeEditModal} close={closeEditEpisodeModal} side="center" gum
+        <Modal trigger={openEpisodeEditModal} close={closeEditEpisodeModal} side="center"
           backgroundColorClass="bg-secondary-cream dark:bg-slate-900">
           <div className="w-[calc(100dvw-12px)] max-w-[600px] p-2">
             <CreateEpisodeForm onSaveEpisode={onSaveEpisode} episodeId={episodeId} editEpisode={selectedEpisode} />
@@ -215,10 +215,10 @@ const EpisodePage: React.FC = () => {
           </div>
         </Modal>
 
-        {/* Edit Event Modal */}
-        <Modal trigger={openEditModal} close={closeEditModal} side="center" gum
+        {/* Create And Edit Event Modal */}
+        <Modal trigger={openEditModal} close={closeEditModal} side="bottom" 
           backgroundColorClass="bg-secondary-cream dark:bg-slate-900">
-          <div className="w-[calc(100dvw-12px)] max-w-[600px] p-2">
+          <div className="w-[calc(100dvw-12px)] max-h-[60dvh] max-w-screen-lg mx-auto p-2">
             <EventsForm onSave={onSave} event={selectedEvent} episodeId={episodeId} />
           </div>
         </Modal>

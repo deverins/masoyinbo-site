@@ -1,4 +1,4 @@
-import React, { MouseEvent, useRef } from 'react';
+import React, { MouseEvent, useRef, useEffect, useCallback } from 'react';
 import { useFormik } from 'formik';
 import { useState } from 'react';
 import { episodeEventsFormValidator } from '@/validationSchema/episodeEventsFormValidator';
@@ -6,94 +6,144 @@ import { EpisodeEvent, EpisodeEventsFormProps } from '@/types';
 import axios from 'axios';
 import { API_URL } from '@/constants/api';
 import Dialogbox from '../DialogBox';
+import debounce from 'lodash/debounce';
+
+const saveNewEventDraft = (event: EpisodeEvent) => {
+  localStorage.eventDraft = JSON.stringify(event);
+};
+
+const getEventDraft = (): EpisodeEvent | null => {
+  if (!localStorage.eventDraft) return null;
+  return JSON.parse(localStorage.eventDraft) as EpisodeEvent;
+};
+
+type FormValues = {
+  question: string;
+  correctAnswer: string;
+  response: string;
+  type: string;
+  isCorrect: string | boolean;
+  amount: number;
+  balance: number;
+};
+
+const defaultValues: FormValues = {
+  question: '',
+  correctAnswer: '',
+  response: '',
+  type: 'Select Type',
+  isCorrect: '',
+  amount: 0,
+  balance: 0,
+};
 
 const EventsForm: React.FC<EpisodeEventsFormProps> = ({ onSave, episodeId, event }) => {
   const [error, setError] = useState<string | null>(null);
   const [submiting, setSubmiting] = useState(false);
-  const typeInputRef = useRef<HTMLInputElement>(null)
+  const typeInputRef = useRef<HTMLInputElement>(null);
 
-  const formik = useFormik({
-    initialValues: {
-      question: event?.question ?? '',
-      correctAnswer: event?.correctAnswer ?? '',
-      response: event?.response ?? '',
-      type: event?.type ?? 'Select Type',
-      isCorrect: event?.isCorrect ?? '',
-      amount: event?.amount ?? 0,
-      balance: event?.balance ?? '',
-    },
+  const formik = useFormik<FormValues>({
+    initialValues: (() => {
+      if (event) {
+        return {
+          ...defaultValues,
+          question: event.question ?? '',
+          correctAnswer: event.correctAnswer ?? '',
+          response: event.response ?? '',
+          type: event.type ?? 'Select Type',
+          isCorrect: event.isCorrect ?? '',
+          amount: event.amount ?? 0,
+          balance: event.balance ?? 0,
+        };
+      }
+
+      const draft = getEventDraft();
+      return draft ? {
+        ...defaultValues,
+        question: draft.question ?? '',
+        correctAnswer: draft.correctAnswer ?? '',
+        response: draft.response ?? '',
+        type: draft.type ?? 'Select Type',
+        isCorrect: draft.isCorrect ?? '',
+        amount: draft.amount ?? 0,
+        balance: draft.balance ?? 0,
+      } : defaultValues;
+    })(),
+
     validationSchema: episodeEventsFormValidator,
     onSubmit: async (values, { resetForm }) => {
-      if (submiting) return
-      setSubmiting(true)
+      if (submiting) return;
+      setSubmiting(true);
       setError(null);
 
-      const { question, correctAnswer, isCorrect, ...rest } = values;
-      const parsedIsCorrect = formik.values.isCorrect === 'true';
-      let payload;
-      if (values.type === 'CODE_MIX') {
-        payload = { ...rest, isCorrect: parsedIsCorrect };
-      } else {
-        payload = { question, correctAnswer, ...rest, isCorrect: parsedIsCorrect };
-      }
+      try {
+        const { question, correctAnswer, isCorrect, ...rest } = values;
+        const parsedIsCorrect = isCorrect === 'true';
+        const payload = values.type === 'CODE_MIX' 
+          ? { ...rest, isCorrect: parsedIsCorrect }
+          : { question, correctAnswer, ...rest, isCorrect: parsedIsCorrect };
 
-      if (!event) {
-        const episodeEvent = await createEvent(episodeId as string, payload as EpisodeEvent)
+        const episodeEvent = !event
+          ? await axios.post(`${API_URL}/api/episode-events`, { episodeId, event: payload }).then(res => res.data.event)
+          : await axios.put(`${API_URL}/api/episode-events/${event._id}`, { event: payload }).then(res => res.data.event);
+
         if (episodeEvent) {
-          onSave(episodeEvent)
+          onSave(episodeEvent);
+          if (!event) {
+            localStorage.removeItem('eventDraft');
+            resetForm();
+          }
         }
-        resetForm()
-        setSubmiting(false)
-        return
+      } catch (error: any) {
+        setError(error?.response?.data?.message as string);
+      } finally {
+        setSubmiting(false);
       }
-
-      const episodeEvent = await updateEvent(event._id, payload as EpisodeEvent)
-      if (episodeEvent) {
-        onSave(episodeEvent)
-      }
-      setSubmiting(false)
-    }
+    },
   });
 
-  const createEvent = async (episodeId: string, payload: EpisodeEvent) => {
-    try {
-      const { data } = await axios.post(`${API_URL}/api/episode-events`, { episodeId, event: payload })
-      const event = data.event as EpisodeEvent
-      return event
-    } catch (error: any) {
-      setError(error?.response?.data?.message as string)
-    }
-  }
-  const updateEvent = async (id: string, payload: EpisodeEvent) => {
-    try {
-      const { data } = await axios.put(`${API_URL}/api/episode-events/${id}`, { event: payload })
-      const event = data.event as EpisodeEvent
-      return event
-    } catch (error: any) {
-      setError(error?.response?.data?.message as string)
-    }
-  }
+  const debouncedSave = useCallback(
+    (values: FormValues) => {
+      const saveDraft = () => {
+        if (!event) {
+          saveNewEventDraft({
+            _id: '',
+            ...values,
+            isCorrect: values.isCorrect === 'true',
+          } as EpisodeEvent);
+        }
+      };
+      const debouncedFn = debounce(saveDraft, 500);
+      debouncedFn();
+      return debouncedFn;
+    },
+    [event]
+  );
 
-  const setTypeValue=(event: MouseEvent<HTMLLIElement>)=>{
+  useEffect(() => {
+    const debouncedFn = debouncedSave(formik.values);
+    return () => debouncedFn.cancel();
+  }, [formik.values, debouncedSave]);
+
+  const setTypeValue = (event: MouseEvent<HTMLLIElement>) => {
     const value = event.currentTarget.dataset.value as string;
-    if(!typeInputRef.current) return
-    typeInputRef.current.value = value 
-    formik.values.type = value
-  }
-
+    if (!typeInputRef.current) return;
+    typeInputRef.current.value = value;
+    formik.setFieldValue('type', value);
+  };
 
   return (
     <>
-      <main className=" py-10 px-4 w-full">
+      <main className=" p-4 w-full">
         <div className="w-full transition-all duration-300 shadow-lg p-6 rounded">
           <h1 className="text-2xl font-bold mb-6 dark:text-gray-400 text-center">Add Episode Event</h1>
           {error && <div className="text-red-500 mb-2 mt-4">{error}</div>}
 
-          <form onSubmit={formik.handleSubmit}>
+          <form onSubmit={formik.handleSubmit} className='grid custom:grid-cols-2 custom:gap-x-3'>
             {/* Type */}
-            <div id='typeField' className='relative'>
-
-              <label className="block text-base font-medium dark:text-gray-400 mb-2 mt-4">Type</label>
+            <div>
+              <div id='typeField' className='relative'>
+              <label className="block items-center text-base font-medium dark:text-gray-400 mb-2 mt-4">*Type</label>
               <input ref={typeInputRef} type="text" readOnly className='w-full py-4 p-2 event-form-input'
                 name="type"
                 value={formik.values.type}
@@ -126,6 +176,8 @@ const EventsForm: React.FC<EpisodeEventsFormProps> = ({ onSave, episodeId, event
                     </li>
                   </ul>
                 </Dialogbox> 
+
+              </div>
               {formik.errors.type && formik.touched.type && (
                 <div className="text-red-500">{formik.errors.type}</div>
               )}
@@ -195,7 +247,7 @@ const EventsForm: React.FC<EpisodeEventsFormProps> = ({ onSave, episodeId, event
 
             {/* Balance */}
             <div>
-              <label className="block text-base font-medium dark:text-gray-400 mb-2 mt-4">Balance</label>
+              <label className="block text-base font-medium dark:text-gray-400 mb-2 mt-4">*Balance</label>
               <input
                 type="number"
                 name="balance"
@@ -210,7 +262,7 @@ const EventsForm: React.FC<EpisodeEventsFormProps> = ({ onSave, episodeId, event
             </div>
             {/* Is Correct */}
             <div>
-              <label className="block text-base font-medium dark:text-gray-400 mb-2 mt-4">Is Correct</label>
+              <label className="block text-base font-medium dark:text-gray-400 mb-2 mt-4">*Is Correct</label>
               <div className="flex items-center space-x-4">
                 <label className="flex items-center dark:text-gray-200">
                   <input
@@ -244,7 +296,7 @@ const EventsForm: React.FC<EpisodeEventsFormProps> = ({ onSave, episodeId, event
             {/* Submit button */}
             <button
               type="submit"
-              className="mt-6 w-full py-4 text-lg dark:border dark:border-slate-400 font-bold bg-primary-light text-white p-2 rounded-md px-4"
+              className="mt-6 custom:col-span-2 w-full py-4 text-lg dark:border dark:border-slate-400 font-bold bg-primary-light text-white p-2 rounded-md px-4"
             >
               {submiting && 'Processing...'}
               {!submiting && (<span>{event ? 'Update Event' : 'Add Event'} </span>)}

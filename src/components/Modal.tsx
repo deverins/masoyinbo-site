@@ -34,9 +34,27 @@ const Modal = ({
   const [closing, setClosing] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
+  const getLeaveClass = () => {
+    switch (side) {
+      case 'center':
+        return 'center-leave';
+      case 'full':
+        return 'full-leave';
+      case 'bottom':
+        return 'bottom-leave';
+      case 'top':
+        return 'top-leave';
+      case 'right':
+        return 'right-leave';
+      case 'left':
+        return 'left-leave';
+      default:
+        return 'center-leave';
+    }
+  };
+
   const closeWithIcon=()=>{
     close();
-    setKey(false)
   }
 
   useEffect(() => {    
@@ -84,7 +102,7 @@ const Modal = ({
       <div
         ref={modalRef}
         style={style}
-        className={`${closing ? `${side}-leave` : side} ${backgroundColorClass}`}
+        className={`${closing ? getLeaveClass() : side} ${backgroundColorClass}`}
       >
         {renderContent()}
       </div>
@@ -143,7 +161,8 @@ const Modal = ({
     <div
       role="modal"
       id={modalId}
-      aria-hidden="true"
+      aria-hidden={!key}
+      aria-modal="true"
       className={`
         fixed inset-0 z-30 bg-black bg-opacity-30 flex items-center justify-center
         ${key ? '' : 'hidden'}
