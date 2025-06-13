@@ -13,9 +13,9 @@ const ThemeToggle: React.FC = () => {
       aria-label="Toggle Dark Mode"
     >
       {theme === 'light' ? (
-        <SunIcon className="h-6 w-6 text-white" />
-      ) : (
         <MoonIcon className="h-6 w-6 text-text-saffron" />
+      ) : (
+        <SunIcon className="h-6 w-6 text-white" />
       )}
     </button>
   );
