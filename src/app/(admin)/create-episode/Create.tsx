@@ -154,24 +154,31 @@ export const CreateEpisodeForm: React.FC<EpisodeFormProps> = ({ onSaveEpisode, e
                 onClick={() => { setDialogOpen(true); }}
               />
               {dialogOpen && (
-                <Dialogbox triggerDomId="participant_id" positions={{ ySide: 'bottom' }} closeOnClick
-                  className='text-neutral-700 dark:text-neutral-200 dark:bg-slate-900
-                    border dark:border-slate-700 right-1/2 w-full shadow translate-x-1/2'
+                <Dialogbox
+                  triggerDomId="participant_id"
+                  positions={{ ySide: 'bottom' }}
+                  closeOnClick
+                  className="text-neutral-700 dark:text-neutral-200 dark:bg-slate-900 border dark:border-slate-700 right-1/2 w-full shadow translate-x-1/2"
                 >
-                  <ul className="dark:text-neutral-200 w-full bg-white rounded-lg shadow-lg dark:bg-slate-900">
-                    {data.filter(participant => !participant.hasEpisode).map(participant => (
-                      <li key={participant._id}>
-                        <button
-                          type="button"
-                          onClick={() => handleParticipantSelect(participant)}
-                          className="w-full text-left p-2 hover:bg-gray-200 rounded-lg dark:hover:bg-gray-700"
-                        >
-                          {participant.fullName}
-                        </button>
-                      </li>
-                    ))}
+                  <ul
+                    className="max-h-32 overflow-y-auto no-scrollbar dark:text-neutral-200 w-full bg-white rounded-lg shadow-lg dark:bg-slate-900"
+                  >
+                    {data
+                      .filter(participant => !participant.hasEpisode)
+                      .map(participant => (
+                        <li key={participant._id}>
+                          <button
+                            type="button"
+                            onClick={() => handleParticipantSelect(participant)}
+                            className="w-full text-left p-2 hover:bg-gray-200 rounded-lg dark:hover:bg-gray-700"
+                          >
+                            {participant.fullName}
+                          </button>
+                        </li>
+                      ))}
                   </ul>
                 </Dialogbox>
+
               )}
               {formik.errors.participant_id && formik.touched.participant_id && (
                 <div className="text-red-500 text-base">{formik.errors.participant_id}</div>
